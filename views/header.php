@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ClassNotFound - You've got a question ? We've got you covered !</title>
+    <title><?php echo TITLE ?> - You've got a question ? We've got you covered !</title>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="<?php echo IMAGES ?>favicon.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
