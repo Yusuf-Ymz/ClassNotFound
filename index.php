@@ -29,3 +29,8 @@ if(empty($_SESSION['logged'])) {
 
 # Show header view
 require_once(VIEWS . 'header.php');
+
+
+
+# Show footer view
+require_once(VIEWS . 'footer.php');
