@@ -12,7 +12,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="index.php?action=homepage">ClassNotFound</a>
+        <a class="navbar-brand" href="index.php?action=homepage"><i class="far fa-comment-alt"></i> ClassNotFound</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -49,7 +49,13 @@
             </div>
             <div class="col-md-9">
                 <!-- Search form -->
-                <form action="index.php?action=search" method="get" id="form-search" class="form-inline">
-                    <button id="btn-search" type="submit" class="btn btn-default"><i class="fas fa-search" aria-hidden="true"></i></button>
-                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
-                </form>
+                <div class="container-fluid form-search">
+                    <form action="index.php?action=search" method="post">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Search">
+                            <div class="input-group-btn">
+                            <button id="btn-search" class="btn btn-default" type="submit" name="form_search"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>

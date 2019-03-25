@@ -22,13 +22,19 @@ a.list-group-item:hover {
     background-color: #DCDCDC;
 }
 
-#form-search {
+.form-search {
+    padding-left: 0px;
+    padding-right: 0px;
     margin-top: 30px;
     margin-bottom: 15px;
 }
 
 #btn-search {
-    margin-right: -15px;
+    background-color: #CED4DA;
+    border: 1px solid #CED4DA;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    border-left: none;
 }
 
 section#main {
