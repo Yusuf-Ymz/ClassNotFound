@@ -9,58 +9,47 @@
     <link rel="stylesheet" href="<?php echo VIEWS ?>CSS/style.css">
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand navbar-light bg-light fixed-top">
-        <div id="brand" class="container-fluid">
-            <a class="navbar-brand" href="index.php?action=homepage">
-                <i class="far fa-comment-alt"></i>
-                <?php echo " " . TITLE ?>
-            </a>
-        </div>
-        <div class="container-fluid">
-            <ul class="nav navbar-nav ml-auto">
-                <li id="btn-new-question" class="nav-item">
-                    <a href="index.php?action=newQuestion" class="btn btn-primary" role="button">New Question</a>
-                </li>
-                <li id="search-bar" class="nav-item">
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
-                    </form>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.php?action=homepage">ClassNotFound</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?action=newQuestion">New Question</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="index.php?action=<?php echo $nav_action_1 ?>"><?php echo $nav_item_1 ?></a>
+                    <a class="nav-link" href="index.php?action=admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="index.php?action=<?php echo $nav_action_2 ?>"><?php echo $nav_item_2 ?></a>
+                    <a class="nav-link" href="index.php?action=logout">Logout</a>
                 </li>
             </ul>
         </div>
-    </nav>
-</header>
-<!-- Category Left Nav -->
-<div class="first-elt sidenav bg-light">
-    <a href="index.php?action=category&id=1">GENERAL</a>
-    <a href="index.php?action=category&id=2">ALGORITHMS</a>
-    <a href="index.php?action=category&id=3">A.I.</a>
-    <a href="index.php?action=category&id=4">BIG DATA</a>
-    <a href="index.php?action=category&id=5">3D GRAPHICS</a>
-    <a href="index.php?action=category&id=6">WEB</a>
-</div>
+    </div>
+</nav>
 
-<div class="first-elt main">
-    <h2>Sidebar</h2>
-    <p>This sidebar is of full height (100%) and always shown.</p>
-    <p>Scroll down the page to see the result.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-    
+<!-- Page Content -->
+<section id="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h2 id="categories" class="my-4">Categories</h2>
+                <div class="list-group">
+                    <a href="index.php?action=category&id=1" class="list-group-item">General</a>
+                    <a href="index.php?action=category&id=2" class="list-group-item">Algorithms</a>
+                    <a href="index.php?action=category&id=3" class="list-group-item">A.I.</a>
+                    <a href="index.php?action=category&id=4" class="list-group-item">Big Data</a>
+                    <a href="index.php?action=category&id=5" class="list-group-item">3D Graphics</a>
+                    <a href="index.php?action=category&id=6" class="list-group-item">Web</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <!-- Search form -->
+                <form action="index.php?action=search" method="get" id="form-search" class="form-inline">
+                    <button id="btn-search" type="submit" class="btn btn-default"><i class="fas fa-search" aria-hidden="true"></i></button>
+                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
+                </form>
