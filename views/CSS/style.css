@@ -4,6 +4,8 @@
 
 #footer {
     margin-left: 160px;
+    padding-top:0px;
+    padding-bottom: 0px;
 }
 
 #brand {
@@ -23,9 +25,9 @@
     width: 160px;
     position: fixed;
     z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #fff;
+    top:0;
+    left:0;
+    background-color:#fff;
     overflow-x: hidden;
     padding-top: 20px;
 }
