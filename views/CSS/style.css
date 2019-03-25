@@ -6,6 +6,18 @@
     margin-left: 160px;
 }
 
+#brand {
+    width: 165px;
+}
+
+#btn-new-question {
+    margin-right: 10px;
+}
+
+#search-bar {
+    margin-right: 15px;
+}
+
 .sidenav {
     height: 100%;
     width: 160px;
@@ -27,7 +39,7 @@
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: #007bff;
 }
 
 .main {

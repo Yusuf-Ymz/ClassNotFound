@@ -1,3 +1,4 @@
+</div>
 <footer id="footer" class="footer-page font-small indigo bg-light">
     <div class="container-fluid text-center text-md-center">
         <div class="row">
