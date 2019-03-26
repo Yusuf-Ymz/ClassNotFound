@@ -10,7 +10,7 @@
                     <input type="password" class="form-control" placeholder="Your Password" name="password"/>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-dark" type="submit" name="login_form">Login</button>
+                    <button class="btn btn-dark" type="submit" name="form_login">Login</button>
                 </div>
             </form>
         </div>
