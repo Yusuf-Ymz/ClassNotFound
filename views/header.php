@@ -22,10 +22,10 @@
                     <a class="nav-link" href="index.php?action=newQuestion">New Question</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=admin">Admin</a>
+                    <a class="nav-link" href="index.php?action=<?php echo $nav_action_1 ?>"><?php echo $nav_item_1 ?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=logout">Logout</a>
+                    <a class="nav-link" href="index.php?action=<?php echo $nav_action_2 ?>"><?php echo $nav_item_2 ?></a>
                 </li>
             </ul>
         </div>
@@ -36,23 +36,25 @@
 <section id="main">
     <div class="container">
         <div class="row">
+            <!-- Categories Menu -->
             <div class="col-md-3">
                 <h2 id="categories" class="my-4">Categories</h2>
                 <div class="list-group">
-                    <a href="index.php?action=category&id=1" class="list-group-item">General</a>
-                    <a href="index.php?action=category&id=2" class="list-group-item">Algorithms</a>
-                    <a href="index.php?action=category&id=3" class="list-group-item">A.I.</a>
-                    <a href="index.php?action=category&id=4" class="list-group-item">Big Data</a>
-                    <a href="index.php?action=category&id=5" class="list-group-item">3D Graphics</a>
-                    <a href="index.php?action=category&id=6" class="list-group-item">Web</a>
+                    <a href="index.php?action=category&id=1" class="list-group-item category">General</a>
+                    <a href="index.php?action=category&id=2" class="list-group-item category">Algorithms</a>
+                    <a href="index.php?action=category&id=3" class="list-group-item category">A.I.</a>
+                    <a href="index.php?action=category&id=4" class="list-group-item category">Big Data</a>
+                    <a href="index.php?action=category&id=5" class="list-group-item category">3D Graphics</a>
+                    <a href="index.php?action=category&id=6" class="list-group-item category">Web</a>
                 </div>
             </div>
+            <!-- Main Content + Search bar -->
             <div class="col-md-9">
                 <!-- Search form -->
                 <div class="container-fluid form-search">
                     <form action="index.php?action=search" method="post">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search">
+                            <input class="form-control" type="text" placeholder="Search" name="search" value="<?php if(isset($_POST['search'])) echo $_POST['search'] ?>">
                             <div class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="submit" name="form_search"><i class="fas fa-search"></i></button>
                             </div>
