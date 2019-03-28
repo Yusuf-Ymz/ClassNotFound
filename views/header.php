@@ -18,14 +18,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                <?php if(empty($_SESSION['logged'])) { ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=newQuestion">New Question</a>
+                    <a class="nav-link" href="index.php?action=register">Register</a>
                 </li>
+                <?php } ?>
+                <?php if(!empty($_SESSION['admin'])) { ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=<?php echo $nav_action_1 ?>"><?php echo $nav_item_1 ?></a>
+                    <a class="nav-link" href="index.php?action=admin">Admin</a>
                 </li>
+                <?php } ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=<?php echo $nav_action_2 ?>"><?php echo $nav_item_2 ?></a>
+                    <a class="nav-link" href="index.php?action=<?php echo empty($_SESSION['logged']) ? 'login">Login' : 'logout">Logout'?></a>
                 </li>
             </ul>
         </div>
