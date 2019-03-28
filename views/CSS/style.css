@@ -32,6 +32,9 @@ a.list-group-item:hover {
         margin-right: 15px;
         margin-left: 15px;
     }
+    #categories {
+        margin-left: 17px;
+    }
 }
 
 #btn-search {

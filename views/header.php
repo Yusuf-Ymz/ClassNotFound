@@ -38,7 +38,7 @@
         <div class="row">
             <!-- Categories Menu -->
             <div class="col-md-3">
-                <h2 id="categories" class="my-4">Categories</h2>
+                <h3 id="categories" class="my-4">Categories</h3>
                 <div class="list-group">
                     <a href="index.php?action=category&id=1" class="list-group-item category">General</a>
                     <a href="index.php?action=category&id=2" class="list-group-item category">Algorithms</a>
