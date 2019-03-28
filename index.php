@@ -8,6 +8,20 @@ define('MODELS','models/');
 define('CONTROLLERS','controllers/');
 define('IMAGES','views/images/');
 define('TITLE','ClassNotFound');
+define('SESSION_ID',session_id());
+
+# Automatic inclusion of classes from models
+function loadClass($class) {
+    require_once(MODELS . $class . '.class.php');
+}
+spl_autoload_register('loadClass');
+
+# Connexion to the database;
+require_once(MODELS . 'Db.php');
+$db=Db::getInstance();
+
+# This array contains all the categories from the database as Category objects
+$tabCategories = $db->select_categories();
 
 # Show header view
 require_once(VIEWS . 'header.php');
@@ -39,7 +53,7 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS.'SearchController.php');
         $controller = new SearchController();
         break;
-    case 'category':
+    case 'Category.class':
         require_once(CONTROLLERS.'CategoryController.php');
         $controller = new CategoryController();
         break;

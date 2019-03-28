@@ -44,12 +44,9 @@
             <div class="col-md-3">
                 <h3 id="categories" class="my-4">Categories</h3>
                 <div class="list-group">
-                    <a href="index.php?action=category&id=1" class="list-group-item category">General</a>
-                    <a href="index.php?action=category&id=2" class="list-group-item category">Algorithms</a>
-                    <a href="index.php?action=category&id=3" class="list-group-item category">A.I.</a>
-                    <a href="index.php?action=category&id=4" class="list-group-item category">Big Data</a>
-                    <a href="index.php?action=category&id=5" class="list-group-item category">3D Graphics</a>
-                    <a href="index.php?action=category&id=6" class="list-group-item category">Web</a>
+                    <?php foreach ($tabCategories as $i => $category) { ?>
+                    <a href="index.php?action=category&id=<?php echo $category->html_id(); ?>" class="list-group-item category"><?php echo $category->html_name(); ?></a>
+                    <?php } ?>
                 </div>
             </div>
             <!-- Main Content + Search bar -->
@@ -58,7 +55,7 @@
                 <div class="container-fluid form-search">
                     <form action="index.php?action=search" method="post">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search" name="search" value="<?php if(isset($_POST['search'])) echo $_POST['search'] ?>">
+                            <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($_POST['search'])) echo 'value="' . $_POST['search'] . '"' ?>>
                             <div class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="submit" name="form_search"><i class="fas fa-search"></i></button>
                             </div>
