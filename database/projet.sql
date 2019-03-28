@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 28 mars 2019 à 07:51
+-- Généré le :  jeu. 28 mars 2019 à 08:47
 -- Version du serveur :  5.7.19
 -- Version de PHP :  5.6.31
 
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
   `author_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
   `subject` text NOT NULL,
+  `date_publication` date NOT NULL,
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
   KEY `author_id_answers` (`author_id`) USING BTREE
@@ -43,32 +44,32 @@ CREATE TABLE IF NOT EXISTS `answers` (
 -- Déchargement des données de la table `answers`
 --
 
-INSERT INTO `answers` (`answer_id`, `author_id`, `question_id`, `subject`) VALUES
-(1, 2, 1, 'You can find documentation on the javadoc website :)'),
-(2, 1, 1, 'Okay thank you'),
-(3, 2, 1, 'Need anything else ?'),
-(4, 1, 1, 'Can you provide the link plz ?'),
-(5, 2, 1, 'javadoc.com/foreach'),
-(6, 2, 2, 'What version are you using ?'),
-(7, 1, 2, 'Version 1.6'),
-(8, 2, 2, 'You can check out my YT channel I have a series of videos dedicated to Blender'),
-(9, 1, 2, 'Thanks I\'ll check it out ! :)'),
-(10, 2, 2, 'You\'re welcome !'),
-(11, 2, 3, 'Wich country do you live in ?'),
-(12, 1, 3, 'In Belgium'),
-(13, 2, 3, 'Well do you have a bachelor in computer science ?'),
-(14, 1, 3, 'Yes I do'),
-(15, 2, 3, 'You could go for a master in AI if any school in belgium are proposing one, if not then you might need to change country to pursue your studies.'),
-(16, 2, 4, 'Are you lactose intolerant ? '),
-(17, 1, 4, 'No I\'m not'),
-(18, 2, 4, 'Then you can use this recipe:\r\n- milk\r\n- chocolate\r\n- eggs\r\n- flour'),
-(19, 1, 4, 'Ok thank you'),
-(20, 2, 4, 'You are welcome'),
-(21, 2, 5, 'PS: I\'m not an IT student so I need to learn from scratch'),
-(22, 1, 5, 'There is plenty of documentation on the official PHP.net website'),
-(23, 2, 5, 'Any other recommendations ?'),
-(24, 1, 5, 'You can check this guy on Youtube: [link]'),
-(25, 2, 5, 'Great thanks');
+INSERT INTO `answers` (`answer_id`, `author_id`, `question_id`, `subject`, `date_publication`) VALUES
+(1, 2, 1, 'You can find documentation on the javadoc website :)', '2019-03-13'),
+(2, 1, 1, 'Okay thank you', '2019-03-06'),
+(3, 2, 1, 'Need anything else ?', '2019-03-07'),
+(4, 1, 1, 'Can you provide the link plz ?', '2019-03-06'),
+(5, 2, 1, 'javadoc.com/foreach', '2019-03-06'),
+(6, 2, 2, 'What version are you using ?', '2019-03-05'),
+(7, 1, 2, 'Version 1.6', '2019-03-12'),
+(8, 2, 2, 'You can check out my YT channel I have a series of videos dedicated to Blender', '2019-03-07'),
+(9, 1, 2, 'Thanks I\'ll check it out ! :)', '2019-03-27'),
+(10, 2, 2, 'You\'re welcome !', '2019-03-08'),
+(11, 2, 3, 'Wich country do you live in ?', '2019-03-21'),
+(12, 1, 3, 'In Belgium', '2019-03-13'),
+(13, 2, 3, 'Well do you have a bachelor in computer science ?', '2019-03-20'),
+(14, 1, 3, 'Yes I do', '2019-03-05'),
+(15, 2, 3, 'You could go for a master in AI if any school in belgium are proposing one, if not then you might need to change country to pursue your studies.', '2019-03-06'),
+(16, 2, 4, 'Are you lactose intolerant ? ', '2019-03-11'),
+(17, 1, 4, 'No I\'m not', '2019-03-18'),
+(18, 2, 4, 'Then you can use this recipe:\r\n- milk\r\n- chocolate\r\n- eggs\r\n- flour', '2019-03-12'),
+(19, 1, 4, 'Ok thank you', '2019-03-19'),
+(20, 2, 4, 'You are welcome', '2019-03-22'),
+(21, 2, 5, 'PS: I\'m not an IT student so I need to learn from scratch', '2019-03-15'),
+(22, 1, 5, 'There is plenty of documentation on the official PHP.net website', '2019-03-22'),
+(23, 2, 5, 'Any other recommendations ?', '2019-03-22'),
+(24, 1, 5, 'You can check this guy on Youtube: [link]', '2019-03-22'),
+(25, 2, 5, 'Great thanks', '2019-03-22');
 
 -- --------------------------------------------------------
 
@@ -171,6 +172,14 @@ CREATE TABLE IF NOT EXISTS `votes` (
   PRIMARY KEY (`member_id`,`answer_id`),
   KEY `answer_id` (`answer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `votes`
+--
+
+INSERT INTO `votes` (`member_id`, `answer_id`, `liked`) VALUES
+(1, 1, 1),
+(2, 12, 0);
 
 --
 -- Contraintes pour les tables déchargées
