@@ -12,6 +12,23 @@ body {
     margin-left: 2px;
 }
 
+.card {
+    margin-bottom: 15px;
+}
+
+.questions {
+    text-decoration: none;
+    color: black;
+}
+
+.card-deco {
+    padding-right: 2px;
+}
+
+.categoryQuestions {
+    margin-top: 10px;
+}
+
 a.list-group-item {
     text-decoration: none;
     color: black;
@@ -47,6 +64,7 @@ a.list-group-item:hover {
 
 section#main {
     background-color: #fff;
+    padding-bottom: 25px;
 }
 
 a.nav-link {

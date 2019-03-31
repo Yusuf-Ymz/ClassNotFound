@@ -53,13 +53,13 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS.'SearchController.php');
         $controller = new SearchController();
         break;
-    case 'Category.class':
+    case 'category':
         require_once(CONTROLLERS.'CategoryController.php');
-        $controller = new CategoryController();
+        $controller = new CategoryController($db);
         break;
     default:
         require_once(CONTROLLERS.'HomepageController.php');
-        $controller = new HomepageController();
+        $controller = new HomepageController($db);
         break;
 }
 
