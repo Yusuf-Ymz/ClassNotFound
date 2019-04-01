@@ -7,6 +7,10 @@ body {
     margin-bottom: 10px !important;
 }
 
+#notification {
+    color: red;
+}
+
 #categories {
     margin-bottom: 10px !important;
     margin-left: 2px;

@@ -10,7 +10,7 @@ define('IMAGES','views/images/');
 define('TITLE','ClassNotFound');
 define('SESSION_ID',session_id());
 
-# Automatic inclusion of classes from models
+# Automated loading of classes from models
 function loadClass($class) {
     require_once(MODELS . $class . '.class.php');
 }
@@ -35,7 +35,7 @@ if (empty($_GET['action'])) {
 switch ($_GET['action']) {
     case 'login':
         require_once(CONTROLLERS.'LoginController.php');
-        $controller = new LoginController();
+        $controller = new LoginController($db);
         break;
     case 'logout':
         require_once(CONTROLLERS.'LogoutController.php');
@@ -43,7 +43,7 @@ switch ($_GET['action']) {
         break;
     case 'register':
         require_once(CONTROLLERS.'RegisterController.php');
-        $controller = new RegisterController();
+        $controller = new RegisterController($db);
         break;
     case 'admin':
         require_once(CONTROLLERS.'AdminController.php');

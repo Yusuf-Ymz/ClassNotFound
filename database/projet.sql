@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 28 mars 2019 à 08:47
--- Version du serveur :  5.7.19
--- Version de PHP :  5.6.31
+-- Généré le :  lun. 01 avr. 2019 à 15:55
+-- Version du serveur :  5.7.24
+-- Version de PHP :  7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -115,15 +115,17 @@ CREATE TABLE IF NOT EXISTS `members` (
   `suspended` tinyint(1) NOT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `idx_login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `members`
 --
 
 INSERT INTO `members` (`member_id`, `login`, `lastname`, `firstname`, `mail`, `password`, `admin`, `suspended`) VALUES
-(1, 'yusuf.yilmaz', 'Yilmaz', 'Yusuf', 'yusuf.yilmaz@student.vinci.be', 'azerty', 0, 0),
-(2, 'antoine.honinckx', 'Honinckx', 'Antoine', 'antoine.honinckx@student.vinci.be', 'azerty', 1, 0);
+(1, 'yusuf.yilmaz', 'Yilmaz', 'Yusuf', 'yusuf.yilmaz@student.vinci.be', '$2y$10$Apvf/0QLDpIKl3CmZ3ysJeh2xKtwQ7ITvJiuzmY1tLL6TYcjyMjde', 0, 0),
+(2, 'antoine.honinckx', 'Honinckx', 'Antoine', 'antoine.honinckx@student.vinci.be', '$2y$10$Apvf/0QLDpIKl3CmZ3ysJeh2xKtwQ7ITvJiuzmY1tLL6TYcjyMjde', 1, 0),
+(3, 'suspended', 'test', 'test', 'test@gmail.com', '$2y$10$Apvf/0QLDpIKl3CmZ3ysJeh2xKtwQ7ITvJiuzmY1tLL6TYcjyMjde', 0, 1),
+(4, 'register', 'test', 'test', 'test@gmail.com', '$2y$10$xtsnOsQX40QOWHtelxes4uEGPoG/L4FoeTmUvBPhgsYUK0mXESKMa', 0, 0);
 
 -- --------------------------------------------------------
 

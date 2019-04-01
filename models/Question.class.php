@@ -9,43 +9,43 @@ class Question
     private $_title;
     private $_subject;
     private $_state;
-    private $_date_publication;
+    private $_publication_date;
 
-    public function __construct($question_id,$author_id,$category_id,$title,$subject,$_date_publication)
+    public function __construct($question_id, $author_id, $category_id, $title, $subject, $_publication_date)
     {
         $this->_question_id = $question_id;
         $this->_author_id = $author_id;
         $this->_category_id = $category_id;
         $this->_title = $title;
         $this->_subject = $subject;
-        $this->_date_publication = $_date_publication;
+        $this->_publication_date = $_publication_date;
     }
 
 
-    public function getQuestionId()
+    public function questionId()
     {
         return $this->_question_id;
     }
 
 
-    public function getAuthorId()
+    public function authorId()
     {
         return $this->_author_id;
     }
 
-    public function getCategoryId()
+    public function categoryId()
     {
         return $this->_category_id;
     }
 
 
-    public function getBestAnswerId()
+    public function bestAnswerId()
     {
         return $this->_best_answer_id;
     }
 
 
-    public function getTitle()
+    public function title()
     {
         return $this->_title;
     }
@@ -54,7 +54,7 @@ class Question
         return htmlspecialchars($this->_title);
     }
 
-    public function getSubject()
+    public function subject()
     {
         return $this->_subject;
     }
@@ -63,7 +63,7 @@ class Question
         return htmlspecialchars($this->_subject);
     }
 
-    public function getState()
+    public function state()
     {
         return $this->_state;
     }
@@ -73,8 +73,8 @@ class Question
         return htmlspecialchars($this->_state);
     }
 
-    public function getDatePublication()
+    public function publicationDate()
     {
-        return $this->_date_publication;
+        return $this->_publication_date;
     }
 }

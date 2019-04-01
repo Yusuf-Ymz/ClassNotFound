@@ -8,6 +8,9 @@
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" placeholder="Your Password" name="password"/>
+                    <?php if(isset($notification)){ ?>
+                        <p id="notification"> <?php echo $notification; ?></p>
+                    <?php } ?>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-dark" type="submit" name="form_login">Login</button>

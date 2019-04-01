@@ -22,6 +22,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?action=register">Register</a>
                 </li>
+                <?php } else { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?action=profile"><?php echo $_SESSION['login']; ?></a>
+                </li>
                 <?php } ?>
                 <?php if(!empty($_SESSION['admin'])) { ?>
                 <li class="nav-item">
