@@ -20,8 +20,6 @@ class QuestionController
         # Select the author of the question
         $author = $this->_db->select_member($question->authorId());
 
-
-
         require_once(VIEWS . 'question.php');
     }
 }

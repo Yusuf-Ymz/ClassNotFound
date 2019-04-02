@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-2">
             <button class="btn btn-dark btn-question">Answer</button>
-            <button class="btn btn-dark btn-question">Duplicated</button>
+            <?php echo isset($_SESSION['admin']) ? '<button class="btn btn-dark btn-question">Duplicated</button>' : ''?>
         </div>
     </div>
     <div class="container">

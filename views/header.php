@@ -59,7 +59,7 @@
                 <div class="container-fluid form-search">
                     <form action="index.php?action=search" method="post">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($_POST['search'])) echo 'value="' . $_POST['search'] . '"' ?>>
+                            <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($_POST['search'])) echo 'value="' . htmlspecialchars($_POST['search']) . '"' ?>>
                             <div class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="submit" name="form_search"><i class="fas fa-search"></i></button>
                             </div>

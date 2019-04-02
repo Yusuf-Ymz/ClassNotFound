@@ -49,7 +49,7 @@ class Db
         $ps->execute();
         $questions = array();
         while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->date_publication);
+            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
         return $questions;
     }
@@ -161,5 +161,20 @@ class Db
         $ps->bindValue(':suspended',0);
         $ps->execute();
         return;
+    }
+
+    # Search for the keyword in the title of the questions in the database
+    public function search_questions($keyword)
+    {
+        $keyword = strtolower($keyword);
+        $query = 'SELECT * FROM questions WHERE LOWER(title) LIKE :keyword';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':keyword', "%$keyword%");
+        $ps->execute();
+        $researchedQuestions = array();
+        while ($row = $ps->fetch()) {
+            $researchedQuestions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+        }
+        return $researchedQuestions;
     }
 }

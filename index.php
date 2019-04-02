@@ -55,7 +55,7 @@ switch ($_GET['action']) {
         break;
     case 'search':
         require_once(CONTROLLERS.'SearchController.php');
-        $controller = new SearchController();
+        $controller = new SearchController($db);
         break;
     case 'category':
         require_once(CONTROLLERS.'CategoryController.php');
