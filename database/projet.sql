@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  lun. 01 avr. 2019 à 15:55
+-- Généré le :  mar. 02 avr. 2019 à 17:13
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.2.14
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
   `author_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
   `subject` text NOT NULL,
-  `date_publication` date NOT NULL,
+  `publication_date` date NOT NULL,
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
   KEY `author_id_answers` (`author_id`) USING BTREE
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
 -- Déchargement des données de la table `answers`
 --
 
-INSERT INTO `answers` (`answer_id`, `author_id`, `question_id`, `subject`, `date_publication`) VALUES
+INSERT INTO `answers` (`answer_id`, `author_id`, `question_id`, `subject`, `publication_date`) VALUES
 (1, 2, 1, 'You can find documentation on the javadoc website :)', '2019-03-13'),
 (2, 1, 1, 'Okay thank you', '2019-03-06'),
 (3, 2, 1, 'Need anything else ?', '2019-03-07'),
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   `suspended` tinyint(1) NOT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `idx_login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `members`
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `title` varchar(50) NOT NULL,
   `subject` text NOT NULL,
   `state` set('solved','duplicated') DEFAULT NULL,
-  `date_publication` date NOT NULL,
+  `publication_date` date NOT NULL,
   PRIMARY KEY (`question_id`),
   KEY `category_id` (`category_id`),
   KEY `best_answer_id` (`best_answer_id`),
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
 -- Déchargement des données de la table `questions`
 --
 
-INSERT INTO `questions` (`question_id`, `author_id`, `category_id`, `best_answer_id`, `title`, `subject`, `state`, `date_publication`) VALUES
+INSERT INTO `questions` (`question_id`, `author_id`, `category_id`, `best_answer_id`, `title`, `subject`, `state`, `publication_date`) VALUES
 (1, 2, 2, NULL, 'How to do a foreach in Java ?', 'Hello,\r\n\r\nHow to do a foreach in Java ?\r\n\r\nThx', NULL, '2019-03-27'),
 (2, 1, 5, NULL, 'Blender help!', 'I was wondering how to use blender, do you have tips ?\r\n\r\nThank you :)', NULL, '2019-03-29'),
 (3, 2, 3, NULL, 'AI career', 'What kind of studies do you have to do in order to have a career in AI ?', NULL, '2019-03-03'),
