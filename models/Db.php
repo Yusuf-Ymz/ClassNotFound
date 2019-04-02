@@ -177,4 +177,23 @@ class Db
         }
         return $researchedQuestions;
     }
+
+    # Verify if the category exists
+    public function category_exists($idCategory){
+        $query =' SELECT * FROM categories WHERE category_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$idCategory);
+        $ps->execute();
+        return ($ps->rowcount() != 0);
+
+    }
+
+    # Verify if the question exists
+    public function question_exists($idQuestion){
+        $query =' SELECT * FROM questions WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$idQuestion);
+        $ps->execute();
+        return ($ps->rowcount() != 0);
+    }
 }

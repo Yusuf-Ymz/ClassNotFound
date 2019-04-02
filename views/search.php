@@ -20,7 +20,7 @@
 
                 </div>
 
-                <!-- Displaying the subject of the question-->
+                <!-- Displaying the title of the question-->
                 <a href="index.php?action=question&id=<?php echo $question->questionId(); ?>"
                    class="list-group-item questions">
                     <?php echo $question->html_title() ?>
