@@ -3,6 +3,10 @@ body {
     background-color: #343A40;
 }
 
+.btn-question {
+    margin: 5px;
+}
+
 .list-group {
     margin-bottom: 10px !important;
 }

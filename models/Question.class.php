@@ -11,14 +11,16 @@ class Question
     private $_state;
     private $_publication_date;
 
-    public function __construct($question_id, $author_id, $category_id, $title, $subject, $_publication_date)
+    public function __construct($question_id, $author_id, $category_id, $best_answer_id , $title, $subject, $state, $publication_date)
     {
         $this->_question_id = $question_id;
         $this->_author_id = $author_id;
         $this->_category_id = $category_id;
+        $this->_best_answer_id = $best_answer_id;
         $this->_title = $title;
         $this->_subject = $subject;
-        $this->_publication_date = $_publication_date;
+        $this->_state = $state;
+        $this->_publication_date = $publication_date;
     }
 
 
@@ -68,7 +70,6 @@ class Question
         return $this->_state;
     }
 
-
     public function html_state(){
         return htmlspecialchars($this->_state);
     }
@@ -77,4 +78,5 @@ class Question
     {
         return $this->_publication_date;
     }
+
 }

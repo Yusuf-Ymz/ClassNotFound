@@ -45,6 +45,10 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS.'RegisterController.php');
         $controller = new RegisterController($db);
         break;
+    case 'question':
+        require_once(CONTROLLERS.'QuestionController.php');
+        $controller = new QuestionController($db);
+        break;
     case 'admin':
         require_once(CONTROLLERS.'AdminController.php');
         $controller = new AdminController();
