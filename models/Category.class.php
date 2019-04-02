@@ -21,11 +21,6 @@ class Category
         return $this->_name;
     }
 
-    public function html_id()
-    {
-        return htmlspecialchars($this->_id);
-    }
-
     public function html_name()
     {
         return htmlspecialchars($this->_name);

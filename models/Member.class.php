@@ -79,7 +79,6 @@ class Member
         return $this->_admin;
     }
 
-
     public function suspended()
     {
         return $this->_suspended;

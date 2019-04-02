@@ -23,12 +23,10 @@ class Question
         $this->_publication_date = $publication_date;
     }
 
-
     public function questionId()
     {
         return $this->_question_id;
     }
-
 
     public function authorId()
     {
@@ -40,12 +38,10 @@ class Question
         return $this->_category_id;
     }
 
-
     public function bestAnswerId()
     {
         return $this->_best_answer_id;
     }
-
 
     public function title()
     {
@@ -68,10 +64,6 @@ class Question
     public function state()
     {
         return $this->_state;
-    }
-
-    public function html_state(){
-        return htmlspecialchars($this->_state);
     }
 
     public function publicationDate()

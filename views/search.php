@@ -10,7 +10,7 @@
 
                     <!-- Here we are searching the author's firstname to display it -->
                     <span class="col-6 font-weight-bold">
-                        <?php $member = $this->_db->select_member($question->authorId()); echo $member->html_firstName().' asks:' ?>
+                        <?php $member = $this->_db->select_member($question->authorId()); echo $member->html_login().' asks:' ?>
                     </span>
 
                     <!-- Searching the question's category to display as well-->
