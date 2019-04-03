@@ -1,6 +1,7 @@
 <div class="container">
     <h3>Results:</h3>
 </div>
+<?php if(count($researchedQuestions) == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No results.</p>'?>
 <?php foreach ($researchedQuestions as $i => $question) { ?>
     <div class="container">
         <div class="card">

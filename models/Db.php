@@ -167,7 +167,7 @@ class Db
     public function search_questions($keyword)
     {
         $keyword = strtolower($keyword);
-        $query = 'SELECT * FROM questions WHERE LOWER(title) LIKE :keyword';
+        $query = 'SELECT * FROM questions WHERE LOWER(title) LIKE :keyword ORDER BY question_id DESC';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':keyword', "%$keyword%");
         $ps->execute();

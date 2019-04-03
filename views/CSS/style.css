@@ -3,8 +3,23 @@ body {
     background-color: #343A40;
 }
 
-.btn-question {
+.question-btn {
+    padding: 5px;
     margin: 5px;
+}
+
+#question-title {
+    margin-bottom: 25px;
+    text-decoration: underline;
+}
+
+.card-login {
+    margin-bottom: 0px;
+}
+
+.separator {
+    margin: 0px;
+    padding: 0px;
 }
 
 .list-group {
