@@ -4,8 +4,8 @@
     <title><?php echo TITLE ?> - You've got a question ? We've got you covered !</title>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="<?php echo IMAGES ?>favicon.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css">
+    <link rel="stylesheet" href="<?php echo VIEWS ?>CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo VIEWS ?>CSS/font-awesome-all.css">
     <link rel="stylesheet" href="<?php echo VIEWS ?>CSS/style.css">
 </head>
 <body>

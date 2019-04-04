@@ -17,7 +17,7 @@ class QuestionController
             header("Location: index.php");
             die();
         }
-        
+
         # Select the question from the id in $_GET['id']
         $question = $this->_db->select_question($_GET['id']);
 

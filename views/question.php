@@ -48,8 +48,6 @@
                 <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answer->html_subject()); ?></p>
             </div>
 
-
-
             <!-- Displaying answer's votes -->
             <div class="card-footer question-btn">
                 <button class="btn btn-dark"><i class="fas fa-thumbs-up"></i> 511</button>
