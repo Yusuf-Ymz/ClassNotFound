@@ -17,12 +17,12 @@
             <p class="card-text"><?php echo Utils::html_replace_enter_by_br($question->html_subject()); ?></p>
         </div>
 
-        <hr class="separator">
-
         <!-- Displaying all question's features -->
-        <div class="question-btn card-body">
+        <div class="question-btn card-footer">
             <button class="btn btn-dark">Answer</button>
-            <?php echo isset($_SESSION['admin']) ? '<button class="btn btn-dark btn-question">Duplicated</button>' : '' ?>
+            <?php echo isset($_SESSION['admin']) ? '<button class="btn btn-dark btn-question">Duplicated</button>
+                                                    <button class="btn btn-dark btn-question">Delete</button>' : '' ?>
+            <?php echo (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) ? '<button class="btn btn-dark btn-question">Edit</button>' : '' ?>
         </div>
     </div>
 </div>
@@ -48,10 +48,10 @@
                 <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answer->html_subject()); ?></p>
             </div>
 
-            <hr class="separator">
+
 
             <!-- Displaying answer's votes -->
-            <div class="card-body question-btn">
+            <div class="card-footer question-btn">
                 <button class="btn btn-dark"><i class="fas fa-thumbs-up"></i> 511</button>
                 <button class="btn btn-dark btn-question"><i class="fas fa-thumbs-down"></i> 27</button>
             </div>

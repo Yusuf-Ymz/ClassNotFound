@@ -13,13 +13,13 @@ body {
     text-decoration: underline;
 }
 
-.card-login {
-    margin-bottom: 0px;
+.card-footer {
+    background-color: white;
+    margin: 0px;
 }
 
-.separator {
-    margin: 0px;
-    padding: 0px;
+.card-login {
+    margin-bottom: 0px;
 }
 
 .list-group {
@@ -30,7 +30,7 @@ body {
     color: red;
 }
 
-.card-header,.card-footer{
+.card-header {
     background-color: white;
 }
 
