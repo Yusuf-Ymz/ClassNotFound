@@ -21,7 +21,7 @@ require_once(MODELS . 'Db.php');
 $db=Db::getInstance();
 
 # This array contains all the categories from the database as Category objects
-$tabCategories = $db->select_categories();
+$categories = $db->select_categories();
 
 # Show header view
 require_once(VIEWS . 'header.php');

@@ -41,19 +41,6 @@ class Db
         return $categories;
     }
 
-    # Select newest questions for the homepage
-    public function select_newest_questions()
-    {
-        $query = 'SELECT * FROM questions ORDER BY question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->execute();
-        $questions = array();
-        while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $questions;
-    }
-
     # Select the member corresponding to the 'id' parameter
     public function select_member($member_id)
     {
@@ -78,20 +65,6 @@ class Db
         return $category;
     }
 
-    # Select all question from the category corresponding to the 'id' parameter
-    public function select_category_questions($category_id)
-    {
-        $query = 'SELECT * FROM questions WHERE category_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $category_id);
-        $ps->execute();
-        $questions = array();
-        while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $questions;
-    }
-
     # Select the question corresponding to the 'id' parameter
     public function select_question($question_id)
     {
@@ -102,20 +75,6 @@ class Db
         $row = $ps->fetch();
         $question = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         return $question;
-    }
-
-    # Select the answers of the question corresponding to the 'id' parameter
-    public function select_answers($question_id)
-    {
-        $query = 'SELECT * FROM answers WHERE question_id=:id ORDER BY answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $question_id);
-        $ps->execute();
-        $answers = array();
-        while ($row = $ps->fetch()) {
-            $answers[] = new Answer($row->answer_id, $row->author_id, $row->question_id, $row->subject, $row->publication_date);
-        }
-        return $answers;
     }
 
     # Verify the password of a login (return null if no such login or incorrect password)
@@ -163,37 +122,95 @@ class Db
         return;
     }
 
-    # Search for the keyword in the title of the questions in the database
-    public function search_questions($keyword)
-    {
-        $keyword = strtolower($keyword);
-        $query = 'SELECT * FROM questions WHERE LOWER(title) LIKE :keyword ORDER BY question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':keyword', "%$keyword%");
-        $ps->execute();
-        $researchedQuestions = array();
-        while ($row = $ps->fetch()) {
-            $researchedQuestions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $researchedQuestions;
-    }
-
     # Verify if the category exists
-    public function category_exists($idCategory){
+    public function category_exists($idCategory)
+    {
         $query =' SELECT * FROM categories WHERE category_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id',$idCategory);
         $ps->execute();
         return ($ps->rowcount() != 0);
-
     }
 
     # Verify if the question exists
-    public function question_exists($idQuestion){
+    public function question_exists($idQuestion)
+    {
         $query =' SELECT * FROM questions WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id',$idQuestion);
         $ps->execute();
         return ($ps->rowcount() != 0);
+    }
+
+    # Select the newest questions + their respective author and category
+    public function select_newest_questions_authors_categories()
+    {
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+
+        $questions = array();
+        $authors = array();
+        $categories = array();
+        while ($row = $ps->fetch()) {
+            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $categories[] = new Category($row->category_id, $row->name);
+        }
+        return array($questions, $authors, $categories);
+    }
+
+    # Select all questions + their respective author from the category with the specified id
+    public function select_questions_authors($idCategory)
+    {
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$idCategory);
+        $ps->execute();
+
+        $questions = array();
+        $authors = array();
+        while ($row = $ps->fetch()) {
+            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        }
+        return array($questions, $authors);
+    }
+
+    # Select all questions + their respective author from the category with the specified id
+    public function select_answers_authors($idQuestion)
+    {
+        $query = 'SELECT A.*, M.* FROM answers A, members M WHERE A.author_id = M.member_id AND A.question_id = :id ORDER BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$idQuestion);
+        $ps->execute();
+
+        $answers = array();
+        $authors = array();
+        while ($row = $ps->fetch()) {
+            $answers[] = new Answer($row->answer_id, $row->author_id, $row->question_id, $row->subject, $row->publication_date);
+            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        }
+        return array($answers, $authors);
+    }
+
+    # Select the questions that contains a certain keyword (+ their respective author and category)
+    public function search_questions_authors_categories($keyword)
+    {
+        $keyword = strtolower($keyword);
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND LOWER(title) LIKE :keyword ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':keyword', "%$keyword%");
+        $ps->execute();
+
+        $questions = array();
+        $authors = array();
+        $categories = array();
+        while ($row = $ps->fetch()) {
+            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $categories[] = new Category($row->category_id, $row->name);
+        }
+        return array($questions, $authors, $categories);
     }
 }

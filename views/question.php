@@ -8,7 +8,7 @@
 
         <!-- Displaying user's login -->
         <div class="card-header">
-            <p class="card-login font-weight-bold"><?php echo $author->html_login() . ' asks:'; ?></p>
+            <p class="card-login font-weight-bold"><?php echo $authorLogin . ' asks:'; ?></p>
         </div>
 
         <!-- Displaying the question's title and question's subject -->
@@ -32,26 +32,31 @@
     <h3>Answers:</h3>
 </div>
 <!-- Displaying all question's answers -->
-<?php foreach ($answers as $i => $answer) { ?>
-    <!-- Searching answer's author_id -->
-    <?php $answer_author = $this->_db->select_member($answer->authorId()) ?>
+<?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
     <div class="container">
         <div class="card">
 
             <!-- Displaying answer's author -->
             <div class="card-header">
-                <p class="card-text card-login font-weight-bold"><?php echo $answer_author->html_login() . ' answers:' ?></p>
+                <p class="card-text card-login font-weight-bold"><?php echo $authors[$i]->html_login() . ' answers:' ?></p>
             </div>
 
             <!-- Displaying the answer -->
             <div class="card-body">
-                <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answer->html_subject()); ?></p>
+                <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answers[$i]->html_subject()); ?></p>
             </div>
 
             <!-- Displaying answer's votes -->
-            <div class="card-footer question-btn">
-                <button class="btn btn-dark"><i class="fas fa-thumbs-up"></i> 511</button>
-                <button class="btn btn-dark btn-question"><i class="fas fa-thumbs-down"></i> 27</button>
+            <div class="row card-footer question-btn">
+                <div class="container card-footer-container col-6">
+                    <button class="btn btn-dark"><i class="fas fa-thumbs-up"></i> 511</button>
+                    <button class="btn btn-dark btn-question"><i class="fas fa-thumbs-down"></i> 27</button>
+                </div>
+                <div class="container card-footer-container col-6">
+                    <span id="date" class="card-deco pagination justify-content-end">
+                        <?php echo $answers[$i]->publicationDate() ?>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

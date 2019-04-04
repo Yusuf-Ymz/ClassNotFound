@@ -34,6 +34,16 @@ body {
     background-color: white;
 }
 
+.card-footer-container {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#date {
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
 #categories {
     margin-bottom: 10px !important;
     margin-left: 2px;

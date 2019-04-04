@@ -48,7 +48,7 @@
             <div class="col-md-3">
                 <h3 id="categories" class="my-4">Categories</h3>
                 <div class="list-group">
-                    <?php foreach ($tabCategories as $i => $category) { ?>
+                    <?php foreach ($categories as $i => $category) { ?>
                     <a href="index.php?action=category&id=<?php echo $category->id(); ?>" class="list-group-item category"><?php echo $category->html_name(); ?></a>
                     <?php } ?>
                 </div>

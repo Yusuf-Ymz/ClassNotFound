@@ -1,27 +1,26 @@
-<div class="container">
-    <h3><?php echo $this->_db->select_category($_GET['id'])->name() ?> Questions:</h3>
-</div>
-<?php if(count($categoryQuestions) == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted in this category yet.</p>'?>
-<?php foreach ($categoryQuestions as $i => $question) { ?>
+    <div class="container">
+        <h3><?php echo $categoryName ?> Questions:</h3>
+    </div>
+<?php if($nbQuestions == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted in this category yet.</p>'?>
+<?php for ($i = 0; $i < $nbQuestions; $i++) { ?>
     <div class="container">
         <div class="card">
             <div class="card-body">
 
                 <!-- Here we are searching the author's firstname to display it -->
                 <span class="font-weight-bold">
-                    <?php $member = $this->_db->select_member($question->authorId());
-                    echo $member->html_login().' asks:' ?>
+                    <?php echo $authors[$i]->html_login().' asks:' ?>
                 </span>
 
                 <!-- Displaying the title of the question-->
-                <a href="index.php?action=question&id=<?php echo $question->questionId(); ?>"
+                <a href="index.php?action=question&id=<?php echo $questions[$i]->questionId(); ?>"
                    class="list-group-item categoryQuestions">
-                    <?php echo $question->html_title() ?>
+                    <?php echo $questions[$i]->html_title() ?>
                 </a>
 
                 <!-- Displaying the question's publication date -->
                 <span class="card-deco pagination justify-content-end">
-                    <?php echo $question->publicationDate() ?>
+                    <?php echo $questions[$i]->publicationDate() ?>
                 </span>
 
             </div>

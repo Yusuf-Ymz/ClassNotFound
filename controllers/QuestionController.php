@@ -21,14 +21,16 @@ class QuestionController
         # Select the question from the id in $_GET['id']
         $question = $this->_db->select_question($_GET['id']);
 
-        # Select the author of the question
+        # Select the login of the question's author
         $authorLogin = $this->_db->select_member($question->authorId())->html_login();
 
-        # Select the question's answers
-        $answers = $this->_db->select_answers($_GET['id']);
+        # Select the question's answers + their respective author
+        $answersAuthors = $this->_db->select_answers_authors($_GET['id']);
 
-        # Select the author of the question
-        $author = $this->_db->select_member($question->authorId());
+        $answers = $answersAuthors[0];
+        $authors = $answersAuthors[1];
+
+        $nbAnswers = count($answers);
 
         require_once(VIEWS . 'question.php');
     }
