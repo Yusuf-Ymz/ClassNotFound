@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 02 avr. 2019 à 17:13
+-- Généré le :  jeu. 04 avr. 2019 à 15:39
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.2.14
 
@@ -45,24 +45,24 @@ CREATE TABLE IF NOT EXISTS `answers` (
 --
 
 INSERT INTO `answers` (`answer_id`, `author_id`, `question_id`, `subject`, `publication_date`) VALUES
-(1, 2, 1, 'You can find documentation on the javadoc website :)', '2019-03-13'),
+(1, 2, 1, 'You can find documentation on the javadoc website :)', '2019-03-06'),
 (2, 1, 1, 'Okay thank you', '2019-03-06'),
 (3, 2, 1, 'Need anything else ?', '2019-03-07'),
-(4, 1, 1, 'Can you provide the link plz ?', '2019-03-06'),
-(5, 2, 1, 'javadoc.com/foreach', '2019-03-06'),
+(4, 1, 1, 'Can you provide the link plz ?', '2019-03-07'),
+(5, 2, 1, 'javadoc.com/foreach', '2019-03-07'),
 (6, 2, 2, 'What version are you using ?', '2019-03-05'),
 (7, 1, 2, 'Version 1.6', '2019-03-12'),
-(8, 2, 2, 'You can check out my YT channel I have a series of videos dedicated to Blender', '2019-03-07'),
-(9, 1, 2, 'Thanks I\'ll check it out ! :)', '2019-03-27'),
-(10, 2, 2, 'You\'re welcome !', '2019-03-08'),
+(8, 2, 2, 'You can check out my YT channel I have a series of videos dedicated to Blender', '2019-03-13'),
+(9, 1, 2, 'Thanks I\'ll check it out ! :)', '2019-03-13'),
+(10, 2, 2, 'You\'re welcome !', '2019-03-13'),
 (11, 2, 3, 'Wich country do you live in ?', '2019-03-21'),
-(12, 1, 3, 'In Belgium', '2019-03-13'),
-(13, 2, 3, 'Well do you have a bachelor in computer science ?', '2019-03-20'),
-(14, 1, 3, 'Yes I do', '2019-03-05'),
-(15, 2, 3, 'You could go for a master in AI if any school in belgium are proposing one, if not then you might need to change country to pursue your studies.', '2019-03-06'),
+(12, 1, 3, 'In Belgium', '2019-03-22'),
+(13, 2, 3, 'Well do you have a bachelor in computer science ?', '2019-03-22'),
+(14, 1, 3, 'Yes I do', '2019-03-23'),
+(15, 2, 3, 'You could go for a master in AI if any school in belgium are proposing one, if not then you might need to change country to pursue your studies.', '2019-03-24'),
 (16, 2, 4, 'Are you lactose intolerant ? ', '2019-03-11'),
 (17, 1, 4, 'No I\'m not', '2019-03-18'),
-(18, 2, 4, 'Then you can use this recipe:\r\n- milk\r\n- chocolate\r\n- eggs\r\n- flour', '2019-03-12'),
+(18, 2, 4, 'Then you can use this recipe:\r\n- milk\r\n- chocolate\r\n- eggs\r\n- flour', '2019-03-19'),
 (19, 1, 4, 'Ok thank you', '2019-03-19'),
 (20, 2, 4, 'You are welcome', '2019-03-22'),
 (21, 2, 5, 'PS: I\'m not an IT student so I need to learn from scratch', '2019-03-15'),
@@ -154,10 +154,10 @@ CREATE TABLE IF NOT EXISTS `questions` (
 --
 
 INSERT INTO `questions` (`question_id`, `author_id`, `category_id`, `best_answer_id`, `title`, `subject`, `state`, `publication_date`) VALUES
-(1, 2, 2, NULL, 'How to do a foreach in Java ?', 'Hello,\r\n\r\nHow to do a foreach in Java ?\r\n\r\nThx', NULL, '2019-03-27'),
-(2, 1, 5, NULL, 'Blender help!', 'I was wondering how to use blender, do you have tips ?\r\n\r\nThank you :)', NULL, '2019-03-29'),
-(3, 2, 3, NULL, 'AI career', 'What kind of studies do you have to do in order to have a career in AI ?', NULL, '2019-03-03'),
-(4, 1, 1, NULL, 'How to make cookies ?', 'Do you guys have any recipe for cookies ?', NULL, '2019-03-14'),
+(1, 2, 2, NULL, 'How to do a foreach in Java ?', 'Hello,\r\n\r\nHow to do a foreach in Java ?\r\n\r\nThx', NULL, '2019-03-06'),
+(2, 1, 5, NULL, 'Blender help!', 'I was wondering how to use blender, do you have tips ?\r\n\r\nThank you :)', NULL, '2019-03-05'),
+(3, 2, 3, NULL, 'AI career', 'What kind of studies do you have to do in order to have a career in AI ?', NULL, '2019-03-21'),
+(4, 1, 1, NULL, 'How to make cookies ?', 'Do you guys have any recipe for cookies ?', NULL, '2019-03-11'),
 (5, 2, 6, NULL, 'Where to learn PHP ?', 'What sites can I use to learn PHP ?', NULL, '2019-03-06');
 
 -- --------------------------------------------------------
