@@ -8,7 +8,15 @@
 
         <!-- Displaying user's login -->
         <div class="card-header">
-            <p class="card-login font-weight-bold"><?php echo $authorLogin . ' asks:'; ?></p>
+            <div class="row">
+                <div class="container col-8">
+                    <p class="card-login font-weight-bold"><?php echo $authorLogin . ' asks:'; ?></p>
+                </div>
+                <div class="container col-4 pagination justify-content-end">
+                    <p class="card-login"><?php echo $question->publicationDate() ?></p>
+                </div>
+            </div>
+
         </div>
 
         <!-- Displaying the question's title and question's subject -->
