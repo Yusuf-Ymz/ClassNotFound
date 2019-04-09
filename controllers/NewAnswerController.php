@@ -22,9 +22,10 @@ class NewAnswerController
             die();
         }
 
-        # Answer form from the question view
+        # Answer form
         if(isset($_POST['form_answer'])) {
             if(isset($_POST['answer_text'])) {
+                # Check if user is trying to post an empty answer
                 if(empty($_POST['answer_text'])) {
                     $notification = 'Your answer cannot be empty!';
                 } else {
