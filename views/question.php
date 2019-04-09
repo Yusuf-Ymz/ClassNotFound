@@ -27,10 +27,33 @@
 
         <!-- Displaying all question's features -->
         <div class="question-btn card-footer">
-            <button class="btn btn-dark">Answer</button>
-            <?php echo isset($_SESSION['admin']) ? '<button class="btn btn-dark btn-question">Duplicated</button>
-                                                    <button class="btn btn-dark btn-question">Delete</button>' : '' ?>
-            <?php echo (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) ? '<button class="btn btn-dark btn-question">Edit</button>' : '' ?>
+
+            <div class="container">
+                <div class="row">
+                    <form class="form-btn" action="index.php?action=newAnswer" method="post">
+                        <button class="btn btn-dark" type="submit">Answer</button>
+                        <input type="hidden" name="id" value="<?php echo $question->questionId(); ?>">
+                    </form>
+
+                    <!-- TODO 3 Autres buttons à revoir ! (Pas encore fait) -->
+                    <?php if(isset($_SESSION['admin'])) { ?>
+                    <form class="form-btn" action="index.php?action=duplicateAnswer" method="post">
+                        <button class="btn btn-dark btn-question" type="submit">Duplicated</button>
+                    </form>
+
+                    <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
+                        <button class="btn btn-dark btn-question" type="submit">Delete</button>
+                    </form>
+                    <?php } ?>
+
+                    <?php if(isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+                    <form class="form-btn" action="index.php?action=editQuestion" method="post">
+                        <button class="btn btn-dark btn-question" type="submit">Edit</button>
+                    </form>
+                    <?php } ?>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

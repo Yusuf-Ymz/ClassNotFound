@@ -61,6 +61,10 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS.'CategoryController.php');
         $controller = new CategoryController($db);
         break;
+    case 'newAnswer':
+        require_once(CONTROLLERS.'NewAnswerController.php');
+        $controller = new NewAnswerController($db);
+        break;
     default:
         require_once(CONTROLLERS.'HomepageController.php');
         $controller = new HomepageController($db);

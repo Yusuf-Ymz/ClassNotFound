@@ -3,9 +3,13 @@ body {
     background-color: #343A40;
 }
 
+form.form-btn {
+    margin-right: 5px;
+}
+
 .question-btn {
-    padding: 5px;
     margin: 5px;
+    padding: 5px;
 }
 
 #question-title {

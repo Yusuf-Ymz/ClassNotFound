@@ -213,4 +213,28 @@ class Db
         }
         return array($questions, $authors, $categories);
     }
+
+    # Select the id corresponding to the login
+    public function select_id($login)
+    {
+        $query = 'SELECT member_id FROM members WHERE login = :login';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':login',$login);
+        $ps->execute();
+        $row = $ps->fetch();
+        return $row->member_id;
+    }
+
+    # Insert a new answer with the specified question_id
+    public function insert_answer($author_id, $question_id, $subject, $publication_date)
+    {
+        $query = 'INSERT INTO answers (author_id,question_id,subject,publication_date) VALUES (:author_id,:question_id,:subject,:publication_date)';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':author_id',$author_id);
+        $ps->bindValue(':question_id',$question_id);
+        $ps->bindValue(':subject',$subject);
+        $ps->bindValue(':publication_date',$publication_date);
+        $ps->execute();
+    }
+
 }
