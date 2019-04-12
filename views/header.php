@@ -35,6 +35,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?action=<?php echo empty($_SESSION['logged']) ? 'login">Login' : 'logout">Logout'?></a>
                 </li>
+                <li class="nav-item">
+                    <a id="btn-new-question" class="nav-link" href="index.php?action=newQuestion"><button id="btn-new-question" class="btn btn-light" type="button">New Question</button></a>
+                </li>
             </ul>
         </div>
     </div>

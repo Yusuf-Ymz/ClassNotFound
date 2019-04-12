@@ -7,6 +7,20 @@ form.form-btn {
     margin-right: 5px;
 }
 
+a#btn-new-question {
+    padding: 0px 0px 0px 6px;
+}
+
+button#btn-new-question {
+    padding: 6px;
+}
+
+@media screen and (max-width: 767px) {
+    a#btn-new-question {
+        padding: 0px;
+    }
+}
+
 .question-btn {
     margin: 5px;
     padding: 5px;
@@ -85,7 +99,7 @@ a.list-group-item:hover {
     margin-bottom: 15px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .category {
         margin-right: 15px;
         margin-left: 15px;
