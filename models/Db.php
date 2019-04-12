@@ -237,4 +237,25 @@ class Db
         $ps->execute();
     }
 
+    # Insert a new question
+    public function insert_question($author_id, $category_id,$title,$subject, $publication_date)
+    {
+        $query = 'INSERT INTO questions (author_id,category_id,title,subject,publication_date) VALUES (:author_id,:category_id,:title,:subject,:publication_date)';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':author_id',$author_id);
+        $ps->bindValue(':category_id',$category_id);
+        $ps->bindValue(':title',$title);
+        $ps->bindValue(':subject',$subject);
+        $ps->bindValue(':publication_date',$publication_date);
+        $ps->execute();
+    }
+
+    #Select the last posted question
+    public function select_last_posted_question(){
+        $query='SELECT MAX(question_id) as \'id\' FROM questions';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+        $row = $ps->fetch();
+        return $row->id;
+    }
 }
