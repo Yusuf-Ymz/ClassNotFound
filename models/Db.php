@@ -301,10 +301,6 @@ class Db
     # Delete a question and all related questions
     public function delete_question($questionid)
     {
-        $query = 'DELETE FROM answers WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionid);
-        $ps->execute();
         $query = 'DELETE FROM questions WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);

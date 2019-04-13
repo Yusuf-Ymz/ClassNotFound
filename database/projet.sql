@@ -192,7 +192,7 @@ INSERT INTO `votes` (`member_id`, `answer_id`, `liked`) VALUES
 --
 ALTER TABLE `answers`
   ADD CONSTRAINT `author_id` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`),
-  ADD CONSTRAINT `question_id` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
+  ADD CONSTRAINT `question_id` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE CASCADE ;
 
 --
 -- Contraintes pour la table `questions`
