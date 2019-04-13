@@ -206,7 +206,7 @@ ALTER TABLE `questions`
 -- Contraintes pour la table `votes`
 --
 ALTER TABLE `votes`
-  ADD CONSTRAINT `answer_id` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`answer_id`),
+  ADD CONSTRAINT `answer_id` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`answer_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `member_id` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`);
 COMMIT;
 
