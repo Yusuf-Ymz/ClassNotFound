@@ -54,46 +54,51 @@ class Db
     }
 
     # Select all members from the database
-    public function select_all_members(){
-        $query='SELECT * FROM members';
+    public function select_all_members()
+    {
+        $query = 'SELECT * FROM members';
         $ps = $this->_db->prepare($query);
         $ps->execute();
-        $members= array();
-        while($row = $ps->fetch()) {
-            $members[]= new Member($row->member_id,$row->login,$row->password,$row->lastname,$row->firstname,$row->mail,$row->admin,$row->suspended);
+        $members = array();
+        while ($row = $ps->fetch()) {
+            $members[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
         }
         return $members;
     }
 
     # Changing the state of the member at suspended
-    public function suspend_member($memberid){
-        $query='UPDATE members SET suspended=1 WHERE member_id=:id';
+    public function suspend_member($memberid)
+    {
+        $query = 'UPDATE members SET suspended=1 WHERE member_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$memberid);
+        $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
 
     # Changing the state of the member at unsus
-    public function unsuspend_member($memberid){
-        $query='UPDATE members SET suspended=0 WHERE member_id=:id';
+    public function unsuspend_member($memberid)
+    {
+        $query = 'UPDATE members SET suspended=0 WHERE member_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$memberid);
+        $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
 
     # Upgrading member to admin
-    public function upgrade_to_admin($memberid){
-        $query='UPDATE members SET admin=1 WHERE member_id=:id';
+    public function upgrade_to_admin($memberid)
+    {
+        $query = 'UPDATE members SET admin=1 WHERE member_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$memberid);
+        $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
 
     # Downgrading admin to basic member
-    public function demote_admin($memberid){
-        $query='UPDATE members SET admin=0 WHERE member_id=:id';
+    public function demote_admin($memberid)
+    {
+        $query = 'UPDATE members SET admin=0 WHERE member_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$memberid);
+        $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
 
@@ -130,10 +135,9 @@ class Db
         $ps->execute();
         $row = $ps->fetch();
         $member = null;
-        if(!empty($row)) {
+        if (!empty($row)) {
             $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            if(!password_verify($password, $member->password()))
-            {
+            if (!password_verify($password, $member->password())) {
                 $member = null;
             }
         }
@@ -145,7 +149,7 @@ class Db
     {
         $query = 'SELECT * FROM members WHERE login=:login';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':login',$login);
+        $ps->bindValue(':login', $login);
         $ps->execute();
         return ($ps->rowcount() != 0);
     }
@@ -155,13 +159,13 @@ class Db
     {
         $query = 'INSERT INTO members (lastname,firstname,mail,login,password,admin,suspended) VALUES (:lastname,:firstname,:mail,:login,:password,:admin,:suspended)';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':lastname',$lastname);
-        $ps->bindValue(':firstname',$firstname);
-        $ps->bindValue(':mail',$mail);
-        $ps->bindValue(':login',$login);
-        $ps->bindValue(':password',$password);
-        $ps->bindValue(':admin',0);
-        $ps->bindValue(':suspended',0);
+        $ps->bindValue(':lastname', $lastname);
+        $ps->bindValue(':firstname', $firstname);
+        $ps->bindValue(':mail', $mail);
+        $ps->bindValue(':login', $login);
+        $ps->bindValue(':password', $password);
+        $ps->bindValue(':admin', 0);
+        $ps->bindValue(':suspended', 0);
         $ps->execute();
         return;
     }
@@ -169,9 +173,9 @@ class Db
     # Verify if the category exists
     public function category_exists($idCategory)
     {
-        $query =' SELECT * FROM categories WHERE category_id=:id';
+        $query = ' SELECT * FROM categories WHERE category_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$idCategory);
+        $ps->bindValue(':id', $idCategory);
         $ps->execute();
         return ($ps->rowcount() != 0);
     }
@@ -179,9 +183,9 @@ class Db
     # Verify if the question exists
     public function question_exists($idQuestion)
     {
-        $query =' SELECT * FROM questions WHERE question_id=:id';
+        $query = ' SELECT * FROM questions WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$idQuestion);
+        $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         return ($ps->rowcount() != 0);
     }
@@ -209,7 +213,7 @@ class Db
     {
         $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$idCategory);
+        $ps->bindValue(':id', $idCategory);
         $ps->execute();
 
         $questions = array();
@@ -226,7 +230,7 @@ class Db
     {
         $query = 'SELECT A.*, M.* FROM answers A, members M WHERE A.author_id = M.member_id AND A.question_id = :id ORDER BY A.answer_id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$idQuestion);
+        $ps->bindValue(':id', $idQuestion);
         $ps->execute();
 
         $answers = array();
@@ -263,7 +267,7 @@ class Db
     {
         $query = 'SELECT member_id FROM members WHERE login = :login';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':login',$login);
+        $ps->bindValue(':login', $login);
         $ps->execute();
         $row = $ps->fetch();
         return $row->member_id;
@@ -274,29 +278,52 @@ class Db
     {
         $query = 'INSERT INTO answers (author_id,question_id,subject,publication_date) VALUES (:author_id,:question_id,:subject,:publication_date)';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':author_id',$author_id);
-        $ps->bindValue(':question_id',$question_id);
-        $ps->bindValue(':subject',$subject);
-        $ps->bindValue(':publication_date',$publication_date);
+        $ps->bindValue(':author_id', $author_id);
+        $ps->bindValue(':question_id', $question_id);
+        $ps->bindValue(':subject', $subject);
+        $ps->bindValue(':publication_date', $publication_date);
         $ps->execute();
     }
 
     # Insert a new question
-    public function insert_question($author_id, $category_id,$title,$subject, $publication_date)
+    public function insert_question($author_id, $category_id, $title, $subject, $publication_date)
     {
         $query = 'INSERT INTO questions (author_id,category_id,title,subject,publication_date) VALUES (:author_id,:category_id,:title,:subject,:publication_date)';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':author_id',$author_id);
-        $ps->bindValue(':category_id',$category_id);
-        $ps->bindValue(':title',$title);
-        $ps->bindValue(':subject',$subject);
-        $ps->bindValue(':publication_date',$publication_date);
+        $ps->bindValue(':author_id', $author_id);
+        $ps->bindValue(':category_id', $category_id);
+        $ps->bindValue(':title', $title);
+        $ps->bindValue(':subject', $subject);
+        $ps->bindValue(':publication_date', $publication_date);
+        $ps->execute();
+    }
+
+    # Delete a question and all related questions
+    public function delete_question($questionid)
+    {
+        $query = 'DELETE FROM answers WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+        $query = 'DELETE FROM questions WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+    }
+
+    # Set a question as duplicate
+    public function duplicate_question($questionid)
+    {
+        $query = "UPDATE questions SET state='duplicated' WHERE question_id=:id";
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
         $ps->execute();
     }
 
     #Select the last posted question
-    public function select_last_posted_question(){
-        $query='SELECT MAX(question_id) as \'id\' FROM questions';
+    public function select_last_posted_question()
+    {
+        $query = 'SELECT MAX(question_id) as \'id\' FROM questions';
         $ps = $this->_db->prepare($query);
         $ps->execute();
         $row = $ps->fetch();
