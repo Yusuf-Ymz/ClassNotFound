@@ -53,6 +53,50 @@ class Db
         return $member;
     }
 
+    # Select all members from the database
+    public function select_all_members(){
+        $query='SELECT * FROM members';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+        $members= array();
+        while($row = $ps->fetch()) {
+            $members[]= new Member($row->member_id,$row->login,$row->password,$row->lastname,$row->firstname,$row->mail,$row->admin,$row->suspended);
+        }
+        return $members;
+    }
+
+    # Changing the state of the member at suspended
+    public function suspend_member($memberid){
+        $query='UPDATE members SET suspended=1 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$memberid);
+        $ps->execute();
+    }
+
+    # Changing the state of the member at unsus
+    public function unsuspend_member($memberid){
+        $query='UPDATE members SET suspended=0 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$memberid);
+        $ps->execute();
+    }
+
+    # Upgrading member to admin
+    public function upgrade_to_admin($memberid){
+        $query='UPDATE members SET admin=1 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$memberid);
+        $ps->execute();
+    }
+
+    # Downgrading admin to basic member
+    public function demote_admin($memberid){
+        $query='UPDATE members SET admin=0 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$memberid);
+        $ps->execute();
+    }
+
     # Select the category corresponding to the 'id' parameter
     public function select_category($category_id)
     {

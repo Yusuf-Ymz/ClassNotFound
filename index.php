@@ -51,7 +51,7 @@ switch ($_GET['action']) {
         break;
     case 'admin':
         require_once(CONTROLLERS.'AdminController.php');
-        $controller = new AdminController();
+        $controller = new AdminController($db);
         break;
     case 'search':
         require_once(CONTROLLERS.'SearchController.php');
