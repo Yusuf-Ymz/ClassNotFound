@@ -37,7 +37,7 @@
 
                     <!-- TODO 3 Autres buttons à revoir ! (Pas encore fait) -->
                     <?php if(isset($_SESSION['admin'])) { ?>
-                    <form class="form-btn" action="index.php?action=duplicateAnswer" method="post">
+                    <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
                         <button class="btn btn-dark btn-question" type="submit">Duplicated</button>
                     </form>
 
