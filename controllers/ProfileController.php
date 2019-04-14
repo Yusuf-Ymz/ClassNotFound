@@ -19,9 +19,9 @@ class ProfileController
             header('Location: index.php?action=homepage');
             die();
         }
-        $memberId=$this->_db->select_id($_SESSION['login']);
-        # Selecting all questions related to the memberId 
+        $memberId = $this->_db->select_id($_SESSION['login']);
+        # Selecting all questions related to the memberId
         $memberQuestions = $this->_db->select_member_questions($memberId);
-        require_once(VIEWS.'profile.php');
+        require_once(VIEWS . 'profile.php');
     }
 }

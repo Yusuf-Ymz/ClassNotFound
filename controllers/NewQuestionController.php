@@ -28,7 +28,6 @@ class NewQuestionController
                 $publicationDate = date("Y-m-d");
                 $this->_db->insert_question($authorId, $_POST['question_category_id'],$_POST['question_title'],$_POST['question_text'], $publicationDate);
                 $postedQuestionId = $this->_db->select_last_posted_question();
-                var_dump($postedQuestionId);
                 header("Location: index.php?action=question&id=" . "$postedQuestionId");
                 die();
             }

@@ -47,7 +47,7 @@
                     <?php } ?>
 
                     <?php if(isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
-                    <form class="form-btn" action="index.php?action=editQuestion" method="post">
+                    <form class="form-btn" action="index.php?action=editQuestion&questionid=<?php echo $question->questionId();?>&authorid=<?php echo $question->authorId();?>" method="post">
                         <button class="btn btn-dark btn-question" type="submit">Edit</button>
                     </form>
                     <?php } ?>
