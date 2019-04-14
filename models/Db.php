@@ -114,6 +114,20 @@ class Db
         return $category;
     }
 
+    # Select all questions related to the member 'id' parameter
+    public function select_member_questions($member_id)
+    {
+        $query = 'SELECT * FROM questions WHERE author_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $member_id);
+        $ps->execute();
+        $memberQuestions = array();
+        while ($row = $ps->fetch()) {
+            $memberQuestions[]=new Question($row->question_id,$row->author_id,$row->category_id,$row->best_answer_id,$row->title,$row->subject,$row->state,$row->publication_date);
+        }
+        return $memberQuestions;
+    }
+
     # Select the question corresponding to the 'id' parameter
     public function select_question($question_id)
     {

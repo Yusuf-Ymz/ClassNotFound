@@ -16,8 +16,9 @@
                 ?>
                 <?php if ($member->admin() == 0) {
                     $value = "Upgrade to admin";
-                    $name="upgrade";
-                } else $value= "Demote admin grade";$name="demote"
+                    $name = "upgrade";
+                } else $value = "Demote admin grade";
+                $name = "demote"
                 ?>
                 <input class="btn btn-dark" type="submit"
                        name="<?php echo $state; ?>[<?php echo $member->memberId(); ?>]"

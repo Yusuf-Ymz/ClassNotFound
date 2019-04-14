@@ -79,6 +79,10 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS . 'DuplicateQuestionController.php');
         $controller = new DuplicateQuestionController($db);
         break;
+    case 'profile':
+        require_once(CONTROLLERS . 'ProfileController.php');
+        $controller = new ProfileController($db);
+        break;
     default:
         require_once(CONTROLLERS . 'HomepageController.php');
         $controller = new HomepageController($db);
