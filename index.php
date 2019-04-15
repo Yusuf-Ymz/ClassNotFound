@@ -84,8 +84,8 @@ switch ($_GET['action']) {
         $controller = new ProfileController($db);
         break;
     case 'editQuestion':
-        require_once(CONTROLLERS . 'EditController.php');
-        $controller = new EditController($db);
+        require_once(CONTROLLERS . 'EditQuestionController.php');
+        $controller = new EditQuestionController($db);
         break;
     default:
         require_once(CONTROLLERS . 'HomepageController.php');

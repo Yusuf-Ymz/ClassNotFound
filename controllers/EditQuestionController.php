@@ -1,7 +1,7 @@
 <?php
 
 
-class EditController
+class EditQuestionController
 {
 
     private $_db;
