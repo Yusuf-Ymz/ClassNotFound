@@ -30,7 +30,7 @@ class AdminController
                 }
             } # Upgrade a member to admin grade
             else if (isset($_POST['upgrade'])) {
-                foreach ($_POST['Upgrade_to_admin'] as $no => $id) {
+                foreach ($_POST['upgrade'] as $no => $id) {
                     $this->_db->upgrade_to_admin($no);
                 }
             } # Demote an admin to basic member
@@ -42,6 +42,7 @@ class AdminController
         }
         # Selecting all members to display
         $members = $this->_db->select_all_members();
+
         require_once(VIEWS . 'admin.php');
     }
 }
