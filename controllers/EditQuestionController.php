@@ -36,7 +36,7 @@ class EditQuestionController
 
         # If the question is duplicated displaying the notification
         if($question->state()=='duplicated'){
-            header('Location: index.php?action=question&id='.$question->questionId().'&duplicated=true');
+            header('Location: index.php?action=question&id='.$_POST['question_id'].'&duplicated=true');
             die();
         }
 

@@ -255,6 +255,14 @@ class Db
         return array($questions, $categories);
     }
 
+    # Add the best answer at the question passed by parameters
+    public function best_answer($questionId,$answerId){
+        $query ='UPDATE  questions SET best_answer_id=:answerid WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':answerid', $answerId);
+        $ps->bindValue(':id', $questionId);
+        $ps->execute();
+    }
     # Select all questions + their respective author from the category with the specified id + votes
     public function select_answers_authors_votes($idQuestion)
     {
