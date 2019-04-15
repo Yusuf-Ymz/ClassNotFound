@@ -17,7 +17,6 @@ class AdminController
         }
 
         # If an admin clicked on a button
-        var_dump($_POST);
         if (!empty($_POST)) {
             # Suspend a member's account
             if (isset($_POST['suspend'])) {
