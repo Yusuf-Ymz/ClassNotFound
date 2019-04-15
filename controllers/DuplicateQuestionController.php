@@ -12,14 +12,14 @@ class DuplicateQuestionController
 
     public function run()
     {
-        #If the user is not an admin or the question doesn't exist--> homepage
-        if (!isset($_SESSION['admin']) || !isset($_GET['questionid']) || !$this->_db->question_exists($_GET['questionid'])) {
+        #If the user try to duplicate a question without being an admin --> homepage
+        if (!isset($_POST['question_id'])) {
             header('Location: index.php?action=homepage');
             die();
         }
         # Setting the question as duplicate
-        $this->_db->duplicate_question($_GET['questionid']);
-        header('Location: index.php?action=homepage');
+        $this->_db->duplicate_question($_POST['question_id']);
+        header('Location: index.php?action=question&id='.$_POST['question_id']);
         die();
     }
 }
