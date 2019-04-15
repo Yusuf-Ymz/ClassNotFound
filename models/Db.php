@@ -342,6 +342,15 @@ class Db
         $ps->execute();
     }
 
+    # Set a question as open
+    public function open_question($questionid)
+    {
+        $query = "UPDATE questions SET state=null WHERE question_id=:id";
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+    }
+
     #Select the last posted question
     public function select_last_posted_question()
     {
