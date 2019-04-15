@@ -21,6 +21,11 @@ class QuestionController
         # Select the question from the id in $_GET['id']
         $question = $this->_db->select_question($_GET['id']);
 
+        # If the question is duplicated and user clicked on an action
+        if(isset($_GET['duplicated']) && $question->state()=='duplicated'){
+            $notification="This question is duplicated";
+        }
+
         # Select the login of the question's author
         $authorLogin = $this->_db->select_member($question->authorId())->html_login();
 

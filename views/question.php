@@ -63,7 +63,9 @@
         </div>
     </div>
 </div>
-
+<?php if(isset($notification)) { ?>
+<div class="container" id="notification"><?php echo $notification; ?> </div>
+<?php } ?>
 <!-- Answers Part -->
 <div class="container">
     <h3>Answers:</h3>

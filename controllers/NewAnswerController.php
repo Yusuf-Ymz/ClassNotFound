@@ -42,6 +42,12 @@ class NewAnswerController
         # Select the question from the id in $_POST['id'] (hidden input)
         $question = $this->_db->select_question($_POST['id']);
 
+        # If the question is duplicated displaying the notification
+        if($question->state()=='duplicated'){
+            header('Location: index.php?action=question&id='.$question->questionId().'&duplicated=true');
+            die();
+        }
+
         # Select the login of the question's author
         $authorLogin = $this->_db->select_member($question->authorId())->html_login();
 

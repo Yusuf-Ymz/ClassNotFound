@@ -34,6 +34,12 @@ class EditQuestionController
         # Selecting the question to edit
         $question = $this->_db->select_question($_POST['question_id']);
 
+        # If the question is duplicated displaying the notification
+        if($question->state()=='duplicated'){
+            header('Location: index.php?action=question&id='.$question->questionId().'&duplicated=true');
+            die();
+        }
+
         # Selecting all categories for newQuestion form
         $categories = $this->_db->select_categories();
 
