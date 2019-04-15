@@ -7,12 +7,13 @@ class Db
 
     private function __construct()
     {
+        $ini = parse_ini_file('config/config.ini');
         try {
-            $this->_db = new PDO('mysql:host=localhost;dbname=projet;charset=utf8', 'root', '');
+            $this->_db = new PDO('mysql:host=localhost;dbname='.$ini['db_name'].';charset=utf8',$ini['db_user'],$ini['db_password']);
             $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->_db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            die('Error: connexion to database failed : ' . $e->getMessage());
+            die('Error: connexion to config failed : ' . $e->getMessage());
         }
     }
 
@@ -53,7 +54,7 @@ class Db
         return $member;
     }
 
-    # Select all members from the database
+    # Select all members from the config
     public function select_all_members()
     {
         $query = 'SELECT * FROM members';
@@ -170,7 +171,7 @@ class Db
         return $member;
     }
 
-    # Return true if the login in parameter exists in the database
+    # Return true if the login in parameter exists in the config
     public function login_exists($login)
     {
         $query = 'SELECT * FROM members WHERE login=:login';
@@ -180,7 +181,7 @@ class Db
         return ($ps->rowcount() != 0);
     }
 
-    # Insert a new member in the database
+    # Insert a new member in the config
     public function insert_member($lastname, $firstname, $mail, $login, $password)
     {
         $query = 'INSERT INTO members (lastname,firstname,mail,login,password,admin,suspended) VALUES (:lastname,:firstname,:mail,:login,:password,:admin,:suspended)';
