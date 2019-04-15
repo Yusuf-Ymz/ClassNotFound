@@ -35,33 +35,29 @@
                         <input type="hidden" name="id" value="<?php echo $question->questionId(); ?>">
                     </form>
 
-                    <!-- TODO 3 Autres buttons à revoir ! (Pas encore fait) -->
                     <?php if (isset($_SESSION['admin'])) { ?>
-                        <?php if ($question->state() == 'duplicated') {
-                            $state = "Open";
-                            $action = "openQuestion";
-                        } else {
-                            $state = "Duplicated";
-                            $action = "duplicateQuestion";
-                        } ?>
-                        <form class="form-btn" action="index.php?action=<?php echo $action; ?>" method="post">
-                            <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <button class="btn btn-dark btn-question" type="submit"><?php echo $state; ?></button>
-                        </form>
-
+                        <?php if ($question->state() == 'duplicated') { ?>
+                            <form class="form-btn" action="index.php?action=openQuestion" method="post">
+                                <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                                <button class="btn btn-dark btn-question" type="submit">Open</button>
+                            </form>
+                        <?php } else { ?>
+                            <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
+                                <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                                <button class="btn btn-dark btn-question" type="submit">Duplicate</button>
+                            </form>
+                        <?php } ?>
                         <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <button class="btn btn-dark btn-question" type="submit">Delete</button>
                         </form>
                     <?php } ?>
-
                     <?php if (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <button class="btn btn-dark btn-question" type="submit">Edit</button>
                         </form>
                     <?php } ?>
-
                 </div>
             </div>
         </div>
