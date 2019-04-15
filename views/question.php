@@ -85,11 +85,13 @@
 
             <!-- Displaying answer's votes -->
             <div class="row card-footer question-btn">
-                <div class="container card-footer-container col-6">
-                    <button class="btn btn-dark"><i class="fas fa-thumbs-up"></i> 511</button>
-                    <button class="btn btn-dark btn-question"><i class="fas fa-thumbs-down"></i> 27</button>
-                </div>
-                <div class="container card-footer-container col-6">
+                <form action="index.php?action=voteAnswer" method="post">
+                    <div class="container card-footer-container">
+                        <button class="btn btn-dark" type="submit" name"like"><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes() ;?></button>
+                        <button class="btn btn-dark btn-question" type="submit" name"dislike"><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes() ;?></button>
+                    </div>
+                </form>
+                <div class="container card-footer-container col-9">
                     <span id="date" class="card-deco pagination justify-content-end">
                         <?php echo $answers[$i]->publicationDate() ?>
                     </span>

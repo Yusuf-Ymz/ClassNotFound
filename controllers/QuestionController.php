@@ -25,11 +25,10 @@ class QuestionController
         $authorLogin = $this->_db->select_member($question->authorId())->html_login();
 
         # Select the question's answers + their respective author
-        $answersAuthors = $this->_db->select_answers_authors($_GET['id']);
+        $answersAuthors = $this->_db->select_answers_authors_votes($_GET['id']);
 
         $answers = $answersAuthors[0];
         $authors = $answersAuthors[1];
-
         $nbAnswers = count($answers);
 
         require_once(VIEWS . 'question.php');
