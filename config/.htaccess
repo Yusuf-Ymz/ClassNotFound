@@ -1,4 +1,4 @@
 AuthName "Enter the login and password"
 AuthType Basic
 AuthUserFile "C:\Progs\wamp64\www\Projet_Web\groupe61\.htpasswd"
-Require valid-user
+Require valid-user	
