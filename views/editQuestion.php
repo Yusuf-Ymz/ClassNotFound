@@ -1,6 +1,5 @@
 <!-- Edit form -->
-<form action="index.php?action=editQuestion&questionid=<?php echo $_GET['questionid']; ?>&authorid=<?php echo $_GET['authorid']; ?>"
-      method="post">
+<form action="index.php?action=editQuestion" method="post">
     <div class="container">
         <!-- The title-->
         <div class="form-group">
@@ -26,6 +25,7 @@
         <?php if (isset($notification)) { ?>
             <p id="notification"> <?php echo $notification; ?> </p>
         <?php } ?>
+        <input type="hidden" name="question_id" value="<?php echo $_POST['question_id']; ?>">
         <input class="btn btn-dark" type="submit" name="form_edit" value="Edit question">
     </div>
 </form>
