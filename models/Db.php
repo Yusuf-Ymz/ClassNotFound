@@ -9,7 +9,7 @@ class Db
     {
         $ini = parse_ini_file('config/config.ini');
         try {
-            $this->_db = new PDO('mysql:host=localhost;dbname='.$ini['db_name'].';charset=utf8',$ini['db_user'],$ini['db_password']);
+            $this->_db = new PDO('mysql:host=localhost;dbname=' . $ini['db_name'] . ';charset=utf8', $ini['db_user'], $ini['db_password']);
             $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->_db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         } catch (PDOException $e) {
@@ -113,20 +113,6 @@ class Db
         $row = $ps->fetch();
         $category = new Category($row->category_id, $row->name);
         return $category;
-    }
-
-    # Select all questions related to the member 'id' parameter
-    public function select_member_questions($member_id)
-    {
-        $query = 'SELECT * FROM questions WHERE author_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $member_id);
-        $ps->execute();
-        $memberQuestions = array();
-        while ($row = $ps->fetch()) {
-            $memberQuestions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $memberQuestions;
     }
 
     # Select the question corresponding to the 'id' parameter
@@ -252,18 +238,34 @@ class Db
         return array($questions, $authors);
     }
 
-    # Select all questions + their respective author from the category with the specified id
-    public function select_answers_authors($idQuestion)
+    # Select the questions + their categories according to the 'id' parameter
+    public function select_member_questions_categories($memberId)
     {
-        $query = 'SELECT A.*, M.* FROM answers A, members M WHERE A.author_id = M.member_id AND A.question_id = :id ORDER BY A.answer_id';
+        $query = 'SELECT Q.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberId);
+        $ps->execute();
+
+        $questions = array();
+        $categories = array();
+        while ($row = $ps->fetch()) {
+            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $categories[] = new Category($row->category_id, $row->name);
+        }
+        return array($questions, $categories);
+    }
+
+    # Select all questions + their respective author from the category with the specified id + votes
+    public function select_answers_authors_votes($idQuestion)
+    {
+        $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
-
         $answers = array();
         $authors = array();
         while ($row = $ps->fetch()) {
-            $answers[] = new Answer($row->answer_id, $row->author_id, $row->question_id, $row->subject, $row->publication_date);
+            $answers[] = new Answer($row->answer_id, $row->author_id, $row->question_id, $row->subject, $row->publication_date, 0, 0);
             $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
         }
         return array($answers, $authors);

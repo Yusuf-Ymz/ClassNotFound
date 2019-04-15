@@ -21,7 +21,9 @@ class ProfileController
         }
         $memberId = $this->_db->select_id($_SESSION['login']);
         # Selecting all questions related to the memberId
-        $memberQuestions = $this->_db->select_member_questions($memberId);
+        $memberQuestions = $this->_db->select_member_questions_categories($memberId);
+        $questions = $memberQuestions[0];
+        $categories = $memberQuestions[1];
         require_once(VIEWS . 'profile.php');
     }
 }
