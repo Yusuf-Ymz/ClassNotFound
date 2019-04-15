@@ -17,27 +17,20 @@ class AdminController
         }
 
         # If an admin clicked on a button
+        var_dump($_POST);
         if (!empty($_POST)) {
             # Suspend a member's account
-            if (isset($_POST['Suspend'])) {
-                foreach ($_POST['Suspend'] as $no => $i) {
-                    $this->_db->suspend_member($no);
-                }
+            if (isset($_POST['suspend'])) {
+                $this->_db->suspend_member($_POST['member_id']);
             } # Activate a member's account
-            else if (isset($_POST['Activate'])) {
-                foreach ($_POST['Activate'] as $no => $id) {
-                    $this->_db->unsuspend_member($no);
-                }
+            else if (isset($_POST['activate'])) {
+                $this->_db->unsuspend_member($_POST['member_id']);
             } # Upgrade a member to admin grade
             else if (isset($_POST['upgrade'])) {
-                foreach ($_POST['upgrade'] as $no => $id) {
-                    $this->_db->upgrade_to_admin($no);
-                }
+                $this->_db->upgrade_to_admin($_POST['member_id']);
             } # Demote an admin to basic member
             else {
-                foreach ($_POST['demote'] as $no => $id) {
-                    $this->_db->demote_admin($no);
-                }
+                $this->_db->demote_admin($_POST['member_id']);
             }
         }
         # Selecting all members to display
