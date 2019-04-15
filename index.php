@@ -75,6 +75,10 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS . 'DeleteQuestionController.php');
         $controller = new DeleteQuestionController($db);
         break;
+    case 'openQuestion':
+        require_once(CONTROLLERS . 'OpenQuestionController.php');
+        $controller = new OpenQuestionController($db);
+        break;
     case 'duplicateQuestion':
         require_once(CONTROLLERS . 'DuplicateQuestionController.php');
         $controller = new DuplicateQuestionController($db);
