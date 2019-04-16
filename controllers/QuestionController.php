@@ -23,7 +23,7 @@ class QuestionController
 
         # If the question is duplicated and user clicked on an action
         if(isset($_GET['duplicated']) && $question->state()=='duplicated'){
-            $notification="This question is duplicated";
+            $notification="This question is marked as duplicated";
         }
 
         # Select the login of the question's author
