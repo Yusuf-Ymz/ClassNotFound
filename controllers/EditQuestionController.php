@@ -26,7 +26,7 @@ class EditQuestionController
         }
 
         # If the user try to edit without being the question's author or is not logged --> homepage
-        if (!isset($_SESSION['logged']) || !isset($_POST['question_id'])) {
+        if (!isset($_POST['edit'])) {
             header('Location: index.php?action=homepage');
             die();
         }

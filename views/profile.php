@@ -18,8 +18,7 @@
             <!-- Displaying the question's publication date -->
             <span class="card-deco pagination justify-content-end">
                     <?php echo $questions[$i]->publicationDate() ?>
-                </span>
-
+            </span>
         </div>
     </div>
 <?php } ?>

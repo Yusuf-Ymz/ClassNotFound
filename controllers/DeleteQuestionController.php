@@ -13,7 +13,7 @@ class DeleteQuestionController
     public function run()
     {
         #If the user try to delete without being an admin --> homepage
-        if (!isset($_POST['question_id'])) {
+        if (!isset($_POST['delete'])) {
             header('Location: index.php?action=homepage');
             die();
         }

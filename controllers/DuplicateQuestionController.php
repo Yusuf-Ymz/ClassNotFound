@@ -13,7 +13,7 @@ class DuplicateQuestionController
     public function run()
     {
         #If the user try to duplicate a question without being an admin --> homepage
-        if (!isset($_POST['question_id'])) {
+        if (!isset($_POST['state'])) {
             header('Location: index.php?action=homepage');
             die();
         }

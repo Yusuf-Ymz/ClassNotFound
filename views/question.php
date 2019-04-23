@@ -39,23 +39,23 @@
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn" action="index.php?action=openQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <button class="btn btn-dark btn-question" type="submit">Open</button>
+                                <button class="btn btn-dark btn-question" type="submit" name="state">Open</button>
                             </form>
                         <?php } else { ?>
                             <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <button class="btn btn-dark btn-question" type="submit">Duplicate</button>
+                                <button class="btn btn-dark btn-question" type="submit" name="state">Duplicate</button>
                             </form>
                         <?php } ?>
                         <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <button class="btn btn-dark btn-question" type="submit">Delete</button>
+                            <button class="btn btn-dark btn-question" type="submit" name="delete">Delete</button>
                         </form>
                     <?php } ?>
                     <?php if (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <button class="btn btn-dark btn-question" type="submit">Edit</button>
+                            <button class="btn btn-dark btn-question" type="submit" name="edit">Edit</button>
                         </form>
                     <?php } ?>
                 </div>
@@ -78,7 +78,8 @@
             <!-- Displaying answer's author -->
             <div class="card-header">
                 <p class="card-text card-login font-weight-bold"><?php echo $answers[$i]->member()->html_login() . ' answers:' ?></p>
-                <?php $bestanswer=$question->bestAnswerId(); if($bestanswer!=null && $answers[$i]->answerId()==$bestanswer){ ?>
+                <?php $bestanswer = $question->bestAnswerId();
+                if ($bestanswer != null && $answers[$i]->answerId() == $bestanswer) { ?>
                     <i class="fas fa-check-double float-md-right"></i>
                 <?php } ?>
             </div>
@@ -91,18 +92,22 @@
             <div class="row card-footer question-btn">
                 <form action="index.php?action=voteAnswer" method="post">
                     <div class="container card-footer-container">
-                        <button class="btn btn-dark" type="submit" name
-                        "like"><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes(); ?></button>
-                        <button class="btn btn-dark btn-question" type="submit" name
-                        "dislike"><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes(); ?></button>
+                        <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                        <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
+                        <button class="btn btn-dark" type="submit" name=
+                        "like" ><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes(); ?>
+                        </button>
+                        <button class="btn btn-dark btn-question" type="submit" name=
+                        "dislike" ><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes(); ?></button>
                     </div>
                 </form>
-                <?php if ($question->bestAnswerId()==null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+                <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
                     <form action="index.php?action=bestAnswer" method="post">
                         <div class="container card-footer-container ml-1">
                             <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                            <button class="btn btn-dark btn-question" type="submit" name="best_answer"><i class="far fa-check-circle"></i></button>
+                            <button class="btn btn-dark btn-question" type="submit" name="best_answer"><i
+                                        class="far fa-check-circle"></i></button>
                         </div>
                     </form>
                 <?php } ?>

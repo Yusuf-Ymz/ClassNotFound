@@ -99,6 +99,10 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS . 'BestAnswerController.php');
         $controller = new BestAnswerController($db);
         break;
+    case 'voteAnswer':
+        require_once(CONTROLLERS . 'VoteAnswerController.php');
+        $controller = new VoteAnswerController($db);
+        break;
     default:
         require_once(CONTROLLERS . 'HomepageController.php');
         $controller = new HomepageController($db);

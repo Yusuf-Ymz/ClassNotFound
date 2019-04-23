@@ -41,6 +41,23 @@ class Db
         return $categories;
     }
 
+
+    public function vote_exists($memberId,$answerId){
+        $query = 'SELECT V.* FROM votes V WHERE V.answer_id=:id AND V.member_id=:memberid';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $answerId);
+        $ps->bindValue(':memberid', $memberId);
+        $ps->execute();
+        return ($ps->rowCount()==0);
+    }
+
+    public function insert_vote($memberId,$answerId,$vote){
+        var_dump($memberId);
+        $query = "INSERT INTO votes  VALUES ($memberId,$answerId,$vote)";
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+    }
+
     # Select the member corresponding to the 'id' parameter
     public function select_member($member_id)
     {
@@ -272,19 +289,18 @@ class Db
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         $answers = array();
-        $authors = array();
         while ($row = $ps->fetch()) {
             $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0);
         }
-        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V ,votes V1 WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V1.answer_id=A.answer_id AND V.liked=1 GROUP BY A.answer_id';
+        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1 GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         while($row = $ps->fetch()) {
             $answers[$row->answer_id]->setLikes($row->likes);
         }
-        $query = 'SELECT A.answer_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V ,votes V1 WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V1.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
+        $query = 'SELECT A.answer_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
@@ -295,7 +311,7 @@ class Db
         foreach ($answers as $i => $answer){
             $answersWithoutHoles[] = $answer;
         }
-        return array($answersWithoutHoles, $authors);
+        return $answersWithoutHoles;
     }
 
     # Select the questions that contains a certain keyword (+ their respective author and category)
