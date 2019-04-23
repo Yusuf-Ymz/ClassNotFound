@@ -42,6 +42,15 @@ class Db
     }
 
 
+    public function select_newest_answer($authorId){
+        $query = 'SELECT MAX(A.answer_id) as \'max\' FROM answers A WHERE author_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$authorId);
+        $ps->execute();
+        $id = $ps->fetch()->max;
+        return $id;
+    }
+
     public function vote_exists($memberId,$answerId){
         $query = 'SELECT V.* FROM votes V WHERE V.answer_id=:id AND V.member_id=:memberid';
         $ps = $this->_db->prepare($query);

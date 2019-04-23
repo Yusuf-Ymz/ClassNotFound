@@ -13,19 +13,19 @@ class VoteAnswerController
     public function run()
     {
 
-        if(!isset($_POST['like']) || !isset($_POST['dislike'])) {
+        if(!isset($_POST['like']) && !isset($_POST['dislike'])) {
             header('Location: index.php');
             die();
         }
 
         # Select the question from the id in $_POST['question_id']
         $question = $this->_db->select_question($_POST['question_id']);
-
         # If the question is duplicated and user clicked on an action
         if ($question->state() == 'duplicated') {
-            header('Location: index.php?action=question&id=' . $_POST['question_id'] . '&duplicated=true');
+            header('Location: index.php?action=question&id=' . $question->questionId() . '&duplicated=true');
             die();
         }
+
         $memberId = $this->_db->select_id($_SESSION['login']);
 
         if ($this->_db->vote_exists($memberId,$_POST['answer_id'])) {
@@ -36,7 +36,7 @@ class VoteAnswerController
             }
         }
 
-        header('Location: index.php?action=question&id=' . $_POST['question_id']);
+        header('Location: index.php?action=question&id=' . $question->questionId().'#'.$_POST['answer_id']);
         die();
     }
 }

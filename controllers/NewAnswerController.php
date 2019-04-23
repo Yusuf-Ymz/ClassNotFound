@@ -4,14 +4,16 @@ class NewAnswerController
 {
     private $_db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->_db = $db;
     }
 
-    public function run(){
+    public function run()
+    {
 
         # Redirection to login if not logged
-        if(!isset($_SESSION['logged'])) {
+        if (!isset($_SESSION['logged'])) {
             header('Location: index.php?action=login');
             die();
         }
@@ -23,17 +25,18 @@ class NewAnswerController
         }
 
         # Answer form
-        if(isset($_POST['form_answer'])) {
-            if(isset($_POST['answer_text'])) {
+        if (isset($_POST['form_answer'])) {
+            if (isset($_POST['answer_text'])) {
                 # Check if user is trying to post an empty answer
-                if(empty($_POST['answer_text'])) {
+                if (empty($_POST['answer_text'])) {
                     $notification = 'Your answer cannot be empty!';
                 } else {
                     # Insert answer into database
                     $authorId = $this->_db->select_id($_SESSION['login']);
                     $publicationDate = date("Y-m-d");
                     $this->_db->insert_answer($authorId, $_POST['id'], $_POST['answer_text'], $publicationDate);
-                    header("Location: index.php?action=question&id=" . $_POST['id']);
+                    $idOfAddedAnswer = $this->_db->select_newest_answer($authorId);
+                    header("Location: index.php?action=question&id=" . $_POST['id'] . '#' . $idOfAddedAnswer);
                     die();
                 }
             }
@@ -43,8 +46,8 @@ class NewAnswerController
         $question = $this->_db->select_question($_POST['id']);
 
         # If the question is duplicated displaying the notification
-        if($question->state()=='duplicated'){
-            header('Location: index.php?action=question&id='.$question->questionId().'&duplicated=true');
+        if ($question->state() == 'duplicated') {
+            header('Location: index.php?action=question&id=' . $question->questionId() . '&duplicated=true');
             die();
         }
 

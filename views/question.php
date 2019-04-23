@@ -72,7 +72,7 @@
 </div>
 <!-- Displaying all question's answers -->
 <?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
-    <div class="container">
+    <div class="container" id="<?php echo $answers[$i]->answerId(); ?>">
         <div class="card">
 
             <!-- Displaying answer's author -->
@@ -94,11 +94,9 @@
                     <div class="container card-footer-container">
                         <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                         <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                        <button class="btn btn-dark" type="submit" name=
-                        "like" ><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes(); ?>
+                        <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes(); ?>
                         </button>
-                        <button class="btn btn-dark btn-question" type="submit" name=
-                        "dislike" ><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes(); ?></button>
+                        <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes(); ?></button>
                     </div>
                 </form>
                 <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
