@@ -266,7 +266,7 @@ class Db
     # Select the questions + their categories according to the 'id' parameter
     public function select_member_questions_categories($memberId)
     {
-        $query = 'SELECT Q.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
+        $query = 'SELECT Q.*, C.* FROM questions Q, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $memberId);
         $ps->execute();
