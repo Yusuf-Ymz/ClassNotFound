@@ -18,9 +18,13 @@ function loadClass($class)
 
 spl_autoload_register('loadClass');
 
+#Getting db configurations
+$ini=parse_ini_file('config/config.ini');
+
 # Connexion to the database;
 require_once(MODELS . 'Db.php');
-$db = Db::getInstance();
+$db = Db::getInstance($ini);
+
 
 # This array contains all the categories from the database as Category objects
 $categories = $db->select_categories();

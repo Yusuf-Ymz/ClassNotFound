@@ -77,7 +77,7 @@
 
             <!-- Displaying answer's author -->
             <div class="card-header">
-                <p class="card-text card-login font-weight-bold"><?php echo $authors[$i]->html_login() . ' answers:' ?></p>
+                <p class="card-text card-login font-weight-bold"><?php echo $answers[$i]->member()->html_login() . ' answers:' ?></p>
                 <?php $bestanswer=$question->bestAnswerId(); if($bestanswer!=null && $answers[$i]->answerId()==$bestanswer){ ?>
                     <i class="fas fa-check-double float-md-right"></i>
                 <?php } ?>
