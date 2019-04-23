@@ -3,17 +3,17 @@
 class Answer
 {
     private $_answer_id;
-    private $_author_id;
+    private $_member;
     private $_question_id;
     private $_subject;
     private $_publication_date;
     private $_likes;
     private $_dislikes;
 
-    public function __construct($answer_id, $author_id, $question_id, $subject, $publication_date,$likes,$dislikes)
+    public function __construct($answer_id, $member, $question_id, $subject, $publication_date,$likes,$dislikes)
     {
         $this->_answer_id = $answer_id;
-        $this->_author_id = $author_id;
+        $this->_member = $member;
         $this->_question_id = $question_id;
         $this->_subject = $subject;
         $this->_publication_date = $publication_date;
@@ -26,9 +26,9 @@ class Answer
         return $this->_answer_id;
     }
 
-    public function authorId()
+    public function member()
     {
-        return $this->_author_id;
+        return $this->_member;
     }
 
     public function questionId()
@@ -57,5 +57,13 @@ class Answer
 
     public function dislikes(){
         return $this->_dislikes;
+    }
+
+    public function setLikes($likes){
+        $this->_likes=$likes;
+    }
+
+    public function setDislikes($dislikes){
+        $this->_dislikes=$dislikes;
     }
 }

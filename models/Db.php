@@ -255,13 +255,15 @@ class Db
     }
 
     # Add the best answer at the question passed by parameters
-    public function best_answer($questionId,$answerId){
-        $query ='UPDATE  questions SET best_answer_id=:answerid WHERE question_id=:id';
+    public function best_answer($questionId, $answerId)
+    {
+        $query = 'UPDATE  questions SET best_answer_id=:answerid WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':answerid', $answerId);
         $ps->bindValue(':id', $questionId);
         $ps->execute();
     }
+
     # Select all questions + their respective author from the category with the specified id + votes
     public function select_answers_authors_votes($idQuestion)
     {
@@ -272,17 +274,35 @@ class Db
         $answers = array();
         $authors = array();
         while ($row = $ps->fetch()) {
-            $answers[] = new Answer($row->answer_id, $row->author_id, $row->question_id, $row->subject, $row->publication_date, 0, 0);
-            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0);
         }
-        return array($answers, $authors);
+        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V ,votes V1 WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V1.answer_id=A.answer_id AND V.liked=1 GROUP BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        while($row = $ps->fetch()) {
+            $answers[$row->answer_id]->setLikes($row->likes);
+        }
+        $query = 'SELECT A.answer_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V ,votes V1 WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V1.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        while($row = $ps->fetch()) {
+            $answers[$row->answer_id]->setDislikes($row->dislikes);
+        }
+        $answersWithoutHoles = array();
+        foreach ($answers as $i => $answer){
+            $answersWithoutHoles[] = $answer;
+        }
+        return array($answersWithoutHoles, $authors);
     }
 
     # Select the questions that contains a certain keyword (+ their respective author and category)
     public function search_questions_authors_categories($keyword)
     {
         $keyword = strtolower($keyword);
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND LOWER(title) LIKE :keyword ORDER BY Q.question_id DESC';
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND (LOWER(Q.title) LIKE :keyword OR LOWER(Q.subject) LIKE :keyword) ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':keyword', "%$keyword%");
         $ps->execute();
