@@ -2,7 +2,7 @@
     <h3>My questions:</h3>
 </div>
 <!-- Displaying all questions -->
-<?php for($i = 0; $i < count($memberQuestions)+1; $i++) { ?>
+<?php for($i = 0; $i < count($questions); $i++) { ?>
     <div class="card">
         <div class="card-body">
             <!-- Searching the question's category to display -->
