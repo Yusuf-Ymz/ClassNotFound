@@ -5,9 +5,8 @@ class Db
     private static $instance = null;
     private $_db;
 
-    private function __construct()
+    private function __construct($ini)
     {
-        $ini = parse_ini_file('config/config.ini');
         try {
             $this->_db = new PDO('mysql:host=localhost;dbname=' . $ini['db_name'] . ';charset=utf8', $ini['db_user'], $ini['db_password']);
             $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,10 +17,10 @@ class Db
     }
 
     # Pattern Singleton
-    public static function getInstance()
+    public static function getInstance($ini)
     {
         if (is_null(self::$instance)) {
-            self::$instance = new Db();
+            self::$instance = new Db($ini);
         }
         return self::$instance;
     }
