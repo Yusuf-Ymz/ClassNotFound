@@ -21,7 +21,8 @@
 
         <!-- Displaying the question's title and question's subject -->
         <div class="card-body">
-            <h5 id="question-title" class="card-title"><?php echo $question->html_title(); ?></h5>
+            <h5 id="question-title" class="card-title"><?php echo $question->html_title();
+                                                        if ($question->state() == 'duplicated') { echo " [DUPLICATE]";}?></h5>
             <p class="card-text"><?php echo Utils::html_replace_enter_by_br($question->html_subject()); ?></p>
         </div>
 
