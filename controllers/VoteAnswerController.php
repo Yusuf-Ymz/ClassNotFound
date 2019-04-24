@@ -20,11 +20,19 @@ class VoteAnswerController
 
         # Select the question from the id in $_POST['question_id']
         $question = $this->_db->select_question($_POST['question_id']);
-        # If the question is duplicated and user clicked on an action
+
+        if(!isset($_SESSION['logged'])){
+            header('Location: index.php?action=login');
+            die();
+        }
+
+        # If the question is duplicated and user clicked on like or dislike
         if ($question->state() == 'duplicated') {
             header('Location: index.php?action=question&id=' . $question->questionId() . '&duplicated=true');
             die();
         }
+
+
 
         $memberId = $this->_db->select_id($_SESSION['login']);
 
@@ -36,7 +44,7 @@ class VoteAnswerController
             }
         }
 
-        header('Location: index.php?action=question&id=' . $question->questionId().'#'.$_POST['answer_id']);
+        header('Location: index.php?action=question&id=' . $question->questionId());
         die();
     }
 }

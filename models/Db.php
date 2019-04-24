@@ -281,7 +281,7 @@ class Db
     }
 
     # Add the best answer at the question passed by parameters
-    public function best_answer($questionId, $answerId)
+    public function set_as_best_answer($questionId, $answerId)
     {
         $query = 'UPDATE  questions SET best_answer_id=:answerid WHERE question_id=:id';
         $ps = $this->_db->prepare($query);

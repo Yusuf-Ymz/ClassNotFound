@@ -25,7 +25,7 @@ class BestAnswerController
             die();
         }
 
-        $this->_db->best_answer($_POST['question_id'],$_POST['answer_id']);
+        $this->_db->set_as_best_answer($_POST['question_id'],$_POST['answer_id']);
         header('Location: index.php?action=question&id='.$_POST['question_id']);
         die();
     }

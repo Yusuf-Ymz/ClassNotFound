@@ -66,22 +66,56 @@
 <?php if (isset($notification)) { ?>
     <div class="container" id="notification"><?php echo $notification; ?> </div>
 <?php } ?>
-<!-- Answers Part -->
-<div class="container">
-    <h3>Answers:</h3>
-</div>
+
 <!-- Displaying all question's answers -->
 <?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
+    <!-- Displaying the best answer on top -->
+    <?php if ($answers[$i]->answerId() == $question->bestAnswerId()) { ?>
+        <div class="container">
+            <h3>Best Answer:</h3>
+        </div>
+        <div class="container" id="<?php echo $answers[$i]->answerId(); ?>">
+            <div class="card">
+                <!-- Displaying answer's author -->
+                <div class="card-header">
+                    <p class="card-text card-login font-weight-bold"><?php echo $answers[$i]->member()->html_login() . ' answers:' ?></p>
+                </div>
+                <!-- Displaying the answer -->
+                <div class="card-body">
+                    <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answers[$i]->html_subject()); ?></p>
+                </div>
+
+                <!-- Displaying answer's votes -->
+                <div class="row card-footer question-btn">
+                    <form action="index.php?action=voteAnswer" method="post">
+                        <div class="container card-footer-container">
+                            <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
+                            <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
+                            <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
+                        </div>
+                    </form>
+                    <div class="container card-footer-container col-8">
+                    <span id="date" class="card-deco pagination justify-content-end">
+                        <?php echo $answers[$i]->publicationDate() ?>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+    <?php if ($i == 0) { ?>
+        <!-- Answers Part -->
+        <div class="container">
+            <h3>Answers:</h3>
+        </div>
+    <?php } ?>
     <div class="container" id="<?php echo $answers[$i]->answerId(); ?>">
         <div class="card">
 
             <!-- Displaying answer's author -->
             <div class="card-header">
                 <p class="card-text card-login font-weight-bold"><?php echo $answers[$i]->member()->html_login() . ' answers:' ?></p>
-                <?php $bestanswer = $question->bestAnswerId();
-                if ($bestanswer != null && $answers[$i]->answerId() == $bestanswer) { ?>
-                    <i class="fas fa-check-double float-md-right"></i>
-                <?php } ?>
             </div>
             <!-- Displaying the answer -->
             <div class="card-body">
@@ -94,9 +128,8 @@
                     <div class="container card-footer-container">
                         <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                         <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                        <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i><?php echo $answers[$i]->likes(); ?>
-                        </button>
-                        <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i><?php echo $answers[$i]->dislikes(); ?></button>
+                        <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
+                        <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
                     </div>
                 </form>
                 <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
@@ -104,8 +137,7 @@
                         <div class="container card-footer-container ml-1">
                             <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                            <button class="btn btn-dark btn-question" type="submit" name="best_answer"><i
-                                        class="far fa-check-circle"></i></button>
+                            <button class="btn btn-dark btn-question" type="submit" name="best_answer"><i class="far fa-check-circle"></i></button>
                         </div>
                     </form>
                 <?php } ?>

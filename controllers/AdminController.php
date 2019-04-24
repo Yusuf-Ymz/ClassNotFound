@@ -32,6 +32,7 @@ class AdminController
                 $this->_db->demote_admin($_POST['member_id']);
             }
         }
+
         # Selecting all members to display
         $members = $this->_db->select_all_members();
 
