@@ -30,7 +30,7 @@ form.form-btn {
 }
 
 a#btn-new-question {
-    padding: 0px 0px 0px 6px;
+    padding: 0px 15px 0px 6px;
 }
 
 button#btn-new-question {
@@ -74,7 +74,7 @@ button#btn-new-question {
     background-color: white;
 }
 
-.card-footer-container {
+.card-footer-container, .likes {
     padding-left: 0px;
     padding-right: 0px;
 }

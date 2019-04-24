@@ -11,7 +11,7 @@
                     <span><?php echo $member->html_login(); ?> </span>
                 </div>
                 <!-- Displaying admin actions-->
-                <div class="card-footer">
+                <div class="card-footer question-btn">
                     <form action="index.php?action=admin" method="post">
                         <?php if ($member->suspended() == 0) { ?>
                             <input class="btn btn-dark" type="submit"

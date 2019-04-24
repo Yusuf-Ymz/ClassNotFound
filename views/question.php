@@ -39,23 +39,23 @@
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn" action="index.php?action=openQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <button class="btn btn-dark btn-question" type="submit" name="state">Open</button>
+                                <button class="btn btn-dark" type="submit" name="state">Open</button>
                             </form>
                         <?php } else { ?>
                             <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <button class="btn btn-dark btn-question" type="submit" name="state">Duplicate</button>
+                                <button class="btn btn-dark" type="submit" name="state">Duplicate</button>
                             </form>
                         <?php } ?>
                         <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <button class="btn btn-dark btn-question" type="submit" name="delete">Delete</button>
+                            <button class="btn btn-dark" type="submit" name="delete">Delete</button>
                         </form>
                     <?php } ?>
                     <?php if (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <button class="btn btn-dark btn-question" type="submit" name="edit">Edit</button>
+                            <button class="btn btn-dark" type="submit" name="edit">Edit</button>
                         </form>
                     <?php } ?>
                 </div>
@@ -87,18 +87,20 @@
 
                 <!-- Displaying answer's votes -->
                 <div class="row card-footer question-btn">
-                    <form action="index.php?action=voteAnswer" method="post">
+                    <form class="col-6 likes" action="index.php?action=voteAnswer" method="post">
                         <div class="container card-footer-container">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                            <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
-                            <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
+                            <button class="btn btn-dark" type="submit" name="like"><i
+                                        class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
+                            <button class="btn btn-dark" type="submit" name="dislike"><i
+                                        class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
                         </div>
                     </form>
-                    <div class="container card-footer-container col-8">
-                    <span id="date" class="card-deco pagination justify-content-end">
-                        <?php echo $answers[$i]->publicationDate() ?>
-                    </span>
+                    <div class="container card-footer-container col-6">
+                        <span id="date" class="card-deco pagination justify-content-end">
+                           <?php echo $answers[$i]->publicationDate() ?>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -124,24 +126,28 @@
 
             <!-- Displaying answer's votes -->
             <div class="row card-footer question-btn">
-                <form action="index.php?action=voteAnswer" method="post">
-                    <div class="container card-footer-container">
-                        <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                        <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                        <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
-                        <button class="btn btn-dark btn-question" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
-                    </div>
-                </form>
-                <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
-                    <form action="index.php?action=bestAnswer" method="post">
-                        <div class="container card-footer-container ml-1">
-                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
-                            <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                            <button class="btn btn-dark btn-question" type="submit" name="best_answer"><i class="far fa-check-circle"></i></button>
+                <div class="col-6 likes">
+                    <form class="form-btn float-left" action="index.php?action=voteAnswer" method="post">
+                        <div class="container card-footer-container">
+                            <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
+                            <button class="btn btn-dark" type="submit" name="like"><i
+                                        class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
+                            <button class="btn btn-dark" type="submit" name="dislike"><i
+                                        class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
                         </div>
                     </form>
-                <?php } ?>
-                <div class="container card-footer-container col-8">
+                    <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+                        <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
+                            <div class="container card-footer-container">
+                                <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
+                                <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
+                                <button class="btn btn-dark" type="submit" name="best_answer"><i class="far fa-check-circle"></i></button>
+                            </div>
+                        </form>
+                    <?php } ?>
+                </div>
+                <div class="container card-footer-container col-6">
                     <span id="date" class="card-deco pagination justify-content-end">
                         <?php echo $answers[$i]->publicationDate() ?>
                     </span>
