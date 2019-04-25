@@ -302,13 +302,15 @@ class Db
             $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0);
         }
-        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1 GROUP BY A.answer_id';
+
+        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         while($row = $ps->fetch()) {
             $answers[$row->answer_id]->setLikes($row->likes);
         }
+
         $query = 'SELECT A.answer_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
@@ -317,6 +319,8 @@ class Db
             $answers[$row->answer_id]->setDislikes($row->dislikes);
         }
         $answersWithoutHoles = array();
+        # Index 0 reserved for the best answer
+        $answersWithoutHoles[0]=null;
         foreach ($answers as $i => $answer){
             $answersWithoutHoles[] = $answer;
         }

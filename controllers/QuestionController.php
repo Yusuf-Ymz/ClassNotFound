@@ -22,8 +22,8 @@ class QuestionController
         $question = $this->_db->select_question($_GET['id']);
 
         # If the question is duplicated and user clicked on an action
-        if(isset($_GET['duplicated']) && $question->state()=='duplicated'){
-            $notification="This question is marked as duplicated";
+        if (isset($_GET['duplicated']) && $question->state() == 'duplicated') {
+            $notification = "This question is marked as duplicated";
         }
 
         # Select the login of the question's author
@@ -31,6 +31,14 @@ class QuestionController
 
         # Select the question's answers + their respective author
         $answers = $this->_db->select_answers_authors_votes($_GET['id']);
+
+        # Place best answer at index 0
+        foreach ($answers as $i => $answer) {
+            if ($answer!=null && $answer->answerId() == $question->bestAnswerId()) {
+                $answers[0] = $answer;
+                break;
+            }
+        }
 
         $nbAnswers = count($answers);
 

@@ -32,8 +32,6 @@ class VoteAnswerController
             die();
         }
 
-
-
         $memberId = $this->_db->select_id($_SESSION['login']);
 
         if ($this->_db->vote_exists($memberId,$_POST['answer_id'])) {
