@@ -13,6 +13,7 @@ class NewQuestionController
     {
         # If the user is not connected --> login
         if (!isset($_SESSION['logged'])) {
+            $_SESSION['error'] = 'You must be logged to post a question';
             header('Location: index.php?action=login');
             die();
         }

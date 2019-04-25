@@ -12,7 +12,7 @@
                 <div class="container col-8">
                     <p class="card-login font-weight-bold"><?php echo $authorLogin . ' asks:'; ?></p>
                 </div>
-                <div class="container col-4 pagination justify-content-end">
+                <div class="container col-4 pagination justify-content-end" id="question-date">
                     <p class="card-login"><?php echo $question->publicationDate() ?></p>
                 </div>
             </div>

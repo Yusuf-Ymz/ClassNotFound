@@ -48,6 +48,10 @@ button#btn-new-question {
     padding: 5px;
 }
 
+#question-date{
+    padding-right: 5px;
+}
+
 #question-title {
     margin-bottom: 25px;
     text-decoration: underline;

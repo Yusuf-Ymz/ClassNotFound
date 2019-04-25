@@ -1,7 +1,8 @@
-    <div class="container">
-        <h3><?php echo $categoryName ?> Questions:</h3>
-    </div>
-<?php if($nbQuestions == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted in this category yet.</p>'?>
+<div class="container">
+    <h3><?php echo $categoryName ?> Questions:</h3>
+</div>
+<?php if ($nbQuestions == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted in this category yet.</p>' ?>
+<!-- Displaying category's questions -->
 <?php for ($i = 0; $i < $nbQuestions; $i++) { ?>
     <div class="container">
         <div class="card">
@@ -9,7 +10,7 @@
 
                 <!-- Here we are searching the author's firstname to display it -->
                 <span class="font-weight-bold">
-                    <?php echo $authors[$i]->html_login().' asks:' ?>
+                    <?php echo $authors[$i]->html_login() . ' asks:' ?>
                 </span>
 
                 <!-- Displaying the title of the question-->

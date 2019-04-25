@@ -13,6 +13,12 @@ class EditQuestionController
 
     public function run()
     {
+        # If the user try to edit without being the question's author or is not logged --> homepage
+        if (!isset($_POST['edit'])) {
+            header('Location: index.php?action=homepage');
+            die();
+        }
+
         # Clicked on submit and if there is an empty field in the form
         if (isset($_POST['question_title']) && isset($_POST['question_subject'])) {
             if (empty($_POST['question_title']) || empty($_POST['question_subject'])) {
@@ -25,18 +31,13 @@ class EditQuestionController
             }
         }
 
-        # If the user try to edit without being the question's author or is not logged --> homepage
-        if (!isset($_POST['edit'])) {
-            header('Location: index.php?action=homepage');
-            die();
-        }
-
         # Selecting the question to edit
         $question = $this->_db->select_question($_POST['question_id']);
 
-        # If the question is duplicated displaying the notification
-        if($question->state()=='duplicated'){
-            header('Location: index.php?action=question&id='.$_POST['question_id'].'&duplicated=true');
+        # If the question is duplicated and user clicked on like or dislike
+        if ($question->state() == 'duplicated') {
+            $_SESSION['error'] = 'This question is marked as duplicated';
+            header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
 

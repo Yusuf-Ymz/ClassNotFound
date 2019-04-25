@@ -42,25 +42,51 @@ class Db
     }
 
 
-    public function select_newest_answer($authorId){
+    public function select_newest_answer($authorId)
+    {
         $query = 'SELECT MAX(A.answer_id) as \'max\' FROM answers A WHERE author_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id',$authorId);
+        $ps->bindValue(':id', $authorId);
         $ps->execute();
         $id = $ps->fetch()->max;
         return $id;
     }
 
-    public function vote_exists($memberId,$answerId){
+    public function vote_exists($memberId, $answerId)
+    {
         $query = 'SELECT V.* FROM votes V WHERE V.answer_id=:id AND V.member_id=:memberid';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $answerId);
         $ps->bindValue(':memberid', $memberId);
         $ps->execute();
-        return ($ps->rowCount()==0);
+        $row = $ps->fetch();
+        if (!empty($row)) {
+            return new Vote($row->member_id, $row->answer_id, $row->liked);
+        }
+        return null;
     }
 
-    public function insert_vote($memberId,$answerId,$vote){
+    public function delete_vote($memberId, $answerId)
+    {
+        $query = 'DELETE FROM votes WHERE answer_id=:id AND member_id=:memberid';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $answerId);
+        $ps->bindValue(':memberid', $memberId);
+        $ps->execute();
+    }
+
+    public function update_vote($memberId, $answerId, $liked)
+    {
+        $query = 'UPDATE votes SET liked=:liked WHERE answer_id=:id AND member_id=:memberid';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':liked', $liked);
+        $ps->bindValue(':id', $answerId);
+        $ps->bindValue(':memberid', $memberId);
+        $ps->execute();
+    }
+
+    public function insert_vote($memberId, $answerId, $vote)
+    {
         var_dump($memberId);
         $query = "INSERT INTO votes  VALUES ($memberId,$answerId,$vote)";
         $ps = $this->_db->prepare($query);
@@ -307,7 +333,7 @@ class Db
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
-        while($row = $ps->fetch()) {
+        while ($row = $ps->fetch()) {
             $answers[$row->answer_id]->setLikes($row->likes);
         }
 
@@ -315,13 +341,13 @@ class Db
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
-        while($row = $ps->fetch()) {
+        while ($row = $ps->fetch()) {
             $answers[$row->answer_id]->setDislikes($row->dislikes);
         }
         $answersWithoutHoles = array();
         # Index 0 reserved for the best answer
-        $answersWithoutHoles[0]=null;
-        foreach ($answers as $i => $answer){
+        $answersWithoutHoles[0] = null;
+        foreach ($answers as $i => $answer) {
             $answersWithoutHoles[] = $answer;
         }
         return $answersWithoutHoles;

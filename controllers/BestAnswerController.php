@@ -9,7 +9,8 @@ class BestAnswerController
         $this->_db = $db;
     }
 
-    public function run(){
+    public function run()
+    {
         # If the user didn't clicked  --> homepage
         if(!isset($_POST['best_answer'])){
             header('Location: index.php?action=homepage');
@@ -19,9 +20,10 @@ class BestAnswerController
         # Selecting the question
         $question = $this->_db->select_question($_POST['question_id']);
 
-        # If the question is duplicated displaying the notification
-        if($question->state()=='duplicated'){
-            header('Location: index.php?action=question&id='.$_POST['question_id'].'&duplicated=true');
+        # If the question is duplicated and user clicked on like or dislike
+        if ($question->state() == 'duplicated') {
+            $_SESSION['error'] = 'This question is marked as duplicated';
+            header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
 

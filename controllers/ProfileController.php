@@ -24,6 +24,7 @@ class ProfileController
         $memberQuestions = $this->_db->select_member_questions_categories($memberId);
         $questions = $memberQuestions[0];
         $categories = $memberQuestions[1];
+        $nbQuestions = count($questions);
         require_once(VIEWS . 'profile.php');
     }
 }

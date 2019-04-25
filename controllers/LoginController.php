@@ -5,27 +5,35 @@ class LoginController
 
     private $_db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->_db = $db;
     }
 
-    public function run(){
+    public function run()
+    {
 
         # User already connected
-        if(isset($_SESSION['logged'])){
+        if (isset($_SESSION['logged'])) {
             header('Location: index.php?action=homepage');
             die();
+        }
+
+        # Redirected from another page
+        if (isset($_SESSION['error']) && !is_null($_SESSION['error'])) {
+            $notification = $_SESSION['error'];
+            $_SESSION['error'] = null;
         }
 
         # Attempting to connect...
 
         # Display notification if any of the fields are empty
-        if(!empty($_POST)) {
-            if(empty($_POST['login']) and empty($_POST['password'])) {
+        if (!empty($_POST)) {
+            if (empty($_POST['login']) and empty($_POST['password'])) {
                 $notification = 'Enter your login and password';
-            } else if(!empty($_POST['login']) and empty($_POST['password'])) {
+            } else if (!empty($_POST['login']) and empty($_POST['password'])) {
                 $notification = 'Enter a password';
-            } else if(empty($_POST['login']) and !empty($_POST['password'])) {
+            } else if (empty($_POST['login']) and !empty($_POST['password'])) {
                 $notification = 'Enter a login';
             } else {
                 # All fields are completed, verification...
@@ -34,20 +42,18 @@ class LoginController
                 $member = $this->_db->verify_member($_POST['login'], $_POST['password']);
 
                 # No such login found OR password incorrect
-                if(is_null($member)) {
+                if (is_null($member)) {
                     $notification = 'Your login/password is incorrect';
-                }
-                # Account suspended
-                elseif($member->suspended()) {
+                } # Account suspended
+                elseif ($member->suspended()) {
                     $notification = 'Your account is suspended';
-                }
-                # Authentication succeeded
+                } # Authentication succeeded
                 else {
                     $_SESSION['logged'] = true;
                     $_SESSION['login'] = $_POST['login'];
 
                     # Check if account has administrator rights
-                    if($member->admin() == 1) {
+                    if ($member->admin() == 1) {
                         $_SESSION['admin'] = true;
                     }
 

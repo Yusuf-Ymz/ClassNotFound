@@ -14,6 +14,7 @@ class NewAnswerController
 
         # Redirection to login if not logged
         if (!isset($_SESSION['logged'])) {
+            $_SESSION['error'] = 'You must be logged to post an answer';
             header('Location: index.php?action=login');
             die();
         }
@@ -45,9 +46,10 @@ class NewAnswerController
         # Select the question from the id in $_POST['id'] (hidden input)
         $question = $this->_db->select_question($_POST['id']);
 
-        # If the question is duplicated displaying the notification
+        # If the question is duplicated and user clicked on like or dislike
         if ($question->state() == 'duplicated') {
-            header('Location: index.php?action=question&id=' . $question->questionId() . '&duplicated=true');
+            $_SESSION['error'] = 'This question is marked as duplicated';
+            header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
 
