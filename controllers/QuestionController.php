@@ -28,7 +28,7 @@ class QuestionController
         }
 
         # Select the login of the question's author
-        $authorLogin = $this->_db->select_member($question->authorId())->html_login();
+        $authorLogin = $question->author()->html_login();
 
         # Select the question's answers + their respective author
         $answers = $this->_db->select_answers_authors_votes($_GET['id']);

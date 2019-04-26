@@ -1,3 +1,6 @@
+<div class="container">
+    <h3>Edit your question:</h3>
+</div>
 <!-- Edit form -->
 <form action="index.php?action=editQuestion" method="post">
     <div class="container">
@@ -15,7 +18,7 @@
         <div class="form-group">
             <select class="browser-default custom-select custom-select-md mb-3" name="question_category_id">
                 <?php for ($i = 0; $i < count($categories); $i++) { ?>
-                    <option <?php if ($categories[$i]->id() == $question->categoryId()) echo "selected"; ?> value="<?php echo $categories[$i]->id(); ?>"><?php echo $categories[$i]->html_name(); ?></option>
+                    <option <?php if ($categories[$i]->id() == $question->category()) echo "selected"; ?> value="<?php echo $categories[$i]->id(); ?>"><?php echo $categories[$i]->html_name(); ?></option>
                 <?php } ?>
             </select>
         </div>

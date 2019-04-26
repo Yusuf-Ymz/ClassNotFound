@@ -5,14 +5,16 @@ class RegisterController
 
     private $_db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->_db = $db;
     }
 
-    public function run(){
+    public function run()
+    {
 
         # User already connected
-        if(isset($_SESSION['logged'])){
+        if (isset($_SESSION['logged'])) {
             header('Location: index.php?action=homepage');
             die();
         }
@@ -20,23 +22,19 @@ class RegisterController
         # Attempting to register...
 
         # Display notification if any of the fields are empty
-        if(!empty($_POST)) {
-            if(empty($_POST['lastname']) || empty($_POST['firstname']) || empty($_POST['mail']) || empty($_POST['login']) || empty($_POST['password'])) {
+        if (!empty($_POST)) {
+            if (preg_match('/^\s*$/', $_POST['lastname']) || preg_match('/^\s*$/', $_POST['firstname']) || preg_match('/^\s*$/', $_POST['lastname']) || preg_match('/^\s*$/', $_POST['login']) || empty($_POST['password'])) {
                 $notification = 'Please fill in all fields';
             } else {
                 # All fields are completed, verification...
 
                 # Login already exists
-                if($this->_db->login_exists($_POST['login']))
-                {
+                if ($this->_db->login_exists($_POST['login'])) {
                     $notification = 'This username already exists';
-                }
-                # Invalid e-mail address
-                elseif(!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail'])) {
+                } # Invalid e-mail address
+                elseif (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail'])) {
                     $notification = 'Please enter a valid mail address';
-                }
-
-                # Successfully registered
+                } # Successfully registered
                 else {
 
                     # Register member to the database

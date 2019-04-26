@@ -10,7 +10,7 @@
 
                 <!-- Here we are searching the author's firstname to display it -->
                 <span class="font-weight-bold">
-                    <?php echo $authors[$i]->html_login() . ' asks:' ?>
+                    <?php echo $questions[$i]->author()->html_login() . ' asks:' ?>
                 </span>
 
                 <!-- Displaying the title of the question-->

@@ -79,12 +79,13 @@
         <div class="container">
             <h3>Best Answer:</h3>
         </div>
-    <?php } elseif($i == 0) { ?>
+    <?php } elseif ($i == 0) { ?>
         <div class="container">
             <h3>Answers:</h3>
         </div>
-        <?php continue; } ?>
-    <div class="container">
+        <?php continue;
+    } ?>
+    <div class="container" id="<?php echo $answers[$i]->answerId(); ?>">
         <div class="card">
             <!-- Displaying answer's author -->
             <div class="card-header">
@@ -98,23 +99,26 @@
             <!-- Displaying answer's votes -->
             <div class="row card-footer question-btn">
                 <div class="col-6 likes">
-                <form class="form-btn float-left" action="index.php?action=voteAnswer" method="post">
-                    <div class="container card-footer-container">
-                        <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                        <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                        <button class="btn btn-dark" type="submit" name="like"><i class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
-                        <button class="btn btn-dark" type="submit" name="dislike"><i class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
-                    </div>
-                </form>
-                <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
-                    <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
+                    <form class="form-btn float-left" action="index.php?action=voteAnswer" method="post">
                         <div class="container card-footer-container">
-                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
-                            <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                            <button class="btn btn-dark" type="submit" name="best_answer"><i class="far fa-check-circle"></i></button>
+                            <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
+                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
+                            <button class="btn btn-dark" type="submit" name="like"><i
+                                        class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
+                            <button class="btn btn-dark" type="submit" name="dislike"><i
+                                        class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
                         </div>
                     </form>
-                <?php } ?>
+                    <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+                        <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
+                            <div class="container card-footer-container">
+                                <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
+                                <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
+                                <button class="btn btn-dark" type="submit" name="best_answer"><i
+                                            class="far fa-check-circle"></i></button>
+                            </div>
+                        </form>
+                    <?php } ?>
                 </div>
                 <div class="container card-footer-container col-6">
                     <span id="date" class="card-deco pagination justify-content-end">
@@ -124,7 +128,7 @@
             </div>
         </div>
     </div>
-    <?php if($i == 0) { ?>
+    <?php if ($i == 0) { ?>
         <div class="container">
             <h3>Answers:</h3>
         </div>

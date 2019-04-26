@@ -35,6 +35,7 @@ class AdminController
 
         # Selecting all members to display
         $members = $this->_db->select_all_members();
+
         $nbMembers = count($members);
 
         require_once(VIEWS . 'admin.php');

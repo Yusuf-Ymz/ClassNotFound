@@ -27,20 +27,19 @@ class NewAnswerController
 
         # Answer form
         if (isset($_POST['form_answer'])) {
-            if (isset($_POST['answer_text'])) {
-                # Check if user is trying to post an empty answer
-                if (empty($_POST['answer_text'])) {
-                    $notification = 'Your answer cannot be empty!';
-                } else {
-                    # Insert answer into database
-                    $authorId = $this->_db->select_id($_SESSION['login']);
-                    $publicationDate = date("Y-m-d");
-                    $this->_db->insert_answer($authorId, $_POST['id'], $_POST['answer_text'], $publicationDate);
-                    $idOfAddedAnswer = $this->_db->select_newest_answer($authorId);
-                    header("Location: index.php?action=question&id=" . $_POST['id'] . '#' . $idOfAddedAnswer);
-                    die();
-                }
+            # Check if user is trying to post an empty answer
+            if (preg_match('/^\s*$/', $_POST['answer_text'])) {
+                $notification = "Please fill in all fields";
+            } else {
+                # Insert answer into database
+                $authorId = $this->_db->select_id($_SESSION['login']);
+                $publicationDate = date("Y-m-d");
+                $this->_db->insert_answer($authorId, $_POST['id'], $_POST['answer_text'], $publicationDate);
+                $idOfAddedAnswer = $this->_db->select_newest_answer($authorId);
+                header("Location: index.php?action=question&id=" . $_POST['id'] . '#' . $idOfAddedAnswer);
+                die();
             }
+
         }
 
         # Select the question from the id in $_POST['id'] (hidden input)
@@ -54,7 +53,7 @@ class NewAnswerController
         }
 
         # Select the login of the question's author
-        $authorLogin = $this->_db->select_member($question->authorId())->html_login();
+        $authorLogin = $question->author()->html_login();
 
         require_once(VIEWS . 'newAnswer.php');
     }

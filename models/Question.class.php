@@ -3,19 +3,19 @@
 class Question
 {
     private $_question_id;
-    private $_author_id;
-    private $_category_id;
+    private $_author;
+    private $_category;
     private $_best_answer_id;
     private $_title;
     private $_subject;
     private $_state;
     private $_publication_date;
 
-    public function __construct($question_id, $author_id, $category_id, $best_answer_id , $title, $subject, $state, $publication_date)
+    public function __construct($question_id, $author, $category, $best_answer_id, $title, $subject, $state, $publication_date)
     {
         $this->_question_id = $question_id;
-        $this->_author_id = $author_id;
-        $this->_category_id = $category_id;
+        $this->_author = $author;
+        $this->_category = $category;
         $this->_best_answer_id = $best_answer_id;
         $this->_title = $title;
         $this->_subject = $subject;
@@ -28,14 +28,14 @@ class Question
         return $this->_question_id;
     }
 
-    public function authorId()
+    public function author()
     {
-        return $this->_author_id;
+        return $this->_author;
     }
 
-    public function categoryId()
+    public function category()
     {
-        return $this->_category_id;
+        return $this->_category;
     }
 
     public function bestAnswerId()
@@ -48,7 +48,8 @@ class Question
         return $this->_title;
     }
 
-    public function html_title(){
+    public function html_title()
+    {
         return htmlspecialchars($this->_title);
     }
 
@@ -57,7 +58,8 @@ class Question
         return $this->_subject;
     }
 
-    public function html_subject(){
+    public function html_subject()
+    {
         return htmlspecialchars($this->_subject);
     }
 

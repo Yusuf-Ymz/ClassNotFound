@@ -11,25 +11,25 @@
 
                     <!-- Here we are searching the author's firstname to display it -->
                     <span class="col-6 font-weight-bold">
-                        <?php echo $authors[$i]->html_login().' asks:' ?>
+                        <?php echo $researchedQuestionsAuthorsCategories[$i]->author()->html_login().' asks:' ?>
                     </span>
 
                     <!-- Searching the question's category to display as well-->
                     <span class="col-6 font-weight-bold red categoryQuestions pagination justify-content-end">
-                    <?php echo $categories[$i]->name(); ?>
+                    <?php echo $researchedQuestionsAuthorsCategories[$i]->category()->name(); ?>
                     </span>
 
                 </div>
 
                 <!-- Displaying the title of the question-->
-                <a href="index.php?action=question&id=<?php echo $questions[$i]->questionId(); ?>"
+                <a href="index.php?action=question&id=<?php echo $researchedQuestionsAuthorsCategories[$i]->questionId(); ?>"
                    class="list-group-item questions">
-                    <?php echo $questions[$i]->html_title() ?>
+                    <?php echo $researchedQuestionsAuthorsCategories[$i]->html_title() ?>
                 </a>
 
                 <!-- Displaying the question's publication date -->
                 <span class="card-deco pagination justify-content-end">
-                    <?php echo $questions[$i]->publicationDate() ?>
+                    <?php echo $researchedQuestionsAuthorsCategories[$i]->publicationDate() ?>
                 </span>
 
             </div>

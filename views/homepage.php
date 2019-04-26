@@ -10,12 +10,12 @@
 
                 <!-- Here we are searching the author's firstname to display it -->
                 <span class="col-6 font-weight-bold">
-                    <?php echo $authors[$i]->html_login().' asks:' ?>
+                    <?php echo $questions[$i]->author()->html_login().' asks:' ?>
                 </span>
 
                 <!-- Searching the question's category to display as well-->
                 <span class="col-6 font-weight-bold categoryQuestions pagination justify-content-end">
-                    <?php echo $categories[$i]->name(); ?>
+                    <?php echo $questions[$i]->category()->name(); ?>
                 </span>
 
                 </div>

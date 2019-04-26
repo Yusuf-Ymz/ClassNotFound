@@ -8,7 +8,7 @@
         </div>
         <!-- The Subject-->
         <div class="form-group">
-            <textarea class="form-control" name="question_text" rows="5" placeholder="Your Question"></textarea>
+            <textarea class="form-control" name="question_subject" rows="5" placeholder="Your Question"></textarea>
         </div>
         <!-- Displaying all categories -->
         <div class="form-group">

@@ -87,7 +87,6 @@ class Db
 
     public function insert_vote($memberId, $answerId, $vote)
     {
-        var_dump($memberId);
         $query = "INSERT INTO votes  VALUES ($memberId,$answerId,$vote)";
         $ps = $this->_db->prepare($query);
         $ps->execute();
@@ -166,15 +165,16 @@ class Db
         return $category;
     }
 
-    # Select the question corresponding to the 'id' parameter
+    # Select the question and question's author corresponding to the 'id' parameter
     public function select_question($question_id)
     {
-        $query = 'SELECT * FROM questions WHERE question_id=:id';
+        $query = 'SELECT Q.*,M.* FROM questions Q, members M WHERE question_id=:id AND M.member_id=Q.author_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $question_id);
         $ps->execute();
         $row = $ps->fetch();
-        $question = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+        $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        $question = new Question($row->question_id, $member, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         return $question;
     }
 
@@ -231,7 +231,6 @@ class Db
         $ps->bindValue(':admin', 0);
         $ps->bindValue(':suspended', 0);
         $ps->execute();
-        return;
     }
 
     # Verify if the category exists
@@ -257,19 +256,17 @@ class Db
     # Select the newest questions + their respective author and category
     public function select_newest_questions_authors_categories()
     {
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id  AND Q.state is null ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
         $ps->execute();
 
         $questions = array();
-        $authors = array();
-        $categories = array();
         while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $categories[] = new Category($row->category_id, $row->name);
+            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
-        return array($questions, $authors, $categories);
+        return $questions;
     }
 
     # Select all questions + their respective author from the category with the specified id
@@ -281,15 +278,15 @@ class Db
         $ps->execute();
 
         $questions = array();
-        $authors = array();
+
         while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $questions[] = new Question($row->question_id, $author, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
-        return array($questions, $authors);
+        return $questions;
     }
 
-    # Select the questions + their categories according to the 'id' parameter
+    # Select member's questions + their categories
     public function select_member_questions_categories($memberId)
     {
         $query = 'SELECT Q.*, C.* FROM questions Q, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
@@ -298,12 +295,12 @@ class Db
         $ps->execute();
 
         $questions = array();
-        $categories = array();
+
         while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-            $categories[] = new Category($row->category_id, $row->name);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $row->author_id, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
-        return array($questions, $categories);
+        return $questions;
     }
 
     # Add the best answer at the question passed by parameters
@@ -363,14 +360,13 @@ class Db
         $ps->execute();
 
         $questions = array();
-        $authors = array();
-        $categories = array();
+
         while ($row = $ps->fetch()) {
-            $questions[] = new Question($row->question_id, $row->author_id, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-            $authors[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $categories[] = new Category($row->category_id, $row->name);
+            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
-        return array($questions, $authors, $categories);
+        return $questions;
     }
 
     # Select the id corresponding to the login
