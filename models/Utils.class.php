@@ -35,10 +35,9 @@ final class Utils
         }
     }
 
-    public static function verify_displaying_best_answer_button($question, $member, $answer, $authorLogin)
+    public static function verify_displaying_best_answer_button($member, $answer, $authorLogin)
     {
-        if ($question->bestAnswerId() == null && $member
-                ->login() == $authorLogin && $answer->member()->memberId() != $member->memberId())
+        if ($member->login() == $authorLogin && $answer->member()->memberId() != $member->memberId())
             return true;
         return false;
     }

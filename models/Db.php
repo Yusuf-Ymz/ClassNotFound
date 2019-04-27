@@ -306,9 +306,16 @@ class Db
     # Add the best answer at the question passed by parameters
     public function set_as_best_answer($questionId, $answerId)
     {
-        $query = 'UPDATE  questions SET best_answer_id=:answerid,state=\'solved\' WHERE question_id=:id';
+        $query = 'UPDATE questions SET best_answer_id=:answerid,state=\'solved\' WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':answerid', $answerId);
+        $ps->bindValue(':id', $questionId);
+        $ps->execute();
+    }
+
+    public function delete_best_answer($questionId){
+        $query = 'UPDATE questions SET best_answer_id=null,state=null WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionId);
         $ps->execute();
     }
@@ -402,11 +409,6 @@ class Db
     # Delete a question and all related questions
     public function delete_question($questionid)
     {
-        $query = 'UPDATE questions SET best_answer_id=null WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionid);
-        $ps->execute();
-
         $query = 'DELETE FROM questions WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);
@@ -422,12 +424,13 @@ class Db
         $ps->execute();
     }
 
-    # Set a question as open
-    public function open_question($questionid)
+    # Set a question's state according to the state variable
+    public function change_question_state($questionid,$state)
     {
-        $query = "UPDATE questions SET state=null WHERE question_id=:id";
+        $query = "UPDATE questions SET state=:state WHERE question_id=:id";
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);
+        $ps->bindValue(':state', $state);
         $ps->execute();
     }
 

@@ -199,7 +199,7 @@ ALTER TABLE `answers`
 --
 ALTER TABLE `questions`
   ADD CONSTRAINT `author_id_questions` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`),
-  ADD CONSTRAINT `best_answer_id` FOREIGN KEY (`best_answer_id`) REFERENCES `answers` (`answer_id`),
+  ADD CONSTRAINT `best_answer_id` FOREIGN KEY (`best_answer_id`) REFERENCES `answers` (`answer_id`) ON DELETE CASCADE ,
   ADD CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
 --

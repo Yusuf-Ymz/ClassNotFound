@@ -39,12 +39,26 @@
                         <input type="hidden" name="id" value="<?php echo $question->questionId(); ?>">
                     </form>
 
+                    <?php if ($question->bestAnswerId() != null) { ?>
+                        <form class="form-btn float-left" action="index.php?action=openQuestion" method="post">
+                            <div class="container card-footer-container">
+                                <input type="hidden" name="answer_id"
+                                       value="<?php echo $answers[$i]->answerId() ?>">
+                                <input type="hidden" name="question_id"
+                                       value="<?php echo $question->questionId() ?>">
+                                <button class="btn btn-dark" type="submit" name="delete_best_answer"> Open</button>
+                            </div>
+                        </form>
+                    <?php } ?>
                     <!-- Displaying admin buttons if user == admin -->
                     <?php if (isset($_SESSION['admin'])) { ?>
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn" action="index.php?action=openQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <button class="btn btn-dark" type="submit" name="state">Open</button>
+                                <?php if ($question->bestAnswerId() != null) { ?>
+                                    <input type="hidden" name="has_best_answer">
+                                <?php } ?>
+                                <button class="btn btn-dark" type="submit" name="state">Remove Duplicate</button>
                             </form>
                         <?php } else { ?>
                             <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
@@ -78,7 +92,9 @@
 <?php } ?>
 
 <!-- Displaying all question's answers -->
-<?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
+<?php for ($i = 0;
+           $i < $nbAnswers;
+           $i++) { ?>
     <!-- Displaying the best answer on top if there is one -->
     <?php if ($i == 0 && $answers[0] != null) { ?>
         <div class="container">
@@ -108,7 +124,8 @@
                         <div class="container card-footer-container">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                            <input type="hidden" name="member_id" value="<?php echo $answers[$i]->member()->memberId(); ?>">
+                            <input type="hidden" name="member_id"
+                                   value="<?php echo $answers[$i]->member()->memberId(); ?>">
                             <button class="<?php Utils::verify_member_liked($answers[$i], $memberId) ?>" type="submit"
                                     name="like"><i
                                         class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
@@ -118,15 +135,19 @@
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and if this not the author's answer-->
-                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button($question,unserialize($_SESSION['login']),$answers[$i],$authorLogin)) { ?>
-                        <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
-                            <div class="container card-footer-container">
-                                <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
-                                <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                                <button class="btn btn-success" type="submit" name="best_answer"><i
-                                            class="far fa-check-circle"></i></button>
-                            </div>
-                        </form>
+                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $answers[$i], $authorLogin)) { ?>
+                        <?php if ($question->bestAnswerId() != $answers[$i]->answerId()) { ?>
+                            <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
+                                <div class="container card-footer-container">
+                                    <input type="hidden" name="answer_id"
+                                           value="<?php echo $answers[$i]->answerId() ?>">
+                                    <input type="hidden" name="question_id"
+                                           value="<?php echo $question->questionId() ?>">
+                                    <button class="btn btn-success" type="submit" name="best_answer"><i
+                                                class="far fa-check-circle"></i></button>
+                                </div>
+                            </form>
+                        <?php } ?>
                     <?php } ?>
                 </div>
                 <div class="container card-footer-container col-6">
