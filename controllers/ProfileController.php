@@ -19,7 +19,7 @@ class ProfileController
             header('Location: index.php?action=homepage');
             die();
         }
-        $memberId = unserialize($_SESSION['login'])->login();
+        $memberId = unserialize($_SESSION['login'])->memberId();
         # Selecting all questions related to the memberId
         $memberQuestions = $this->_db->select_member_questions_categories($memberId);
 
