@@ -25,7 +25,7 @@ class NewQuestionController
                 $notification = "Please fill in all fields";
             } else {
                 # Insert question into database
-                $authorId = $this->_db->select_id($_SESSION['login']);
+                $authorId = unserialize($_SESSION['login'])->memberId();
                 $publicationDate = date("Y-m-d");
                 $this->_db->insert_question($authorId, $_POST['question_category_id'],$_POST['question_title'],$_POST['question_subject'], $publicationDate);
                 $postedQuestionId = $this->_db->select_last_posted_question();

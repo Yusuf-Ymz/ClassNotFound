@@ -23,6 +23,8 @@ class VoteAnswerController
             die();
         }
 
+
+
         # Select the question from the id in $_POST['question_id']
         $question = $this->_db->select_question($_POST['question_id']);
 
@@ -34,8 +36,16 @@ class VoteAnswerController
             die();
         }
 
-        $memberId = $this->_db->select_id($_SESSION['login']);
+        $memberId = unserialize($_SESSION['login'])->memberId();
+
+        # If the member try to vote for his answer
+        if($memberId==$_POST['member_id']){
+            header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
+            die();
+        }
+
         $vote = $this->_db->vote_exists($memberId, $_POST['answer_id']);
+
         if ($vote == null) {
             if (isset($_POST['like'])) {
                 $this->_db->insert_vote($memberId, $_POST['answer_id'], 1);
@@ -58,7 +68,7 @@ class VoteAnswerController
             }
         }
 
-        header('Location: index.php?action=question&id=' . $question->questionId());
+        header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
         die();
     }
 }

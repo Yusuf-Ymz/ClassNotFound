@@ -8,4 +8,38 @@ final class Utils
         return str_replace("\n", '<br>', $string);
     }
 
+    public static function verify_member_liked($answer, $memberId)
+    {
+        if ($memberId != null) {
+            if ($answer->check_member_liked($memberId)) {
+                echo 'btn btn-primary';
+            } else {
+                echo 'btn btn-dark';
+            }
+        } else {
+            echo 'btn btn-dark';
+        }
+    }
+
+
+    public static function verify_member_disliked($answer, $memberId)
+    {
+        if ($memberId != null) {
+            if ($answer->check_member_disliked($memberId)) {
+                echo 'btn btn-danger';
+            } else {
+                echo 'btn btn-dark';
+            }
+        } else {
+            echo 'btn btn-dark';
+        }
+    }
+
+    public static function verify_displaying_best_answer_button($question, $member, $answer, $authorLogin)
+    {
+        if ($question->bestAnswerId() == null && $member
+                ->login() == $authorLogin && $answer->member()->memberId() != $member->memberId())
+            return true;
+        return false;
+    }
 }

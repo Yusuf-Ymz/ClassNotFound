@@ -100,7 +100,7 @@ class Db
         $ps->bindValue(':id', $member_id);
         $ps->execute();
         $row = $ps->fetch();
-        $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        $member = new Member($row->member_id, $row->login,$row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
         return $member;
     }
 
@@ -112,7 +112,7 @@ class Db
         $ps->execute();
         $members = array();
         while ($row = $ps->fetch()) {
-            $members[] = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $members[] = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
         }
         return $members;
     }
@@ -173,7 +173,7 @@ class Db
         $ps->bindValue(':id', $question_id);
         $ps->execute();
         $row = $ps->fetch();
-        $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
         $question = new Question($row->question_id, $member, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         return $question;
     }
@@ -200,8 +200,8 @@ class Db
         $row = $ps->fetch();
         $member = null;
         if (!empty($row)) {
-            $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            if (!password_verify($password, $member->password())) {
+            $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            if (!password_verify($password, $row->password)) {
                 $member = null;
             }
         }
@@ -262,7 +262,7 @@ class Db
 
         $questions = array();
         while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $category = new Category($row->category_id, $row->name);
             $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
@@ -280,7 +280,7 @@ class Db
         $questions = array();
 
         while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $questions[] = new Question($row->question_id, $author, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
         return $questions;
@@ -321,25 +321,30 @@ class Db
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         $answers = array();
+        $membersWhoLiked = array();
+        $membersWhoDisliked = array();
         while ($row = $ps->fetch()) {
-            $member = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0);
+            $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0,$membersWhoLiked,$membersWhoDisliked);
         }
 
-        $query = 'SELECT A.answer_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
+        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         while ($row = $ps->fetch()) {
             $answers[$row->answer_id]->setLikes($row->likes);
+            $answers[$row->answer_id]->add_a_member_who_liked($row->member_id);
         }
 
-        $query = 'SELECT A.answer_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
+        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         while ($row = $ps->fetch()) {
             $answers[$row->answer_id]->setDislikes($row->dislikes);
+            $answers[$row->answer_id]->add_a_member_who_disliked($row->member_id);
+
         }
         $answersWithoutHoles = array();
         # Index 0 reserved for the best answer
@@ -362,22 +367,11 @@ class Db
         $questions = array();
 
         while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->password, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $category = new Category($row->category_id, $row->name);
             $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
         }
         return $questions;
-    }
-
-    # Select the id corresponding to the login
-    public function select_id($login)
-    {
-        $query = 'SELECT member_id FROM members WHERE login = :login';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':login', $login);
-        $ps->execute();
-        $row = $ps->fetch();
-        return $row->member_id;
     }
 
     # Insert a new answer with the specified question_id
@@ -408,6 +402,11 @@ class Db
     # Delete a question and all related questions
     public function delete_question($questionid)
     {
+        $query = 'UPDATE questions SET best_answer_id=null WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+
         $query = 'DELETE FROM questions WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);

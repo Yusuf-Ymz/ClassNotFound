@@ -33,11 +33,13 @@
 
             <div class="container">
                 <div class="row">
+
                     <form class="form-btn" action="index.php?action=newAnswer" method="post">
                         <button class="btn btn-dark" type="submit">Answer</button>
                         <input type="hidden" name="id" value="<?php echo $question->questionId(); ?>">
                     </form>
 
+                    <!-- Displaying admin buttons if user == admin -->
                     <?php if (isset($_SESSION['admin'])) { ?>
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn" action="index.php?action=openQuestion" method="post">
@@ -55,12 +57,15 @@
                             <button class="btn btn-dark" type="submit" name="delete">Delete</button>
                         </form>
                     <?php } ?>
-                    <?php if (isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+
+                    <!-- Displaying edit button if user == question's author -->
+                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $authorLogin) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <button class="btn btn-dark" type="submit" name="edit">Edit</button>
                         </form>
                     <?php } ?>
+
                 </div>
             </div>
         </div>
@@ -103,18 +108,22 @@
                         <div class="container card-footer-container">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
-                            <button class="btn btn-dark" type="submit" name="like"><i
+                            <input type="hidden" name="member_id" value="<?php echo $answers[$i]->member()->memberId(); ?>">
+                            <button class="<?php Utils::verify_member_liked($answers[$i], $memberId) ?>" type="submit"
+                                    name="like"><i
                                         class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
-                            <button class="btn btn-dark" type="submit" name="dislike"><i
+                            <button class="<?php Utils::verify_member_disliked($answers[$i], $memberId) ?>"
+                                    type="submit" name="dislike"><i
                                         class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
                         </div>
                     </form>
-                    <?php if ($question->bestAnswerId() == null && isset($_SESSION['login']) && $_SESSION['login'] == $authorLogin) { ?>
+                    <!-- Displaying best answer button if user == question's author and if this not the author's answer-->
+                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button($question,unserialize($_SESSION['login']),$answers[$i],$authorLogin)) { ?>
                         <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
                             <div class="container card-footer-container">
                                 <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId() ?>">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
-                                <button class="btn btn-dark" type="submit" name="best_answer"><i
+                                <button class="btn btn-success" type="submit" name="best_answer"><i
                                             class="far fa-check-circle"></i></button>
                             </div>
                         </form>

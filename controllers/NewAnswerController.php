@@ -32,7 +32,7 @@ class NewAnswerController
                 $notification = "Please fill in all fields";
             } else {
                 # Insert answer into database
-                $authorId = $this->_db->select_id($_SESSION['login']);
+                $authorId = unserialize($_SESSION['login'])->memberId();
                 $publicationDate = date("Y-m-d");
                 $this->_db->insert_answer($authorId, $_POST['id'], $_POST['answer_text'], $publicationDate);
                 $idOfAddedAnswer = $this->_db->select_newest_answer($authorId);

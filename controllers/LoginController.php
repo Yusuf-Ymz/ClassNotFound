@@ -50,7 +50,7 @@ class LoginController
                 } # Authentication succeeded
                 else {
                     $_SESSION['logged'] = true;
-                    $_SESSION['login'] = $_POST['login'];
+                    $_SESSION['login'] = serialize($member);
 
                     # Check if account has administrator rights
                     if ($member->admin() == 1) {

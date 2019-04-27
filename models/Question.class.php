@@ -33,7 +33,17 @@ class Question
         return $this->_author;
     }
 
+    public function authorId()
+    {
+        return $this->_author;
+    }
+
     public function category()
+    {
+        return $this->_category;
+    }
+
+    public function categoryId()
     {
         return $this->_category;
     }

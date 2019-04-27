@@ -4,18 +4,16 @@ class Member
 {
     private $_member_id;
     private $_login;
-    private $_password;
     private $_lastName;
     private $_firstName;
     private $_mail;
     private $_admin;
     private $_suspended;
 
-    public function __construct($member_id, $login, $password, $lastName, $firstName, $mail, $admin, $suspended)
+    public function __construct($member_id, $login, $lastName, $firstName, $mail, $admin, $suspended)
     {
         $this->_member_id = $member_id;
         $this->_login = $login;
-        $this->_password = $password;
         $this->_lastName = $lastName;
         $this->_firstName = $firstName;
         $this->_mail = $mail;
@@ -37,11 +35,6 @@ class Member
     public function html_login()
     {
         return htmlspecialchars($this->_login);
-    }
-
-    public function password()
-    {
-        return $this->_password;
     }
 
     public function lastName()
