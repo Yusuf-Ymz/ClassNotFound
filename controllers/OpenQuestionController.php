@@ -20,7 +20,7 @@ class OpenQuestionController
 
         if (isset($_POST['state'])) {
             # Setting the question as open
-            if (isset($_POST['delete_best_answer'])) {
+            if (isset($_POST['has_best_answer'])) {
                 $this->_db->change_question_state($_POST['question_id'], 'solved');
             } else {
                 $this->_db->change_question_state($_POST['question_id'], null);
