@@ -17,10 +17,10 @@ class CategoryController
             die();
         }
 
-        $categoryName = $this->_db->select_category($_GET['id'])->name();
+        $category = $this->_db->select_category($_GET['id']);
 
         # Select all questions + their respective author from the category with the specified id
-        $questions = $this->_db->select_questions_authors($_GET['id']);
+        $questions = $this->_db->select_questions_for_category($_GET['id']);
 
         $nbQuestions = count($questions);
 

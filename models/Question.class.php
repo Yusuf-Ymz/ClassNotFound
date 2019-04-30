@@ -40,14 +40,9 @@ class Question
         return $this->_category;
     }
 
-    public function categoryId()
+    public function bestAnswer()
     {
-        return $this->_category;
-    }
-
-    public function bestAnswerId()
-    {
-        return $this->_best_answer_id;
+        return $this->_best_answer;
     }
 
     public function title()

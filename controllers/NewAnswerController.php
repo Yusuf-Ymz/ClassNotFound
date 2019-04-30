@@ -43,7 +43,7 @@ class NewAnswerController
         }
 
         # Select the question from the id in $_POST['id'] (hidden input)
-        $question = $this->_db->select_question($_POST['id']);
+        $question = $this->_db->select_question_for_new_answer($_POST['id']);
 
         # If the question is duplicated and user clicked on like or dislike
         if ($question->state() == 'duplicated') {
@@ -51,9 +51,6 @@ class NewAnswerController
             header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
-
-        # Select the login of the question's author
-        $authorLogin = $question->author()->html_login();
 
         require_once(VIEWS . 'newAnswer.php');
     }

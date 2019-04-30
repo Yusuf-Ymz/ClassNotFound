@@ -13,8 +13,7 @@
         <!-- Displaying all categories -->
         <div class="form-group">
             <select class="browser-default custom-select custom-select-md mb-3" name="question_category_id">
-                <option selected
-                        value="<?php echo $categories[0]->id(); ?>"><?php echo $categories[0]->html_name(); ?></option>
+                <option selected value="<?php echo $categories[0]->id(); ?>"><?php echo $categories[0]->html_name(); ?></option>
                 <?php for ($i = 1; $i < count($categories); $i++) { ?>
                     <option value="<?php echo $categories[$i]->id(); ?>"><?php echo $categories[$i]->html_name(); ?></option>
                 <?php } ?>

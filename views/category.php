@@ -1,5 +1,5 @@
 <div class="container">
-    <h3><?php echo $categoryName ?> Questions:</h3>
+    <h3><?php echo $category->name(); ?> Questions:</h3>
 </div>
 <?php if ($nbQuestions == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted in this category yet.</p>' ?>
 <!-- Displaying category's questions -->

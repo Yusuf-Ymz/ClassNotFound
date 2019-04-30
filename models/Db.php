@@ -28,7 +28,9 @@ class Db
 
     # ***** Database scripts *****
 
-    # Select all categories (index.php)
+
+    # GENERAL / ALL SITE
+    # Select all categories
     public function select_categories()
     {
         $query = 'SELECT * FROM categories ORDER BY category_id ASC';
@@ -40,6 +42,251 @@ class Db
         }
         return $categories;
     }
+
+
+    # HOMEPAGE CONTROLLER
+    # Select the newest questions
+    public function select_newest_questions_for_homepage() {
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id  AND Q.state is null ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+
+        $questions = array();
+        while ($row = $ps->fetch()) {
+            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date ,null);
+        }
+        return $questions;
+    }
+
+
+    # CATEGORY CONTROLLER
+    # Select all questions from a category
+    public function select_questions_for_category($idCategory)
+    {
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idCategory);
+        $ps->execute();
+
+        $questions = array();
+
+        while ($row = $ps->fetch()) {
+            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+            $questions[] = new Question($row->question_id, $author, null, null, $row->title, null, null, $row->publication_date, null);
+        }
+        return $questions;
+    }
+
+
+    # EDIT CONTROLLER
+    # Select question from id
+    public function select_question_for_edit($idCategory)
+    {
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idCategory);
+        $ps->execute();
+        $row = $ps->fetch();
+        $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+        return new Question($row->question_id, $author, null, null, $row->title, $row->subject, $row->state, null, null);
+    }
+
+
+    # NEW ANSWER CONTROLLER
+    # Select question from id
+    public function select_question_for_new_answer($idCategory)
+    {
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+        $row = $ps->fetch();
+        $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+        $category = new Category($row->category_id, $row->name);
+        return new Question($row->question_id, $author, $category, null, $row->title, $row->subject, $row->state, $row->publication_date ,null);
+    }
+
+
+    # ADMIN CONTROLLER
+    # Select all members from the config
+    public function select_all_members()
+    {
+        $query = 'SELECT * FROM members';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+        $members = array();
+        while ($row = $ps->fetch()) {
+            $members[] = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+        }
+        return $members;
+    }
+    # Changing the state of the member at suspended
+    public function suspend_member($memberid)
+    {
+        $query = 'UPDATE members SET suspended=1 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberid);
+        $ps->execute();
+    }
+    # Changing the state of the member at unsus
+    public function unsuspend_member($memberid)
+    {
+        $query = 'UPDATE members SET suspended=0 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberid);
+        $ps->execute();
+    }
+    # Upgrading member to admin
+    public function upgrade_to_admin($memberid)
+    {
+        $query = 'UPDATE members SET admin=1 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberid);
+        $ps->execute();
+    }
+    # Downgrading admin to basic member
+    public function demote_admin($memberid)
+    {
+        $query = 'UPDATE members SET admin=0 WHERE member_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberid);
+        $ps->execute();
+    }
+
+    # OPEN QUESTION CONTROLLER
+    # Select question's state from id
+    public function select_question_state($question_id)
+    {
+        $query = 'SELECT Q.state FROM questions Q WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $question_id);
+        $ps->execute();
+        $row = $ps->fetch();
+        return $row->state;
+    }
+
+
+    # SEARCH CONTROLLER
+    # Select the questions that contains a certain keyword (+ their respective author and category)
+    public function search_questions_authors_categories($keyword)
+    {
+        $keyword = strtolower($keyword);
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND (LOWER(Q.title) LIKE :keyword OR LOWER(Q.subject) LIKE :keyword) ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':keyword', "%$keyword%");
+        $ps->execute();
+
+        $questions = array();
+        while ($row = $ps->fetch()) {
+            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
+        }
+        return $questions;
+    }
+
+
+    # PROFILE CONTROLLER
+    # Select a member's questions via his id
+    public function select_questions_for_profile($memberId)
+    {
+        $query = 'SELECT Q.*, C.* FROM questions Q, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $memberId);
+        $ps->execute();
+
+        $questions = array();
+        while ($row = $ps->fetch()) {
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, null, $category, null, $row->title, null, null, $row->publication_date, null);
+        }
+        return $questions;
+    }
+
+
+    # QUESTION CONTROLLER
+    # Select question from id
+
+    ################### TODO ##########################
+
+    public function select_question($question_id)
+    {
+        $bestAnswer = select_best_answer($question_id);
+        $answers = $this->select_answers_authors_votes($question_id);
+        $answers[0] = $bestAnswer;
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.question_id=:id AND M.member_id=Q.author_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $question_id);
+        $ps->execute();
+        $row = $ps->fetch();
+        $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+        $question = new Question($row->question_id, $author, null, $bestAnswer, $row->title, $row->subject, $row->state, $row->publication_date, $answers);
+        return $question;
+    }
+    # Select all questions + their respective author from the category with the specified id + votes
+    public function select_answers_authors_votes($idQuestion)
+    {
+        $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        $answers = array();
+        $like_ids = array();
+        $dislike_ids = array();
+        while ($row = $ps->fetch()) {
+            $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->subject, $row->publication_date, 0, 0, $like_ids, $dislike_ids);
+        }
+
+        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        while ($row = $ps->fetch()) {
+            $answers[$row->answer_id]->setLikes($row->likes);
+            $answers[$row->answer_id]->add_like_id($row->member_id);
+        }
+
+        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        while ($row = $ps->fetch()) {
+            $answers[$row->answer_id]->setDislikes($row->dislikes);
+            $answers[$row->answer_id]->add_a_member_who_disliked($row->member_id);
+
+        }
+        $answersWithoutHoles = array();
+        # Index 0 reserved for the best answer
+        $answersWithoutHoles[0] = null;
+        foreach ($answers as $i => $answer) {
+            $answersWithoutHoles[] = $answer;
+        }
+        return $answersWithoutHoles;
+    }
+
+    public function select_best_answer($questionId)
+    {
+        $query = 'SELECT A.*, M.* FROM questions Q, answers A, members M WHERE A.answer_id=:id AND M.member_id=A.author_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionId);
+        $ps->execute();
+        $row = $ps->fetch();
+        $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+        return new Answer($row->answer_id, $author, $row->subject, $row->publication_date, 0, 0, null, null);
+    }
+    ################### TODO ##########################
+
+
+
+
+                    ###################
+                    ##### A TRIER #####
+                    ###################
+
+
+
 
 
     public function select_newest_answer($authorId)
@@ -104,55 +351,6 @@ class Db
         return $member;
     }
 
-    # Select all members from the config
-    public function select_all_members()
-    {
-        $query = 'SELECT * FROM members';
-        $ps = $this->_db->prepare($query);
-        $ps->execute();
-        $members = array();
-        while ($row = $ps->fetch()) {
-            $members[] = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-        }
-        return $members;
-    }
-
-    # Changing the state of the member at suspended
-    public function suspend_member($memberid)
-    {
-        $query = 'UPDATE members SET suspended=1 WHERE member_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $memberid);
-        $ps->execute();
-    }
-
-    # Changing the state of the member at unsus
-    public function unsuspend_member($memberid)
-    {
-        $query = 'UPDATE members SET suspended=0 WHERE member_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $memberid);
-        $ps->execute();
-    }
-
-    # Upgrading member to admin
-    public function upgrade_to_admin($memberid)
-    {
-        $query = 'UPDATE members SET admin=1 WHERE member_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $memberid);
-        $ps->execute();
-    }
-
-    # Downgrading admin to basic member
-    public function demote_admin($memberid)
-    {
-        $query = 'UPDATE members SET admin=0 WHERE member_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $memberid);
-        $ps->execute();
-    }
-
     # Select the category corresponding to the 'id' parameter
     public function select_category($category_id)
     {
@@ -165,19 +363,7 @@ class Db
         return $category;
     }
 
-    # Select the question and question's author corresponding to the 'id' parameter
-    public function select_question($question_id)
-    {
-        $answers = $this->select_answers_authors_votes($question_id);
-        $query = 'SELECT Q.*,M.*,A.* FROM questions Q, members M,answers A WHERE question_id=:id AND M.member_id=Q.author_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $question_id);
-        $ps->execute();
-        $row = $ps->fetch();
-        $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-        $question = new Question($row->question_id, $member, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date, $answers);
-        return $question;
-    }
+
 
     # Update the question corresponding to the 'id' parameter
     public function edit_question($question_id, $title, $subject, $category)
@@ -254,55 +440,7 @@ class Db
         return ($ps->rowcount() != 0);
     }
 
-    # Select the newest questions + their respective author and category
-    public function select_newest_questions_authors_categories()
-    {
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id  AND Q.state is null ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->execute();
 
-        $questions = array();
-        while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date ,null);
-        }
-        return $questions;
-    }
-
-    # Select all questions + their respective author from the category with the specified id
-    public function select_questions_authors($idCategory)
-    {
-        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idCategory);
-        $ps->execute();
-
-        $questions = array();
-
-        while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $questions[] = new Question($row->question_id, $author, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $questions;
-    }
-
-    # Select member's questions + their categories
-    public function select_member_questions_categories($memberId)
-    {
-        $query = 'SELECT Q.*, C.* FROM questions Q, categories C WHERE Q.author_id = :id AND Q.category_id = C.category_id ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $memberId);
-        $ps->execute();
-
-        $questions = array();
-
-        while ($row = $ps->fetch()) {
-            $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $row->author_id, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
-        }
-        return $questions;
-    }
 
     # Add the best answer at the question passed by parameters
     public function set_as_best_answer($questionId, $answerId)
@@ -321,66 +459,9 @@ class Db
         $ps->execute();
     }
 
-    # Select all questions + their respective author from the category with the specified id + votes
-    public function select_answers_authors_votes($idQuestion)
-    {
-        $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        $answers = array();
-        $membersWhoLiked = array();
-        $membersWhoDisliked = array();
-        while ($row = $ps->fetch()) {
-            $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->question_id, $row->subject, $row->publication_date, 0, 0,$membersWhoLiked,$membersWhoDisliked);
-        }
 
-        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        while ($row = $ps->fetch()) {
-            $answers[$row->answer_id]->setLikes($row->likes);
-            $answers[$row->answer_id]->add_a_member_who_liked($row->member_id);
-        }
 
-        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        while ($row = $ps->fetch()) {
-            $answers[$row->answer_id]->setDislikes($row->dislikes);
-            $answers[$row->answer_id]->add_a_member_who_disliked($row->member_id);
 
-        }
-        $answersWithoutHoles = array();
-        # Index 0 reserved for the best answer
-        $answersWithoutHoles[0] = null;
-        foreach ($answers as $i => $answer) {
-            $answersWithoutHoles[] = $answer;
-        }
-        return $answersWithoutHoles;
-    }
-
-    # Select the questions that contains a certain keyword (+ their respective author and category)
-    public function search_questions_authors_categories($keyword)
-    {
-        $keyword = strtolower($keyword);
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND (LOWER(Q.title) LIKE :keyword OR LOWER(Q.subject) LIKE :keyword) ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':keyword', "%$keyword%");
-        $ps->execute();
-
-        $questions = array();
-
-        while ($row = $ps->fetch()) {
-            $author = new Member(null, $row->login, null, null, null, null, null);
-            $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
-        }
-        return $questions;
-    }
 
     # Insert a new answer with the specified question_id
     public function insert_answer($author_id, $question_id, $subject, $publication_date)
@@ -426,7 +507,7 @@ class Db
     }
 
     # Set a question's state according to the state variable
-    public function change_question_state($questionid,$state)
+    public function change_question_state($questionid, $state)
     {
         $query = "UPDATE questions SET state=:state WHERE question_id=:id";
         $ps = $this->_db->prepare($query);

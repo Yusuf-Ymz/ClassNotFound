@@ -22,9 +22,8 @@
                 <?php } ?>
             </select>
         </div>
-        <!-- If the form is incomplete-->
         <?php if (isset($notification)) { ?>
-            <p id="notification"> <?php echo $notification; ?> </p>
+            <p id="notification"> <?php echo $notification; ?></p>
         <?php } ?>
         <input type="hidden" name="question_id" value="<?php echo $_POST['question_id']; ?>">
         <input class="btn btn-dark" type="submit" name="form_edit" value="Edit question">

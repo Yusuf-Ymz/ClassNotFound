@@ -21,7 +21,6 @@ class EditQuestionController
 
         # Clicked on submit and if there is an empty field in the form
         if (isset($_POST['question_title']) && isset($_POST['question_subject'])) {
-            //if (trim($_POST['question_title']) === '' || trim($_POST['question_subject']) === '') {
             if (preg_match('/^\s*$/', $_POST['question_title']) || preg_match('/^\s*$/', $_POST['question_subject'])) {
                 $notification = "Please fill in all fields";
             } # If not update question's title subject and category
@@ -33,7 +32,7 @@ class EditQuestionController
         }
 
         # Selecting the question to edit
-        $question = $this->_db->select_question($_POST['question_id']);
+        $question = $this->_db->select_question_for_edit($_POST['question_id']);
 
         # If the question is duplicated and user clicked on like or dislike
         if ($question->state() == 'duplicated') {
@@ -41,9 +40,6 @@ class EditQuestionController
             header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
-
-        # Selecting all categories for newQuestion form
-        $categories = $this->_db->select_categories();
 
         require_once(VIEWS . 'editQuestion.php');
     }

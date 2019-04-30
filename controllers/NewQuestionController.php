@@ -29,11 +29,11 @@ class NewQuestionController
                 $publicationDate = date("Y-m-d");
                 $this->_db->insert_question($authorId, $_POST['question_category_id'],$_POST['question_title'],$_POST['question_subject'], $publicationDate);
                 $postedQuestionId = $this->_db->select_last_posted_question();
-                header("Location: index.php?action=question&id=" . "$postedQuestionId");
+                header("Location: index.php?action=question&id=" . $postedQuestionId);
                 die();
             }
         }
-        # Selecting all categories for newQuestion form
+
         $categories = $this->_db->select_categories();
 
         require_once(VIEWS . 'newQuestion.php');

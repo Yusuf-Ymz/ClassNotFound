@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="container col-8">
-                    <p class="card-login font-weight-bold"><?php echo $authorLogin . ' asks:'; ?></p>
+                    <p class="card-login font-weight-bold"><?php echo $question->author()->html_login() . ' asks:'; ?></p>
                 </div>
                 <div class="container col-4 pagination justify-content-end">
                     <p class="card-login"><?php echo $question->publicationDate() ?></p>

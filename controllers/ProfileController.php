@@ -21,7 +21,7 @@ class ProfileController
         }
         $memberId = unserialize($_SESSION['login'])->memberId();
         # Selecting all questions related to the memberId
-        $memberQuestions = $this->_db->select_member_questions_categories($memberId);
+        $memberQuestions = $this->_db->select_questions_for_profile($memberId);
 
         $nbQuestions = count($memberQuestions);
 

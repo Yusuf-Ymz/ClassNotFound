@@ -12,7 +12,7 @@ class HomepageController
     public function run(){
 
         # Select the newest questions + their respective author and category from the database
-        $questions = $this->_db->select_newest_questions_authors_categories();
+        $questions = $this->_db->select_newest_questions_for_homepage();
 
         $nbQuestions = count($questions);
 
