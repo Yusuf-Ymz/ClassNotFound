@@ -24,7 +24,7 @@
                 </li>
                 <?php } else { ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=profile"><?php echo htmlspecialchars(unserialize($_SESSION['login'])->login()); ?></a>
+                    <a class="nav-link" href="index.php?action=profile"><?php echo unserialize($_SESSION['login'])->html_login(); ?></a>
                 </li>
                 <?php } ?>
                 <?php if(!empty($_SESSION['admin'])) { ?>

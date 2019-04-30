@@ -28,7 +28,7 @@ class Db
 
     # ***** Database scripts *****
 
-    # Select all categories
+    # Select all categories (index.php)
     public function select_categories()
     {
         $query = 'SELECT * FROM categories ORDER BY category_id ASC';
@@ -168,13 +168,14 @@ class Db
     # Select the question and question's author corresponding to the 'id' parameter
     public function select_question($question_id)
     {
-        $query = 'SELECT Q.*,M.* FROM questions Q, members M WHERE question_id=:id AND M.member_id=Q.author_id';
+        $answers = $this->select_answers_authors_votes($question_id);
+        $query = 'SELECT Q.*,M.*,A.* FROM questions Q, members M,answers A WHERE question_id=:id AND M.member_id=Q.author_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $question_id);
         $ps->execute();
         $row = $ps->fetch();
         $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-        $question = new Question($row->question_id, $member, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+        $question = new Question($row->question_id, $member, $row->category_id, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date, $answers);
         return $question;
     }
 
@@ -264,7 +265,7 @@ class Db
         while ($row = $ps->fetch()) {
             $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date ,null);
         }
         return $questions;
     }
@@ -374,9 +375,9 @@ class Db
         $questions = array();
 
         while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $author = new Member(null, $row->login, null, null, null, null, null);
             $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, $row->best_answer_id, $row->title, $row->subject, $row->state, $row->publication_date);
+            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
         }
         return $questions;
     }

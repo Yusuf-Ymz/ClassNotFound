@@ -29,7 +29,6 @@ class QuestionController
 
         # Select the login of the question's author
         $authorLogin = $question->author()->html_login();
-
         $memberId = null ;
 
         if (isset($_SESSION['login'])) {
@@ -37,18 +36,15 @@ class QuestionController
             $memberId = unserialize($_SESSION['login'])->memberId();
         }
 
-        # Select the question's answers + their respective author
-        $answers = $this->_db->select_answers_authors_votes($_GET['id']);
-
         # Place best answer at index 0
-        foreach ($answers as $i => $answer) {
-            if ($answer != null && $answer->answerId() == $question->bestAnswerId()) {
+        foreach ($question->answers() as $i => $answer) {
+            if ($answer != null && $answer->answerId() == $question->bestAnswer()->answerId()) {
                 $answers[0] = $answer;
                 break;
             }
         }
 
-        $nbAnswers = count($answers);
+        $nbAnswers = count($question->answers());
 
         require_once(VIEWS . 'question.php');
     }

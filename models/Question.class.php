@@ -5,22 +5,24 @@ class Question
     private $_question_id;
     private $_author;
     private $_category;
-    private $_best_answer_id;
+    private $_best_answer;
     private $_title;
     private $_subject;
     private $_state;
     private $_publication_date;
+    private $_answers;
 
-    public function __construct($question_id, $author, $category, $best_answer_id, $title, $subject, $state, $publication_date)
+    public function __construct($question_id, $author, $category, $best_answer, $title, $subject, $state, $publication_date, $answers)
     {
         $this->_question_id = $question_id;
         $this->_author = $author;
         $this->_category = $category;
-        $this->_best_answer_id = $best_answer_id;
+        $this->_best_answer = $best_answer;
         $this->_title = $title;
         $this->_subject = $subject;
         $this->_state = $state;
         $this->_publication_date = $publication_date;
+        $this->_answers = $answers;
     }
 
     public function questionId()
@@ -29,11 +31,6 @@ class Question
     }
 
     public function author()
-    {
-        return $this->_author;
-    }
-
-    public function authorId()
     {
         return $this->_author;
     }
@@ -81,6 +78,10 @@ class Question
     public function publicationDate()
     {
         return $this->_publication_date;
+    }
+
+    public function answers(){
+        return $this->_answers;
     }
 
 }

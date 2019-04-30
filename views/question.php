@@ -43,7 +43,7 @@
                         <form class="form-btn float-left" action="index.php?action=openQuestion" method="post">
                             <div class="container card-footer-container">
                                 <input type="hidden" name="answer_id"
-                                       value="<?php echo $answers[$i]->answerId() ?>">
+                                       value="<?php echo $question->answers()[$i]->answerId() ?>">
                                 <input type="hidden" name="question_id"
                                        value="<?php echo $question->questionId() ?>">
                                 <button class="btn btn-dark" type="submit" name="delete_best_answer"> Open</button>
@@ -92,11 +92,9 @@
 <?php } ?>
 
 <!-- Displaying all question's answers -->
-<?php for ($i = 0;
-           $i < $nbAnswers;
-           $i++) { ?>
+<?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
     <!-- Displaying the best answer on top if there is one -->
-    <?php if ($i == 0 && $answers[0] != null) { ?>
+    <?php if ($i == 0 && $question->answers()[0] != null) { ?>
         <div class="container">
             <h3>Best Answer:</h3>
         </div>
@@ -106,15 +104,15 @@
         </div>
         <?php continue;
     } ?>
-    <div class="container" id="<?php echo $answers[$i]->answerId(); ?>">
+    <div class="container" id="<?php echo $question->answers()[$i]->answerId(); ?>">
         <div class="card">
             <!-- Displaying answer's author -->
             <div class="card-header">
-                <p class="card-text card-login font-weight-bold"><?php echo $answers[$i]->member()->html_login() . ' answers:' ?></p>
+                <p class="card-text card-login font-weight-bold"><?php echo $question->answers()[$i]->member()->html_login() . ' answers:' ?></p>
             </div>
             <!-- Displaying the answer -->
             <div class="card-body">
-                <p class="card-text"><?php echo Utils::html_replace_enter_by_br($answers[$i]->html_subject()); ?></p>
+                <p class="card-text"><?php echo Utils::html_replace_enter_by_br($question->answers()[$i]->html_subject()); ?></p>
             </div>
 
             <!-- Displaying answer's votes -->
@@ -123,24 +121,24 @@
                     <form class="form-btn float-left" action="index.php?action=voteAnswer" method="post">
                         <div class="container card-footer-container">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                            <input type="hidden" name="answer_id" value="<?php echo $answers[$i]->answerId(); ?>">
+                            <input type="hidden" name="answer_id" value="<?php echo $question->answers()[$i]->answerId(); ?>">
                             <input type="hidden" name="member_id"
-                                   value="<?php echo $answers[$i]->member()->memberId(); ?>">
-                            <button class="<?php Utils::verify_member_liked($answers[$i], $memberId) ?>" type="submit"
+                                   value="<?php echo $question->answers()[$i]->member()->memberId(); ?>">
+                            <button class="<?php Utils::verify_member_liked($question->answers()[$i], $memberId) ?>" type="submit"
                                     name="like"><i
-                                        class="fas fa-thumbs-up"></i> <?php echo $answers[$i]->likes(); ?></button>
-                            <button class="<?php Utils::verify_member_disliked($answers[$i], $memberId) ?>"
+                                        class="fas fa-thumbs-up"></i> <?php echo $question->answers()[$i]->likes(); ?></button>
+                            <button class="<?php Utils::verify_member_disliked($question->answers()[$i], $memberId) ?>"
                                     type="submit" name="dislike"><i
-                                        class="fas fa-thumbs-down"></i> <?php echo $answers[$i]->dislikes(); ?></button>
+                                        class="fas fa-thumbs-down"></i> <?php echo $question->answers()[$i]->dislikes(); ?></button>
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and if this not the author's answer-->
-                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $answers[$i], $authorLogin)) { ?>
-                        <?php if ($question->bestAnswerId() != $answers[$i]->answerId()) { ?>
+                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $question->answers()[$i], $authorLogin)) { ?>
+                        <?php if ($question->bestAnswerId() != $question->answers()[$i]->answerId()) { ?>
                             <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
                                 <div class="container card-footer-container">
                                     <input type="hidden" name="answer_id"
-                                           value="<?php echo $answers[$i]->answerId() ?>">
+                                           value="<?php echo $question->answers()[$i]->answerId() ?>">
                                     <input type="hidden" name="question_id"
                                            value="<?php echo $question->questionId() ?>">
                                     <button class="btn btn-success" type="submit" name="best_answer"><i
@@ -152,7 +150,7 @@
                 </div>
                 <div class="container card-footer-container col-6">
                     <span id="date" class="card-deco pagination justify-content-end">
-                        <?php echo $answers[$i]->publicationDate() ?>
+                        <?php echo $question->answers()[$i]->publicationDate() ?>
                     </span>
                 </div>
             </div>
