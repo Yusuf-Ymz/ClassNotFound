@@ -29,19 +29,12 @@ class QuestionController
 
         # Select the login of the question's author
         $authorLogin = $question->author()->html_login();
+
         $memberId = null ;
 
         if (isset($_SESSION['login'])) {
             # Select the user's id
             $memberId = unserialize($_SESSION['login'])->memberId();
-        }
-
-        # Place best answer at index 0
-        foreach ($question->answers() as $i => $answer) {
-            if ($answer != null && $answer->answerId() == $question->bestAnswer()->answerId()) {
-                $answers[0] = $answer;
-                break;
-            }
         }
 
         $nbAnswers = count($question->answers());

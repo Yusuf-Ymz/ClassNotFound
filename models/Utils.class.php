@@ -37,7 +37,7 @@ final class Utils
 
     public static function verify_displaying_best_answer_button($member, $answer, $authorLogin)
     {
-        if ($member->login() == $authorLogin && $answer->member()->memberId() != $member->memberId())
+        if ($member->login() == $authorLogin && $answer->author()->memberId() != $member->memberId())
             return true;
         return false;
     }

@@ -82,24 +82,26 @@ class Db
 
     # EDIT CONTROLLER
     # Select question from id
-    public function select_question_for_edit($idCategory)
+    public function select_question_for_edit($idQuestion)
     {
-        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id';
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M ,categories C WHERE Q.author_id = M.member_id AND Q.question_id=:id AND Q.category_id=C.category_id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idCategory);
+        $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         $row = $ps->fetch();
         $author = new Member($row->member_id, $row->login, null, null, null, null, null);
-        return new Question($row->question_id, $author, null, null, $row->title, $row->subject, $row->state, null, null);
+        $category = new Category($row->category_id, $row->name);
+        return new Question($row->question_id, $author, $category, null, $row->title, $row->subject, $row->state, null, null);
     }
 
 
     # NEW ANSWER CONTROLLER
     # Select question from id
-    public function select_question_for_new_answer($idCategory)
+    public function select_question_for_new_answer($idQuestion)
     {
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id';
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.question_id=:id AND Q.author_id = M.member_id AND Q.category_id = C.category_id';
         $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
         $ps->execute();
         $row = $ps->fetch();
         $author = new Member($row->member_id, $row->login, null, null, null, null, null);
@@ -121,7 +123,8 @@ class Db
         }
         return $members;
     }
-    # Changing the state of the member at suspended
+
+    # Changing the state of the member to suspended
     public function suspend_member($memberid)
     {
         $query = 'UPDATE members SET suspended=1 WHERE member_id=:id';
@@ -129,7 +132,8 @@ class Db
         $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
-    # Changing the state of the member at unsus
+
+    # Changing the state of the member to unsus
     public function unsuspend_member($memberid)
     {
         $query = 'UPDATE members SET suspended=0 WHERE member_id=:id';
@@ -137,6 +141,7 @@ class Db
         $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
+
     # Upgrading member to admin
     public function upgrade_to_admin($memberid)
     {
@@ -145,6 +150,7 @@ class Db
         $ps->bindValue(':id', $memberid);
         $ps->execute();
     }
+
     # Downgrading admin to basic member
     public function demote_admin($memberid)
     {
@@ -212,8 +218,15 @@ class Db
 
     public function select_question($question_id)
     {
-        $bestAnswer = select_best_answer($question_id);
+        $bestAnswerId = $this->select_best_answer_id($question_id);
         $answers = $this->select_answers_authors_votes($question_id);
+        $bestAnswer = null;
+        for($i = 1 ; $i<count($answers) ; $i++){
+            if($answers[$i]->answerId() == $bestAnswerId) {
+                $bestAnswer = $answers[$i];
+                break;
+            }
+        }
         $answers[0] = $bestAnswer;
         $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.question_id=:id AND M.member_id=Q.author_id';
         $ps = $this->_db->prepare($query);
@@ -254,7 +267,7 @@ class Db
         $ps->execute();
         while ($row = $ps->fetch()) {
             $answers[$row->answer_id]->setDislikes($row->dislikes);
-            $answers[$row->answer_id]->add_a_member_who_disliked($row->member_id);
+            $answers[$row->answer_id]->add_dislike_id($row->member_id);
 
         }
         $answersWithoutHoles = array();
@@ -266,15 +279,13 @@ class Db
         return $answersWithoutHoles;
     }
 
-    public function select_best_answer($questionId)
-    {
-        $query = 'SELECT A.*, M.* FROM questions Q, answers A, members M WHERE A.answer_id=:id AND M.member_id=A.author_id';
+    public function select_best_answer_id($question_id){
+        $query = 'SELECT Q.best_answer_id FROM questions Q WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionId);
+        $ps->bindValue(':id', $question_id);
         $ps->execute();
         $row = $ps->fetch();
-        $author = new Member($row->member_id, $row->login, null, null, null, null, null);
-        return new Answer($row->answer_id, $author, $row->subject, $row->publication_date, 0, 0, null, null);
+        return $row->best_answer_id;
     }
     ################### TODO ##########################
 
@@ -458,10 +469,6 @@ class Db
         $ps->bindValue(':id', $questionId);
         $ps->execute();
     }
-
-
-
-
 
     # Insert a new answer with the specified question_id
     public function insert_answer($author_id, $question_id, $subject, $publication_date)

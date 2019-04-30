@@ -39,11 +39,11 @@
                         <input type="hidden" name="id" value="<?php echo $question->questionId(); ?>">
                     </form>
 
-                    <?php if ($question->bestAnswerId() != null) { ?>
+                    <?php if ($question->bestAnswer() != null) { ?>
                         <form class="form-btn float-left" action="index.php?action=openQuestion" method="post">
                             <div class="container card-footer-container">
                                 <input type="hidden" name="answer_id"
-                                       value="<?php echo $question->answers()[$i]->answerId() ?>">
+                                       value="<?php echo $question->bestAnswer()->answerId() ?>">
                                 <input type="hidden" name="question_id"
                                        value="<?php echo $question->questionId() ?>">
                                 <button class="btn btn-dark" type="submit" name="delete_best_answer"> Open</button>
@@ -55,7 +55,7 @@
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn" action="index.php?action=openQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
-                                <?php if ($question->bestAnswerId() != null) { ?>
+                                <?php if ($question->bestAnswer() != null) { ?>
                                     <input type="hidden" name="has_best_answer">
                                 <?php } ?>
                                 <button class="btn btn-dark" type="submit" name="state">Remove Duplicate</button>
@@ -108,7 +108,7 @@
         <div class="card">
             <!-- Displaying answer's author -->
             <div class="card-header">
-                <p class="card-text card-login font-weight-bold"><?php echo $question->answers()[$i]->member()->html_login() . ' answers:' ?></p>
+                <p class="card-text card-login font-weight-bold"><?php echo $question->answers()[$i]->author()->html_login() . ' answers:' ?></p>
             </div>
             <!-- Displaying the answer -->
             <div class="card-body">
@@ -123,18 +123,18 @@
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId(); ?>">
                             <input type="hidden" name="answer_id" value="<?php echo $question->answers()[$i]->answerId(); ?>">
                             <input type="hidden" name="member_id"
-                                   value="<?php echo $question->answers()[$i]->member()->memberId(); ?>">
+                                   value="<?php echo $question->answers()[$i]->author()->memberId(); ?>">
                             <button class="<?php Utils::verify_member_liked($question->answers()[$i], $memberId) ?>" type="submit"
                                     name="like"><i
-                                        class="fas fa-thumbs-up"></i> <?php echo $question->answers()[$i]->likes(); ?></button>
+                                        class="fas fa-thumbs-up"></i> <?php echo $question->answers()[$i]->nbLikes(); ?></button>
                             <button class="<?php Utils::verify_member_disliked($question->answers()[$i], $memberId) ?>"
                                     type="submit" name="dislike"><i
-                                        class="fas fa-thumbs-down"></i> <?php echo $question->answers()[$i]->dislikes(); ?></button>
+                                        class="fas fa-thumbs-down"></i> <?php echo $question->answers()[$i]->nbDislikes(); ?></button>
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and if this not the author's answer-->
                     <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $question->answers()[$i], $authorLogin)) { ?>
-                        <?php if ($question->bestAnswerId() != $question->answers()[$i]->answerId()) { ?>
+                        <?php if ($question->bestAnswer()->answerId() != $question->answers()[$i]->answerId()) { ?>
                             <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
                                 <div class="container card-footer-container">
                                     <input type="hidden" name="answer_id"

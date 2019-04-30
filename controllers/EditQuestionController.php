@@ -41,6 +41,8 @@ class EditQuestionController
             die();
         }
 
+        $categories = $this->_db->select_categories();
+
         require_once(VIEWS . 'editQuestion.php');
     }
 }
