@@ -28,7 +28,7 @@
                                    value="Upgrade to admin">
                         <?php } else { ?>
                             <input class="btn btn-dark" type="submit"
-                                   name=""
+                                   name="demote"
                                    value="Demote admin grade">
                         <?php } ?>
 
