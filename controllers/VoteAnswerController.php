@@ -24,7 +24,6 @@ class VoteAnswerController
         }
 
 
-
         # Select the question from the id in $_POST['question_id']
         $question = $this->_db->select_question($_POST['question_id']);
 
@@ -39,26 +38,27 @@ class VoteAnswerController
         $memberId = unserialize($_SESSION['login'])->memberId();
 
         # If the member try to vote for his answer
-        /* if($memberId==$_POST['member_id']){
-            header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
+        if ($memberId == $_POST['member_id']) {
+            $_SESSION['error'] = 'You cannot vote for your own answers';
+            header('Location: index.php?action=question&id=' . $question->questionId());
             die();
-        }*/
+        }
 
         if (isset($_POST['like'])) {
-            $vote = 1 ;
+            $vote = 1;
         } else {
             $vote = 0;
         }
         try {
-            $this->_db->insert_vote($memberId, $_POST['answer_id'],$vote);
-        }catch (PDOException $e){
+            $this->_db->insert_vote($memberId, $_POST['answer_id'], $vote);
+        } catch (PDOException $e) {
             $_SESSION['error'] = 'You already voted for this answer';
             header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
 
 
-        header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
+        header('Location: index.php?action=question&id=' . $question->questionId() . '#' . $_POST['answer_id']);
         die();
     }
 }
