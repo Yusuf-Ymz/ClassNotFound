@@ -8,33 +8,7 @@ final class Utils
         return str_replace("\n", '<br>', $string);
     }
 
-    public static function verify_member_liked($answer, $memberId)
-    {
-        if ($memberId != null) {
-            if ($answer->check_member_liked($memberId)) {
-                echo 'btn btn-primary';
-            } else {
-                echo 'btn btn-dark';
-            }
-        } else {
-            echo 'btn btn-dark';
-        }
-    }
-
-
-    public static function verify_member_disliked($answer, $memberId)
-    {
-        if ($memberId != null) {
-            if ($answer->check_member_disliked($memberId)) {
-                echo 'btn btn-danger';
-            } else {
-                echo 'btn btn-dark';
-            }
-        } else {
-            echo 'btn btn-dark';
-        }
-    }
-
+    # Verify if answers author is the logged member
     public static function verify_displaying_best_answer_button($member, $answer, $authorLogin)
     {
         if ($member->login() == $authorLogin && $answer->author()->memberId() != $member->memberId())

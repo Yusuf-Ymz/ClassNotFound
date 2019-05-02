@@ -39,34 +39,24 @@ class VoteAnswerController
         $memberId = unserialize($_SESSION['login'])->memberId();
 
         # If the member try to vote for his answer
-        if($memberId==$_POST['member_id']){
+        /* if($memberId==$_POST['member_id']){
             header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
+            die();
+        }*/
+
+        if (isset($_POST['like'])) {
+            $vote = 1 ;
+        } else {
+            $vote = 0;
+        }
+        try {
+            $this->_db->insert_vote($memberId, $_POST['answer_id'],$vote);
+        }catch (PDOException $e){
+            $_SESSION['error'] = 'You already voted for this answer';
+            header('Location: index.php?action=question&id=' . $question->questionId());
             die();
         }
 
-        $vote = $this->_db->vote_exists($memberId, $_POST['answer_id']);
-
-        if ($vote == null) {
-            if (isset($_POST['like'])) {
-                $this->_db->insert_vote($memberId, $_POST['answer_id'], 1);
-            } else {
-                $this->_db->insert_vote($memberId, $_POST['answer_id'], 0);
-            }
-        } else {
-            if ($vote->liked() == 1) {
-                if (isset($_POST['like'])) {
-                    $this->_db->delete_vote($memberId, $_POST['answer_id']);
-                } else {
-                    $this->_db->update_vote($memberId, $_POST['answer_id'], 0);
-                }
-            } else {
-                if (isset($_POST['dislike'])) {
-                    $this->_db->delete_vote($memberId, $_POST['answer_id']);
-                } else {
-                    $this->_db->update_vote($memberId, $_POST['answer_id'], 1);
-                }
-            }
-        }
 
         header('Location: index.php?action=question&id=' . $question->questionId() . '#'. $_POST['answer_id']);
         die();

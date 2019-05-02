@@ -18,7 +18,7 @@ class BestAnswerController
         }
 
         # Selecting the question
-        $question = $this->_db->select_question($_POST['question_id']);
+        $question = $this->_db->select_question_for_best_answer($_POST['question_id']);
 
         # If the question is duplicated and user clicked on like or dislike
         if ($question->state() == 'duplicated') {

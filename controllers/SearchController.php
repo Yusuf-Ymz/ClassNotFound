@@ -21,7 +21,7 @@ class SearchController
         if(preg_match('/^\s*$/', $_POST['search'])) $_POST['search'] = '';
 
         # Select the question that contains a certain keyword (from the search bar)
-        $researchedQuestionsAuthorsCategories = $this->_db->search_questions_authors_categories($_POST['search']);
+        $researchedQuestionsAuthorsCategories = $this->_db->search_questions($_POST['search']);
 
         $nbQuestions = count($researchedQuestionsAuthorsCategories);
 

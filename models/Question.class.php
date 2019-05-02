@@ -45,6 +45,10 @@ class Question
         return $this->_best_answer;
     }
 
+    public function setBestAnswer($bestAnswer){
+        $this->_best_answer = $bestAnswer;
+    }
+
     public function title()
     {
         return $this->_title;

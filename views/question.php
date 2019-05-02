@@ -124,10 +124,10 @@
                             <input type="hidden" name="answer_id" value="<?php echo $question->answers()[$i]->answerId(); ?>">
                             <input type="hidden" name="member_id"
                                    value="<?php echo $question->answers()[$i]->author()->memberId(); ?>">
-                            <button class="<?php Utils::verify_member_liked($question->answers()[$i], $memberId) ?>" type="submit"
+                            <button class="btn btn-dark" type="submit"
                                     name="like"><i
                                         class="fas fa-thumbs-up"></i> <?php echo $question->answers()[$i]->nbLikes(); ?></button>
-                            <button class="<?php Utils::verify_member_disliked($question->answers()[$i], $memberId) ?>"
+                            <button class="btn btn-dark"
                                     type="submit" name="dislike"><i
                                         class="fas fa-thumbs-down"></i> <?php echo $question->answers()[$i]->nbDislikes(); ?></button>
                         </div>
