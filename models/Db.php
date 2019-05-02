@@ -474,39 +474,36 @@ class Db
     # Select all questions + their respective author from the category with the specified id + votes
     public function select_answers_authors_votes($idQuestion)
     {
-        //$query = 'SELECT A.answer_id,sum(V.liked),count(V.*) FROM answers A , votes V WHERE A.question_id=:id AND V.answer_id=A.answer_id';
+        $query = 'SELECT A.answer_id,sum(V.liked) as \'likes\',count(V.answer_id) as \'votes\' FROM answers A , votes V WHERE A.question_id=:id AND V.answer_id=A.answer_id GROUP BY A.answer_id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        $votes = array();
+        while ($row = $ps->fetch()) {
+            $votes[$row->answer_id][0] = $row->likes ;
+            $votes[$row->answer_id][1] = $row->votes - $row->likes ;
+        }
+
         $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
+
         $answers = array();
+        $answers[0] = null;
+        
         while ($row = $ps->fetch()) {
             $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $answers[$row->answer_id] = new Answer($row->answer_id, $member, $row->subject, $row->publication_date, 0, 0);
+            $likes=0;
+            $dislikes=0;
+            if(array_key_exists($row->answer_id,$votes)){
+                $likes = $votes[$row->answer_id][0];
+                $dislikes = $votes[$row->answer_id][1];
+            }
+            $answers[] = new Answer($row->answer_id, $member, $row->subject, $row->publication_date, $likes, $dislikes);
         }
 
-        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'likes\'  FROM answers A,votes V  WHERE A.question_id = :id AND V.answer_id=A.answer_id  AND V.liked=1  GROUP BY A.answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        while ($row = $ps->fetch()) {
-            $answers[$row->answer_id]->setLikes($row->likes);
-        }
-
-        $query = 'SELECT A.answer_id,V.member_id,count(V.liked) as \'dislikes\'  FROM answers A,votes V WHERE A.question_id = :id AND V.answer_id=A.answer_id AND V.liked=0 GROUP BY A.answer_id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        while ($row = $ps->fetch()) {
-            $answers[$row->answer_id]->setDislikes($row->dislikes);
-        }
-        $answersWithoutHoles = array();
-        # Index 0 reserved for the best answer
-        $answersWithoutHoles[0] = null;
-        foreach ($answers as $i => $answer) {
-            $answersWithoutHoles[] = $answer;
-        }
-        return $answersWithoutHoles;
+        return $answers;
     }
 
     public function select_best_answer_id($question_id){
