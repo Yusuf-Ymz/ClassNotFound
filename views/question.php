@@ -134,7 +134,7 @@
                     </form>
                     <!-- Displaying best answer button if user == question's author and if this not the author's answer-->
                     <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $question->answers()[$i], $authorLogin)) { ?>
-                        <?php if ($question->bestAnswer()->answerId() != $question->answers()[$i]->answerId()) { ?>
+                        <?php if ($question->bestAnswer() != null && $question->bestAnswer()->answerId() != $question->answers()[$i]->answerId()) { ?>
                             <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
                                 <div class="container card-footer-container">
                                     <input type="hidden" name="answer_id"
