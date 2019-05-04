@@ -30,6 +30,10 @@ class QuestionController
         # Select the login of the question's author
         $authorLogin = $question->author()->html_login();
 
+        $questionId = $question->questionId();
+
+        $bestAnswer = $question->bestAnswer();
+
         $memberId = null ;
 
         if (isset($_SESSION['login'])) {

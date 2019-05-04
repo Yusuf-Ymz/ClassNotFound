@@ -488,10 +488,8 @@ class Db
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $idQuestion);
         $ps->execute();
-
         $answers = array();
         $answers[0] = null;
-        
         while ($row = $ps->fetch()) {
             $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
             $likes=0;
