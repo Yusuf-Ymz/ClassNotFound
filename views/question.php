@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<!-- Displaying notification in case of duplicate question -->
+<!-- Displaying notification in case of not available feature-->
 <?php if (isset($notification)) { ?>
     <div class="container" id="notification"><?php echo $notification; ?> </div>
 <?php } ?>
@@ -94,7 +94,7 @@
 <!-- Displaying all question's answers -->
 <?php for ($i = 0; $i < $nbAnswers; $i++) { ?>
     <!-- Displaying the best answer on top if there is one -->
-    <?php if ($i == 0 && $question->answers()[0] != null) { ?>
+    <?php if ($i == 0 && $bestAnswer != null) { ?>
         <div class="container">
             <h3>Best Answer:</h3>
         </div>

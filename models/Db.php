@@ -144,16 +144,6 @@ class Db
         return $category;
     }
 
-    # Verify if the category exists
-    public function category_exists($idCategory)
-    {
-        $query = ' SELECT * FROM categories WHERE category_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idCategory);
-        $ps->execute();
-        return ($ps->rowcount() != 0);
-    }
-
     # -------------------------------------------------------------------------------- #
 
     # EDIT CONTROLLER

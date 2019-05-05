@@ -1,6 +1,6 @@
 <?php
 
-
+# Class for next features
 class Vote
 {
     private $_member_id;

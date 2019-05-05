@@ -33,7 +33,7 @@ class AdminController
             }
         }
 
-        # Selecting all members to display
+        # Selecting all members to display in admin view
         $members = $this->_db->select_all_members();
 
         $nbMembers = count($members);

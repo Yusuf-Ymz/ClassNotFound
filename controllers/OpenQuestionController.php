@@ -38,6 +38,8 @@ class OpenQuestionController
         } else {
             $this->_db->delete_best_answer($_POST['question_id']);
         }
+
+        # This controller is not displaying a view --> redirect to the question page
         header('Location: index.php?action=question&id=' . $_POST['question_id']);
         die();
     }

@@ -17,8 +17,11 @@ class DuplicateQuestionController
             header('Location: index.php?action=homepage');
             die();
         }
+
         # Setting the question as duplicate
         $this->_db->duplicate_question($_POST['question_id']);
+
+        # This controller is not displaying a view --> redirect to the question page
         header('Location: index.php?action=question&id='.$_POST['question_id']);
         die();
     }

@@ -17,8 +17,11 @@ class DeleteQuestionController
             header('Location: index.php?action=homepage');
             die();
         }
+
         # Removing the question and all related answers
         $this->_db->delete_question($_POST['question_id']);
+
+        # This controller is not displaying a view --> redirect to homepage
         header('Location: index.php?action=homepage');
         die();
     }

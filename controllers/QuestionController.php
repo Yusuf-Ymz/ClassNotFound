@@ -30,16 +30,11 @@ class QuestionController
         # Select the login of the question's author
         $authorLogin = $question->author()->html_login();
 
+        # Select the question's id
         $questionId = $question->questionId();
 
+        # Select the question's best answer
         $bestAnswer = $question->bestAnswer();
-
-        $memberId = null ;
-
-        if (isset($_SESSION['login'])) {
-            # Select the user's id
-            $memberId = unserialize($_SESSION['login'])->memberId();
-        }
 
         $nbAnswers = count($question->answers());
 
