@@ -439,7 +439,6 @@ class Db
     }
 
     # Select question from id
-    ################### TODO ##########################
     public function select_question($question_id)
     {
         $bestAnswerId = $this->select_best_answer_id($question_id);
@@ -502,5 +501,5 @@ class Db
         $row = $ps->fetch();
         return $row->best_answer_id;
     }
-    ################### TODO ##########################
+
 }
