@@ -261,7 +261,7 @@ class Db
     # Select all members from the database
     public function select_all_members()
     {
-        $query = 'SELECT * FROM members';
+        $query = 'SELECT * FROM members ORDER BY login';
         $ps = $this->_db->prepare($query);
         $ps->execute();
         $members = array();

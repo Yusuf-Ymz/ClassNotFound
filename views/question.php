@@ -22,9 +22,7 @@
         <!-- Displaying the question's title and question's subject -->
         <div class="card-body">
             <h5 id="question-title" class="card-title"><?php echo $question->html_title();
-                if ($question->state() == 'duplicated') {
-                    echo " [DUPLICATE]";
-                } ?></h5>
+            if($question->state() != null) echo " [". strtoupper($question->state()) ."]"; ?></h5>
             <p class="card-text"><?php echo Utils::html_replace_enter_by_br($question->html_subject()); ?></p>
         </div>
 
@@ -33,12 +31,19 @@
 
             <div class="container">
                 <div class="row">
-
+                    <!-- New Answer Button -->
                     <form class="form-btn" action="index.php?action=newAnswer" method="post">
                         <button class="btn btn-dark" type="submit">Answer</button>
                         <input type="hidden" name="id" value="<?php echo $questionId; ?>">
                     </form>
 
+                    <!-- Displaying edit button if user == question's author -->
+                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $authorLogin) { ?>
+                        <form class="form-btn" action="index.php?action=editQuestion" method="post">
+                            <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
+                            <button class="btn btn-dark" type="submit" name="edit">Edit</button>
+                        </form>
+                    <?php } ?>
                     <?php if (isset($_SESSION['login']) && $bestAnswer != null && unserialize($_SESSION['login'])->html_login() == $authorLogin) { ?>
                         <form class="form-btn float-left" action="index.php?action=openQuestion" method="post">
                             <div class="container card-footer-container">
@@ -46,7 +51,7 @@
                                        value="<?php echo $bestAnswer->answerId() ?>">
                                 <input type="hidden" name="question_id"
                                        value="<?php echo $questionId ?>">
-                                <button class="btn btn-dark" type="submit" name="delete_best_answer">Open</button>
+                                <button class="btn btn-secondary" type="submit" name="delete_best_answer">Remove Best Answer</button>
                             </div>
                         </form>
                     <?php } ?>
@@ -58,28 +63,19 @@
                                 <?php if ($bestAnswer != null) { ?>
                                     <input type="hidden" name="has_best_answer">
                                 <?php } ?>
-                                <button class="btn btn-dark" type="submit" name="state">Remove Duplicate</button>
+                                <button class="btn btn-secondary" type="submit" name="state">Remove Duplicate</button>
                             </form>
                         <?php } else { ?>
                             <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
-                                <button class="btn btn-dark" type="submit" name="state">Duplicate</button>
+                                <button class="btn btn-secondary" type="submit" name="state">Duplicate</button>
                             </form>
                         <?php } ?>
                         <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
-                            <button class="btn btn-dark" type="submit" name="delete">Delete</button>
+                            <button class="btn btn-danger" type="submit" name="delete">Delete</button>
                         </form>
                     <?php } ?>
-
-                    <!-- Displaying edit button if user == question's author -->
-                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $authorLogin) { ?>
-                        <form class="form-btn" action="index.php?action=editQuestion" method="post">
-                            <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
-                            <button class="btn btn-dark" type="submit" name="edit">Edit</button>
-                        </form>
-                    <?php } ?>
-
                 </div>
             </div>
         </div>
@@ -133,7 +129,7 @@
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and the answer is not his-->
-                    <?php if (isset($_SESSION['login']) && Utils::verify_displaying_best_answer_button(unserialize($_SESSION['login']), $question->answers()[$i], $authorLogin)) { ?>
+                    <?php if (isset($_SESSION['login'])) { ?>
                         <?php if ($bestAnswer == null || ($bestAnswer != null && $bestAnswer->answerId() != $question->answers()[$i]->answerId())) { ?>
                             <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
                                 <div class="container card-footer-container">
