@@ -29,16 +29,14 @@ form.form-btn {
     margin-right: 5px;
 }
 
-a#btn-new-question-a {
-    padding: 0px 15px 0px 6px;
-}
-
-button#btn-new-question {
+a#btn-new-question {
     padding: 6px;
+    margin: 0px 0px 0px 6px;
+    color: black;
 }
 
 @media screen and (max-width: 767px) {
-    a#btn-new-question-a {
+    a#btn-new-question {
         padding: 0px;
     }
 }
