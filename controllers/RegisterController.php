@@ -35,16 +35,22 @@ class RegisterController
                 else {
                     # Catch error if login already exists
                     try {
+
                         # Register member to the database
                         $this->_db->insert_member($_POST['lastname'], $_POST['firstname'], $_POST['mail'], $_POST['login'], password_hash($_POST['password'], PASSWORD_BCRYPT));
+
                         # Redirection to login after being successfully registered
                         header('Location: index.php?action=login');
                         die();
                     } catch (PDOException $e) {
-                        $notification = 'This username already exists';
+                        if($e->getCode()==22001){
+                            $notification = 'Take a shorter username';
+                        } else {
+                            $notification = 'This username already exists';
+                        }
                     }
                 }
-            }
+            }   
         }
         require_once(VIEWS . 'register.php');
     }
