@@ -66,15 +66,6 @@ class Db
     # -------------------------------------------------------------------------------- #
 
     # REGISTER CONTROLLER
-    # Return true if the login in parameter exists in the database
-    public function login_exists($login)
-    {
-        $query = 'SELECT * FROM members WHERE login=:login';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':login', $login);
-        $ps->execute();
-        return ($ps->rowcount() != 0);
-    }
 
     # Insert a new member in the database
     public function insert_member($lastname, $firstname, $mail, $login, $password)
