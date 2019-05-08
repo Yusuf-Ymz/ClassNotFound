@@ -33,7 +33,7 @@
                 <div class="row">
                     <!-- New Answer Button -->
                     <form class="form-btn" action="index.php?action=newAnswer" method="post">
-                        <button class="btn btn-dark" type="submit">Answer</button>
+                        <button class="btn btn-dark" type="submit" name="new_answer">Answer</button>
                         <input type="hidden" name="id" value="<?php echo $questionId; ?>">
                     </form>
 
@@ -58,20 +58,17 @@
                     <!-- Displaying admin buttons if user == admin -->
                     <?php if (isset($_SESSION['admin'])) { ?>
                         <?php if ($question->state() == 'duplicated') { ?>
-                            <form class="form-btn" action="index.php?action=openQuestion" method="post">
+                            <form class="form-btn" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
-                                <?php if ($bestAnswer != null) { ?>
-                                    <input type="hidden" name="has_best_answer">
-                                <?php } ?>
-                                <button class="btn btn-secondary" type="submit" name="state">Remove Duplicate</button>
+                                <button class="btn btn-secondary" type="submit" name="remove_duplicate">Remove Duplicate</button>
                             </form>
                         <?php } else { ?>
-                            <form class="form-btn" action="index.php?action=duplicateQuestion" method="post">
+                            <form class="form-btn" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                                 <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
-                                <button class="btn btn-secondary" type="submit" name="state">Duplicate</button>
+                                <button class="btn btn-secondary" type="submit" name="duplicate">Duplicate</button>
                             </form>
                         <?php } ?>
-                        <form class="form-btn" action="index.php?action=deleteQuestion" method="post">
+                        <form class="form-btn" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
                             <button class="btn btn-danger" type="submit" name="delete">Delete</button>
                         </form>
@@ -114,7 +111,7 @@
             <!-- Displaying answer's votes -->
             <div class="row card-footer question-btn">
                 <div class="col-6 likes">
-                    <form class="form-btn float-left" action="index.php?action=voteAnswer" method="post">
+                    <form class="form-btn float-left" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                         <div class="container card-footer-container">
                             <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
                             <input type="hidden" name="answer_id" value="<?php echo $question->answers()[$i]->answerId(); ?>">
@@ -131,7 +128,7 @@
                     <!-- Displaying best answer button if user == question's author and the answer is not his-->
                     <?php if (isset($_SESSION['login'])) { ?>
                         <?php if ($bestAnswer == null || ($bestAnswer != null && $bestAnswer->answerId() != $question->answers()[$i]->answerId())) { ?>
-                            <form class="form-btn float-left" action="index.php?action=bestAnswer" method="post">
+                            <form class="form-btn float-left" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                                 <div class="container card-footer-container">
                                     <input type="hidden" name="answer_id"
                                            value="<?php echo $question->answers()[$i]->answerId() ?>">

@@ -75,18 +75,6 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS . 'NewAnswerController.php');
         $controller = new NewAnswerController($db);
         break;
-    case 'deleteQuestion':
-        require_once(CONTROLLERS . 'DeleteQuestionController.php');
-        $controller = new DeleteQuestionController($db);
-        break;
-    case 'openQuestion':
-        require_once(CONTROLLERS . 'OpenQuestionController.php');
-        $controller = new OpenQuestionController($db);
-        break;
-    case 'duplicateQuestion':
-        require_once(CONTROLLERS . 'DuplicateQuestionController.php');
-        $controller = new DuplicateQuestionController($db);
-        break;
     case 'profile':
         require_once(CONTROLLERS . 'ProfileController.php');
         $controller = new ProfileController($db);
@@ -94,14 +82,6 @@ switch ($_GET['action']) {
     case 'editQuestion':
         require_once(CONTROLLERS . 'EditQuestionController.php');
         $controller = new EditQuestionController($db);
-        break;
-    case 'bestAnswer':
-        require_once(CONTROLLERS . 'BestAnswerController.php');
-        $controller = new BestAnswerController($db);
-        break;
-    case 'voteAnswer':
-        require_once(CONTROLLERS . 'VoteAnswerController.php');
-        $controller = new VoteAnswerController($db);
         break;
     default:
         require_once(CONTROLLERS . 'HomepageController.php');

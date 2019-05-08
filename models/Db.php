@@ -312,13 +312,12 @@ class Db
         return $row->state;
     }
 
-    # Set a question's state according to the state variable
-    public function change_question_state($questionid, $state)
+    # Set a question's state to open
+    public function open_question($questionid)
     {
-        $query = "UPDATE questions SET state=:state WHERE question_id=:id";
+        $query = "UPDATE questions SET state=null WHERE question_id=:id";
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);
-        $ps->bindValue(':state', $state);
         $ps->execute();
     }
 
@@ -328,7 +327,7 @@ class Db
     # Set a question as duplicate
     public function duplicate_question($questionid)
     {
-        $query = "UPDATE questions SET state='duplicated' WHERE question_id=:id";
+        $query = "UPDATE questions SET best_answer_id=null,state='duplicated' WHERE question_id=:id";
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionid);
         $ps->execute();
