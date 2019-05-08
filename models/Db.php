@@ -27,7 +27,7 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-                            # ***** DATABASE SCRIPTS ***** #
+    # ***** DATABASE SCRIPTS ***** #
 
     # -------------------------------------------------------------------------------- #
 
@@ -49,7 +49,8 @@ class Db
 
     # HOMEPAGE CONTROLLER
     # Select the newest questions
-    public function select_newest_questions_for_homepage() {
+    public function select_newest_questions_for_homepage()
+    {
         $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id  AND Q.state is null ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
         $ps->execute();
@@ -58,7 +59,7 @@ class Db
         while ($row = $ps->fetch()) {
             $author = new Member($row->member_id, $row->login, null, null, null, null, null);
             $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date ,null);
+            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
         }
         return $questions;
     }
@@ -176,7 +177,7 @@ class Db
         $row = $ps->fetch();
         $author = new Member($row->member_id, $row->login, null, null, null, null, null);
         $category = new Category($row->category_id, $row->name);
-        return new Question($row->question_id, $author, $category, null, $row->title, $row->subject, $row->state, $row->publication_date ,null);
+        return new Question($row->question_id, $author, $category, null, $row->title, $row->subject, $row->state, $row->publication_date, null);
     }
 
     # Select id of last posted answer
@@ -204,49 +205,6 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # VOTE ANSWER CONTROLLER
-    # Insert a vote in the database
-    public function insert_vote($memberId, $answerId, $vote)
-    {
-        $query = "INSERT INTO votes  VALUES ($memberId,$answerId,$vote)";
-        $ps = $this->_db->prepare($query);
-        $ps->execute();
-    }
-
-    # -------------------------------------------------------------------------------- #
-
-    # BEST ANSWER CONTROLLER
-    # Select question from id
-    public function select_question_for_best_answer($idQuestion)
-    {
-        $query = 'SELECT Q.* FROM questions Q WHERE Q.question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        $row = $ps->fetch();
-        return new Question($row->question_id, null, null, null, null, null, $row->state, null ,null);
-    }
-
-    # Add the best answer at the question passed by parameters
-    public function set_as_best_answer($questionId, $answerId)
-    {
-        $query = 'UPDATE questions SET best_answer_id=:answerid, state=:solved WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':answerid', $answerId);
-        $ps->bindValue(':id', $questionId);
-        $ps->bindValue(':solved', 'solved');
-        $ps->execute();
-    }
-
-    # Delete the best answer
-    public function delete_best_answer($questionId){
-        $query = 'UPDATE questions SET best_answer_id=null,state=null WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionId);
-        $ps->execute();
-    }
-
-    # -------------------------------------------------------------------------------- #
 
     # ADMIN CONTROLLER
     # Select all members from the database
@@ -300,54 +258,6 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # OPEN QUESTION CONTROLLER
-    # Select question's state from id
-    public function select_question_state($question_id)
-    {
-        $query = 'SELECT Q.state FROM questions Q WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $question_id);
-        $ps->execute();
-        $row = $ps->fetch();
-        return $row->state;
-    }
-
-    # Set a question's state to open
-    public function open_question($questionid)
-    {
-        $query = "UPDATE questions SET state=null WHERE question_id=:id";
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionid);
-        $ps->execute();
-    }
-
-    # -------------------------------------------------------------------------------- #
-
-    # DUPLICATE CONTROLLER
-    # Set a question as duplicate
-    public function duplicate_question($questionid)
-    {
-        $query = "UPDATE questions SET best_answer_id=null,state='duplicated' WHERE question_id=:id";
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionid);
-        $ps->execute();
-    }
-
-    # -------------------------------------------------------------------------------- #
-
-    # DELETE CONTROLLER
-    # Delete a question and all related questions
-    public function delete_question($questionid)
-    {
-        $query = 'DELETE FROM questions WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $questionid);
-        $ps->execute();
-    }
-
-
-    # -------------------------------------------------------------------------------- #
-
     # SEARCH CONTROLLER
     # Select the questions that contains a certain keyword
     public function search_questions($keyword)
@@ -366,7 +276,6 @@ class Db
         }
         return $questions;
     }
-
 
     # -------------------------------------------------------------------------------- #
 
@@ -387,7 +296,6 @@ class Db
         return $questions;
     }
 
-
     # -------------------------------------------------------------------------------- #
 
     # NEW QUESTION CONTROLLER
@@ -400,7 +308,6 @@ class Db
         $row = $ps->fetch();
         return $row->id;
     }
-
 
     # -------------------------------------------------------------------------------- #
 
@@ -434,8 +341,8 @@ class Db
         $bestAnswerId = $this->select_best_answer_id($question_id);
         $answers = $this->select_answers_authors_votes($question_id);
         $bestAnswer = null;
-        for($i = 1 ; $i<count($answers) ; $i++){
-            if($answers[$i]->answerId() == $bestAnswerId) {
+        for ($i = 1; $i < count($answers); $i++) {
+            if ($answers[$i]->answerId() == $bestAnswerId) {
                 $bestAnswer = $answers[$i];
                 break;
             }
@@ -450,6 +357,7 @@ class Db
         $question = new Question($row->question_id, $author, null, $bestAnswer, $row->title, $row->subject, $row->state, $row->publication_date, $answers);
         return $question;
     }
+
     # Select all questions + their respective author from the category with the specified id + votes
     public function select_answers_authors_votes($idQuestion)
     {
@@ -459,8 +367,8 @@ class Db
         $ps->execute();
         $votes = array();
         while ($row = $ps->fetch()) {
-            $votes[$row->answer_id][0] = $row->likes ;
-            $votes[$row->answer_id][1] = $row->votes - $row->likes ;
+            $votes[$row->answer_id][0] = $row->likes;
+            $votes[$row->answer_id][1] = $row->votes - $row->likes;
         }
 
         $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
@@ -471,9 +379,9 @@ class Db
         $answers[0] = null;
         while ($row = $ps->fetch()) {
             $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
-            $likes=0;
-            $dislikes=0;
-            if(array_key_exists($row->answer_id,$votes)){
+            $likes = 0;
+            $dislikes = 0;
+            if (array_key_exists($row->answer_id, $votes)) {
                 $likes = $votes[$row->answer_id][0];
                 $dislikes = $votes[$row->answer_id][1];
             }
@@ -483,7 +391,8 @@ class Db
         return $answers;
     }
 
-    public function select_best_answer_id($question_id){
+    public function select_best_answer_id($question_id)
+    {
         $query = 'SELECT Q.best_answer_id FROM questions Q WHERE question_id=:id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $question_id);
@@ -492,4 +401,76 @@ class Db
         return $row->best_answer_id;
     }
 
+    # Set the question's best answer to null
+    public function remove_best_answer($questionId)
+    {
+        $query = "UPDATE questions SET best_answer_id=null WHERE question_id=:id";
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionId);
+        $ps->execute();
+    }
+
+    # Set a question's state to open
+    public function open_question($questionid)
+    {
+        $query = "UPDATE questions SET state=null WHERE question_id=:id";
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+    }
+
+    public function duplicate_question($questionid)
+    {
+        $query = "UPDATE questions SET best_answer_id=null,state='duplicated' WHERE question_id=:id";
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+    }
+
+    public function delete_question($questionid)
+    {
+        $query = 'DELETE FROM questions WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionid);
+        $ps->execute();
+    }
+
+    # Select question from id
+    public function select_question_for_best_answer($idQuestion)
+    {
+        $query = 'SELECT Q.* FROM questions Q WHERE Q.question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idQuestion);
+        $ps->execute();
+        $row = $ps->fetch();
+        return new Question($row->question_id, null, null, null, null, null, $row->state, null, null);
+    }
+
+    # Add the best answer at the question passed by parameters
+    public function set_as_best_answer($questionId, $answerId)
+    {
+        $query = 'UPDATE questions SET best_answer_id=:answerid, state=:solved WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':answerid', $answerId);
+        $ps->bindValue(':id', $questionId);
+        $ps->bindValue(':solved', 'solved');
+        $ps->execute();
+    }
+
+    # Delete the best answer
+    public function delete_best_answer($questionId)
+    {
+        $query = 'UPDATE questions SET best_answer_id=null,state=null WHERE question_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $questionId);
+        $ps->execute();
+    }
+
+    # Insert a vote in the database
+    public function insert_vote($memberId, $answerId, $vote)
+    {
+        $query = "INSERT INTO votes  VALUES ($memberId,$answerId,$vote)";
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+    }
 }

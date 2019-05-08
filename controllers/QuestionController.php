@@ -13,15 +13,20 @@ class QuestionController
     {
 
         # If no id specified or incorrect id --> redirect to homepage
-        if (!isset($_GET['id']) || empty($_GET['id']) || !$this->_db->question_exists($_GET['id'])) {
+        if (!isset($_GET['id']) || empty($_GET['id'])) {
             header("Location: index.php");
             die();
         }
 
-        $memberId = unserialize($_SESSION['login'])->memberId();
-
         # Select the question from the id in $_GET['id']
         $question = $this->_db->select_question($_GET['id']);
+
+        if($question == null){
+            header('Location: index.php?action=homepage');
+            die();
+        }
+
+        $memberId = unserialize($_SESSION['login'])->memberId();
 
         # Getting the login of the question's author
         $authorLogin = $question->author()->html_login();
@@ -42,51 +47,35 @@ class QuestionController
             $_SESSION['error'] = null;
         }
 
-
         # If the user clicked on a button
         if (!empty($_POST)) {
-            if (isset($_POST['form_edit'])) {
-                $display = false;
-                $result = $this->($questionState);
-                if ($result != null) $notification = $result;
-            } elseif (isset($_POST['form_answer'])) {
-                $display = false;
-            } elseif ()
-            else {
-                # Removing question's duplicate state
-                if (isset($_POST['remove_duplicate'])) {
-                    $this->open_question();
-                } elseif (isset($_POST['delete'])) {
-                    $this->delete_question();
-                }# If the question is duplicated and user clicked on an action other than remove duplicate
-                elseif ($questionState == 'duplicated') {
-                    $notification = 'This question is marked as duplicated';
+            if (isset($_POST['remove_duplicate'])) {
+                $this->open_question();
+            } # Removing question's duplicate state
+            elseif (isset($_POST['delete'])) {
+                $this->delete_question();
+            } elseif ($questionState == 'duplicated') {
+                $notification = 'This question is marked as duplicated';
+            } else {
+                # Setting the question as duplicate
+                if (isset($_POST['duplicate'])) {
+                    $this->duplicate();
+                } elseif (isset($_POST['like']) || isset($_POST['dislike'])) {
+                    # Voting for an answer
+                    $result = $this->vote_answer($questionState, $memberId);
+                    if ($result != null) $notification = $result;
+                } elseif (isset($_POST['delete_best_answer'])) {
+                    # Removing the question and all related answers
+                    $this->remove_best_answer();
                 } else {
-                    # Setting the question as duplicate
-                    if (isset($_POST['duplicate'])) {
-                        $this->duplicate();
-                    }
-
-                    if (isset($_POST['like']) || isset($_POST['dislike'])) {
-                        # Voting for an answer
-                        $result = $this->vote_answer($questionState, $memberId);
-                        if ($result != null) $notification = $result;
-                    }
-
-
-                    if (isset($_POST['delete_best_answer'])) {
-                        # Removing the question and all related answers
-                        $this->open_question();
-                    }
-
-                    if (isset($_POST['best_answer'])) {
-                        # Setting the answer as best answer
-                        $this->best_answer();
-                    }
+                    # Setting the answer as best answer
+                    $this->best_answer();
                 }
             }
         }
-        if(!isset($display)) require_once(VIEWS . 'question.php');
+
+        require_once(VIEWS . 'question.php');
+
     }
 
     private function duplicate()
@@ -94,16 +83,17 @@ class QuestionController
         $this->_db->duplicate_question($_POST['question_id']);
         header('Location: index.php?action=question&id=' . $_POST['question_id']);
         die();
-
     }
 
-    private function edit_question(){
-
+    private function remove_best_answer()
+    {
+        $this->_db->remove_best_answer($_POST['question_id']);
+        header('Location: index.php?action=question&id=' . $_POST['question_id']);
+        die();
     }
 
     private function open_question()
     {
-
         $this->_db->open_question($_POST['question_id']);
 
         header('Location: index.php?action=question&id=' . $_POST['question_id']);
@@ -134,6 +124,8 @@ class QuestionController
         # Trying to insert the member's vote
         try {
             $this->_db->insert_vote($memberId, $_POST['answer_id'], $vote);
+            header('Location: index.php?action=question&id=' . $_POST['question_id'] .'#' . $_POST['answer_id']);
+            die();
         }# The member has already voted for this answer
         catch (PDOException $e) {
             return 'You already voted for this answer';
@@ -160,5 +152,4 @@ class QuestionController
         header('Location: index.php?action=question&id=' . $_POST['question_id']);
         die();
     }
-
 }

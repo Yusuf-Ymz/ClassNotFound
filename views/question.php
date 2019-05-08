@@ -45,7 +45,7 @@
                         </form>
                     <?php } ?>
                     <?php if (isset($_SESSION['login']) && $bestAnswer != null && unserialize($_SESSION['login'])->html_login() == $authorLogin) { ?>
-                        <form class="form-btn float-left" action="index.php?action=openQuestion" method="post">
+                        <form class="form-btn float-left" action="index.php?action=question&id=<?php echo $questionId ?>" method="post">
                             <div class="container card-footer-container">
                                 <input type="hidden" name="answer_id"
                                        value="<?php echo $bestAnswer->answerId() ?>">
@@ -126,7 +126,7 @@
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and the answer is not his-->
-                    <?php if (isset($_SESSION['login'])) { ?>
+                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $authorLogin) { ?>
                         <?php if ($bestAnswer == null || ($bestAnswer != null && $bestAnswer->answerId() != $question->answers()[$i]->answerId())) { ?>
                             <form class="form-btn float-left" action="index.php?action=question&id=<?php echo $questionId; ?>" method="post">
                                 <div class="container card-footer-container">
