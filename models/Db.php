@@ -47,12 +47,62 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # HOMEPAGE CONTROLLER
+    # QUESTIONS CONTROLLER
     # Select the newest questions
     public function select_newest_questions_for_homepage()
     {
         $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id  AND Q.state is null ORDER BY Q.question_id DESC';
         $ps = $this->_db->prepare($query);
+        $ps->execute();
+
+        $questions = array();
+        while ($row = $ps->fetch()) {
+            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+            $category = new Category($row->category_id, $row->name);
+            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
+        }
+        return $questions;
+    }
+
+    # Select all questions from a category
+    public function select_questions_for_category($idCategory)
+    {
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $idCategory);
+        $ps->execute();
+
+        $questions = array();
+
+        while ($row = $ps->fetch()) {
+            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
+            $questions[] = new Question($row->question_id, $author, null, null, $row->title, null, null, $row->publication_date, null);
+        }
+        return $questions;
+    }
+
+    # Select the category corresponding to the 'id' parameter
+    public function select_category($category_id)
+    {
+        $query = 'SELECT * FROM categories WHERE category_id=:id';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id', $category_id);
+        $ps->execute();
+        if($ps->rowCount() == 0){
+            return null;
+        }
+        $row = $ps->fetch();
+        $category = new Category($row->category_id, $row->name);
+        return $category;
+    }
+
+    # Select the questions that contains a certain keyword
+    public function search_questions($keyword)
+    {
+        $keyword = strtolower($keyword);
+        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND (LOWER(Q.title) LIKE :keyword OR LOWER(Q.subject) LIKE :keyword) ORDER BY Q.question_id DESC';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':keyword', "%$keyword%");
         $ps->execute();
 
         $questions = array();
@@ -106,38 +156,6 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # CATEGORY CONTROLLER
-    # Select all questions from a category
-    public function select_questions_for_category($idCategory)
-    {
-        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.author_id = M.member_id AND Q.category_id = :id ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idCategory);
-        $ps->execute();
-
-        $questions = array();
-
-        while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
-            $questions[] = new Question($row->question_id, $author, null, null, $row->title, null, null, $row->publication_date, null);
-        }
-        return $questions;
-    }
-
-    # Select the category corresponding to the 'id' parameter
-    public function select_category($category_id)
-    {
-        $query = 'SELECT * FROM categories WHERE category_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $category_id);
-        $ps->execute();
-        $row = $ps->fetch();
-        $category = new Category($row->category_id, $row->name);
-        return $category;
-    }
-
-    # -------------------------------------------------------------------------------- #
-
     # EDIT CONTROLLER
     # Select question from id
     public function select_question_for_edit($idQuestion)
@@ -161,6 +179,29 @@ class Db
         $ps->bindValue(':subject', $subject);
         $ps->bindValue(':cat', $category);
         $ps->bindValue(':id', $question_id);
+        $ps->execute();
+    }
+
+    #Select the last posted question
+    public function select_last_posted_question()
+    {
+        $query = 'SELECT MAX(question_id) as \'id\' FROM questions';
+        $ps = $this->_db->prepare($query);
+        $ps->execute();
+        $row = $ps->fetch();
+        return $row->id;
+    }
+
+    # Insert a new question
+    public function insert_question($author_id, $category_id, $title, $subject, $publication_date)
+    {
+        $query = 'INSERT INTO questions (author_id,category_id,title,subject,publication_date) VALUES (:author_id,:category_id,:title,:subject,:publication_date)';
+        $ps = $this->_db->prepare($query);
+        $ps->bindValue(':author_id', $author_id);
+        $ps->bindValue(':category_id', $category_id);
+        $ps->bindValue(':title', $title);
+        $ps->bindValue(':subject', $subject);
+        $ps->bindValue(':publication_date', $publication_date);
         $ps->execute();
     }
 
@@ -258,27 +299,6 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # SEARCH CONTROLLER
-    # Select the questions that contains a certain keyword
-    public function search_questions($keyword)
-    {
-        $keyword = strtolower($keyword);
-        $query = 'SELECT Q.*, M.*, C.* FROM questions Q, members M, categories C WHERE Q.author_id = M.member_id AND Q.category_id = C.category_id AND (LOWER(Q.title) LIKE :keyword OR LOWER(Q.subject) LIKE :keyword) ORDER BY Q.question_id DESC';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':keyword', "%$keyword%");
-        $ps->execute();
-
-        $questions = array();
-        while ($row = $ps->fetch()) {
-            $author = new Member($row->member_id, $row->login, null, null, null, null, null);
-            $category = new Category($row->category_id, $row->name);
-            $questions[] = new Question($row->question_id, $author, $category, null, $row->title, null, null, $row->publication_date, null);
-        }
-        return $questions;
-    }
-
-    # -------------------------------------------------------------------------------- #
-
     # PROFILE CONTROLLER
     # Select a member's questions via his id
     public function select_questions_for_profile($memberId)
@@ -298,42 +318,7 @@ class Db
 
     # -------------------------------------------------------------------------------- #
 
-    # NEW QUESTION CONTROLLER
-    #Select the last posted question
-    public function select_last_posted_question()
-    {
-        $query = 'SELECT MAX(question_id) as \'id\' FROM questions';
-        $ps = $this->_db->prepare($query);
-        $ps->execute();
-        $row = $ps->fetch();
-        return $row->id;
-    }
-
-    # -------------------------------------------------------------------------------- #
-
     # QUESTION CONTROLLER
-    # Verify if the question exists
-    public function question_exists($idQuestion)
-    {
-        $query = ' SELECT * FROM questions WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
-        $ps->execute();
-        return ($ps->rowcount() != 0);
-    }
-
-    # Insert a new question
-    public function insert_question($author_id, $category_id, $title, $subject, $publication_date)
-    {
-        $query = 'INSERT INTO questions (author_id,category_id,title,subject,publication_date) VALUES (:author_id,:category_id,:title,:subject,:publication_date)';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':author_id', $author_id);
-        $ps->bindValue(':category_id', $category_id);
-        $ps->bindValue(':title', $title);
-        $ps->bindValue(':subject', $subject);
-        $ps->bindValue(':publication_date', $publication_date);
-        $ps->execute();
-    }
 
     # Select question from id
     public function select_question($question_id)
@@ -353,7 +338,7 @@ class Db
     }
 
     # Select all questions + their respective author from the category with the specified id + votes
-    public function select_answers_authors_votes($question, $bestAnswerId)
+    private function select_answers_authors_votes($question, $bestAnswerId)
     {
         $query = 'SELECT A.answer_id,sum(V.liked) as \'likes\',count(V.answer_id) as \'votes\' FROM answers A , votes V WHERE A.question_id=:id AND V.answer_id=A.answer_id GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
@@ -386,16 +371,6 @@ class Db
             $answers[] = $answer;
         }
         return $answers;
-    }
-
-    public function select_best_answer_id($question_id)
-    {
-        $query = 'SELECT Q.best_answer_id FROM questions Q WHERE question_id=:id';
-        $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $question_id);
-        $ps->execute();
-        $row = $ps->fetch();
-        return $row->best_answer_id;
     }
 
     # Set the question's best answer to null

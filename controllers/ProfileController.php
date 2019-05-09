@@ -16,7 +16,7 @@ class ProfileController
 
         # User not connected --> redirect homepage
         if (!isset($_SESSION['logged'])) {
-            header('Location: index.php?action=homepage');
+            header('Location: index.php');
             die();
         }
         $memberId = unserialize($_SESSION['login'])->memberId();

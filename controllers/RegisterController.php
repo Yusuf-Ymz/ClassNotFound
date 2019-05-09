@@ -15,7 +15,7 @@ class RegisterController
 
         # User already connected
         if (isset($_SESSION['logged'])) {
-            header('Location: index.php?action=homepage');
+            header('Location: index.php');
             die();
         }
 

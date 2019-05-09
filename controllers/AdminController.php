@@ -13,7 +13,7 @@ class AdminController
     {
         # If the user is not connected or is not an admin --> homepage
         if (!isset($_SESSION['admin'])) {
-            header('Location: index.php?action=homepage');
+            header('Location: index.php');
         }
 
         # If an admin clicked on a button

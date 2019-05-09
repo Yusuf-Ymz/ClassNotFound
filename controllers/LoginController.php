@@ -15,7 +15,7 @@ class LoginController
 
         # User already connected
         if (isset($_SESSION['logged'])) {
-            header('Location: index.php?action=homepage');
+            header('Location: index.php');
             die();
         }
 
@@ -58,7 +58,7 @@ class LoginController
                     }
 
                     # Redirection to homepage after being successfully connected
-                    header('Location: index.php?action=homepage');
+                    header('Location: index.php');
                     die();
                 }
             }

@@ -12,7 +12,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="index.php?action=homepage"><i class="far fa-comment-alt"></i> ClassNotFound</a>
+        <a class="navbar-brand" href="index.php"><i class="far fa-comment-alt"></i> ClassNotFound</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -36,7 +36,7 @@
                     <a class="nav-link" href="index.php?action=<?php echo empty($_SESSION['logged']) ? 'login">Login' : 'logout">Logout'?></a>
                 </li>
                 <li class="nav-item">
-                    <a id="btn-new-question" class="btn btn-light" href="index.php?action=editQuestion">New Question</a>
+                    <a id="btn-new-question" class="btn btn-light" href="index.php?action=editQuestion&newQuestion">New Question</a>
                 </li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
                 <h3 id="categories" class="my-4">Categories</h3>
                 <div class="list-group">
                     <?php foreach ($categories as $i => $category) { ?>
-                    <a href="index.php?action=category&id=<?php echo $category->id(); ?>" class="list-group-item category"><?php echo $category->html_name(); ?></a>
+                    <a href="index.php?action=questions&category_id=<?php echo $category->id(); ?>" class="list-group-item category"><?php echo $category->html_name(); ?></a>
                     <?php } ?>
                 </div>
             </div>
@@ -60,7 +60,7 @@
             <div class="col-md-9">
                 <!-- Search form -->
                 <div class="container-fluid form-search">
-                    <form action="index.php?action=search" method="post">
+                    <form action="index.php?action=questions" method="post">
                         <div class="input-group">
                             <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($_POST['search'])) echo 'value="' . htmlspecialchars($_POST['search']) . '"' ?>>
                             <div class="input-group-btn">

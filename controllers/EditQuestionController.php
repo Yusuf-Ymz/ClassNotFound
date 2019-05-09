@@ -17,6 +17,18 @@ class EditQuestionController
         if(isset($_POST['edit']) || isset($_POST['form_edit'])) {
             $question = $this->_db->select_question_for_edit($_POST['question_id']);
         } else {
+            # If the user try to access this controller without doing any action
+            if(!isset($_GET['newQuestion']) && !isset($_POST['form_question'])){
+                header('Location: index.php');
+                die();
+            }
+            # If the user try to post a question without being connected --> redirect login with notification
+            if(!isset($_SESSION['logged'])){
+                $_SESSION['error'] = 'You must be logged to post a question';
+                header('Location: index.php?action=login');
+                die();
+            }
+            # Empty question to post
             $question = new Question(null, null, null, null, null, null, null, null, null);
         }
 
@@ -48,6 +60,7 @@ class EditQuestionController
             die();
         }
 
+        # Selecting all categories to display
         $categories = $this->_db->select_categories();
 
         require_once(VIEWS . 'editQuestion.php');

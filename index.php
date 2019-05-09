@@ -59,14 +59,6 @@ switch ($_GET['action']) {
         require_once(CONTROLLERS . 'AdminController.php');
         $controller = new AdminController($db);
         break;
-    case 'search':
-        require_once(CONTROLLERS . 'SearchController.php');
-        $controller = new SearchController($db);
-        break;
-    case 'category':
-        require_once(CONTROLLERS . 'CategoryController.php');
-        $controller = new CategoryController($db);
-        break;
     case 'newAnswer':
         require_once(CONTROLLERS . 'NewAnswerController.php');
         $controller = new NewAnswerController($db);
@@ -80,8 +72,8 @@ switch ($_GET['action']) {
         $controller = new EditQuestionController($db);
         break;
     default:
-        require_once(CONTROLLERS . 'HomepageController.php');
-        $controller = new HomepageController($db);
+        require_once(CONTROLLERS . 'QuestionsControllers.php');
+        $controller = new QuestionsControllers($db);
         break;
 }
 
