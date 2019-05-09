@@ -74,6 +74,10 @@ class QuestionController
             }
         }
 
+        /*if(!isset($notification)){
+            $question = $this->_db->select_question($_GET['id']);
+        }*/
+
         require_once(VIEWS . 'question.php');
 
     }

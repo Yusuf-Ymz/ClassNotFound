@@ -83,4 +83,8 @@ class Question
         return $this->_answers;
     }
 
+    public function setAnswers($answers){
+        $this->_answers = $answers;
+    }
+
 }

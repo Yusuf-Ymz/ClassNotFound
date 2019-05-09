@@ -338,32 +338,26 @@ class Db
     # Select question from id
     public function select_question($question_id)
     {
-        $bestAnswerId = $this->select_best_answer_id($question_id);
-        $answers = $this->select_answers_authors_votes($question_id);
-        $bestAnswer = null;
-        for ($i = 1; $i < count($answers); $i++) {
-            if ($answers[$i]->answerId() == $bestAnswerId) {
-                $bestAnswer = $answers[$i];
-                break;
-            }
-        }
-        $answers[0] = $bestAnswer;
-        $query = 'SELECT Q.*, M.* FROM questions Q, members M WHERE Q.question_id=:id AND M.member_id=Q.author_id';
+        $query = 'SELECT Q.*, M.* FROM questions Q, members M  WHERE Q.question_id=:id AND M.member_id=Q.author_id';
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $question_id);
         $ps->execute();
         $row = $ps->fetch();
         $author = new Member($row->member_id, $row->login, null, null, null, null, null);
-        $question = new Question($row->question_id, $author, null, $bestAnswer, $row->title, $row->subject, $row->state, $row->publication_date, $answers);
+        $question = new Question($row->question_id, $author, null, null, $row->title, $row->subject, $row->state, $row->publication_date, null);
+
+        $answers = $this->select_answers_authors_votes($question, $row->best_answer_id);
+        $answers[0] = $question->bestAnswer();
+        $question->setAnswers($answers);
         return $question;
     }
 
     # Select all questions + their respective author from the category with the specified id + votes
-    public function select_answers_authors_votes($idQuestion)
+    public function select_answers_authors_votes($question, $bestAnswerId)
     {
         $query = 'SELECT A.answer_id,sum(V.liked) as \'likes\',count(V.answer_id) as \'votes\' FROM answers A , votes V WHERE A.question_id=:id AND V.answer_id=A.answer_id GROUP BY A.answer_id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
+        $ps->bindValue(':id', $question->questionId());
         $ps->execute();
         $votes = array();
         while ($row = $ps->fetch()) {
@@ -373,7 +367,7 @@ class Db
 
         $query = 'SELECT A.*, M.*  FROM answers A, members M   WHERE  A.author_id= M.member_id AND A.question_id = :id ORDER BY A.answer_id';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $idQuestion);
+        $ps->bindValue(':id', $question->questionId());
         $ps->execute();
         $answers = array();
         $answers[0] = null;
@@ -385,9 +379,12 @@ class Db
                 $likes = $votes[$row->answer_id][0];
                 $dislikes = $votes[$row->answer_id][1];
             }
-            $answers[] = new Answer($row->answer_id, $member, $row->subject, $row->publication_date, $likes, $dislikes);
+            $answer = new Answer($row->answer_id, $member, $row->subject, $row->publication_date, $likes, $dislikes);
+            if($row->answer_id == $bestAnswerId) {
+                $question->setBestAnswer($answer);
+            }
+            $answers[] = $answer;
         }
-
         return $answers;
     }
 
@@ -404,7 +401,7 @@ class Db
     # Set the question's best answer to null
     public function remove_best_answer($questionId)
     {
-        $query = "UPDATE questions SET best_answer_id=null WHERE question_id=:id";
+        $query = "UPDATE questions SET best_answer_id=null,state=null WHERE question_id=:id";
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $questionId);
         $ps->execute();
