@@ -33,7 +33,7 @@
                 </li>
                 <?php } ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=<?php echo !isset($isLogged) ? 'login">Login' : 'logout">Logout'?></a>
+                    <a class="nav-link" href="index.php?action=<?php echo !isset($memberLogin) ? 'login">Login' : 'logout">Logout'?></a>
                 </li>
                 <li class="nav-item">
                     <a id="btn-new-question" class="btn btn-light" href="index.php?action=editQuestion&newQuestion">New Question</a>
