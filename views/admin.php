@@ -1,10 +1,9 @@
 <div class="container">
     <h3>Members:</h3>
 </div>
-<?php if($nbMembers == 1) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No other user found.</p>'?>
+<?php if($nbMembers == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No other user found.</p>'?>
 <!-- Displaying all members -->
 <?php for ($i = 0; $i < $nbMembers; $i++) { ?>
-    <?php if (unserialize($_SESSION['login'])->login() != $members[$i]->login()) { ?>
         <div class="container">
             <div class="card">
                 <div class="card-body">
@@ -37,6 +36,5 @@
                 </div>
             </div>
         </div>
-    <?php } ?>
 <?php } ?>
 

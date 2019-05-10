@@ -1,20 +1,12 @@
 <div class="container">
-    <h3>
-        <?php
-        if (isset($category)) {
-            echo $category->name() . " Questions:";
-        } elseif (isset($_POST['form_search'])) {
-            echo 'Results:';
-        } else echo 'Newest Questions';
-        ?>
-    </h3>
+    <h3><?php echo $message; ?></h3>
 </div>
 <?php
 if ($nbQuestions == 0) {
     echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i>';
     if (isset($category)) {
         echo ' No questions have been posted in this category yet.';
-    } elseif (isset($_POST['form_search'])) {
+    } elseif (isset($search)) {
         echo ' No results';
     } else echo ' No open questions have been found</p>';
 }

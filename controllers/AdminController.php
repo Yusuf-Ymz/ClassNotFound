@@ -34,7 +34,7 @@ class AdminController
         }
 
         # Selecting all members to display in admin view
-        $members = $this->_db->select_all_members();
+        $members = $this->_db->select_all_members(unserialize($_SESSION['login'])->memberId());
 
         $nbMembers = count($members);
 

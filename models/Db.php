@@ -248,11 +248,12 @@ class Db
 
 
     # ADMIN CONTROLLER
-    # Select all members from the database
-    public function select_all_members()
+    # Select all members except the current user from the database for the admin view
+    public function select_all_members($memberId)
     {
-        $query = 'SELECT * FROM members ORDER BY login';
+        $query = 'SELECT * FROM members WHERE member_id NOT IN (SELECT member_id FROM members WHERE member_id=:id) ORDER BY login';
         $ps = $this->_db->prepare($query);
+        $ps->bindValue(':id',$memberId);
         $ps->execute();
         $members = array();
         while ($row = $ps->fetch()) {

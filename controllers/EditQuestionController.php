@@ -13,7 +13,7 @@ class EditQuestionController
 
     public function run()
     {
-        # Selecting the question to edit
+        # Selecting the question to edit if the author clicked on edit on the question's view
         if(isset($_POST['edit']) || isset($_POST['form_edit'])) {
             $question = $this->_db->select_question_for_edit($_POST['question_id']);
         } else {
@@ -37,11 +37,15 @@ class EditQuestionController
             if (preg_match('/^\s*$/', $_POST['question_title']) || preg_match('/^\s*$/', $_POST['question_subject'])) {
                 $notification = "Please fill in all fields";
             } else {
+                # If the member is editing his question
                 if (isset($_POST['form_edit'])) {
+                    # Updating his question
                     $this->_db->edit_question($_POST['question_id'], $_POST['question_title'], $_POST['question_subject'], $_POST['question_category_id']);
                     header("Location: index.php?action=question&id=" . $_POST['question_id']);
                     die();
-                } elseif (isset($_POST['form_question'])) {
+                }
+                # If the member is posting a question
+                elseif (isset($_POST['form_question'])) {
                     # Insert question into database
                     $authorId = unserialize($_SESSION['login'])->memberId();
                     $publicationDate = date("Y-m-d");
@@ -62,6 +66,9 @@ class EditQuestionController
 
         # Selecting all categories to display
         $categories = $this->_db->select_categories();
+
+        if(isset($_POST['question_id']))
+            $questionId = $_POST['question_id'];
 
         require_once(VIEWS . 'editQuestion.php');
     }

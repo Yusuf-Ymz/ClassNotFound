@@ -1,5 +1,5 @@
 <div class="container">
-    <?php if(isset($_POST['question_id'])) { ?><h3>Edit your question:</h3>
+    <?php if(isset($questionId)) { ?><h3>Edit your question:</h3>
     <?php } else { ?><h3>New question:</h3><?php } ?>
 </div>
 <!-- Edit form -->
@@ -26,8 +26,8 @@
         <?php if (isset($notification)) { ?>
             <p id="notification"> <?php echo $notification; ?></p>
         <?php } ?>
-        <?php if(isset($_POST['question_id'])) { ?>
-            <input type="hidden" name="question_id" value="<?php echo $_POST['question_id']; ?>">
+        <?php if(isset($questionId)) { ?>
+            <input type="hidden" name="question_id" value="<?php echo $questionId; ?>">
             <input class="btn btn-dark" type="submit" name="form_edit" value="Edit question">
         <?php } else { ?>
             <input class="btn btn-dark" type="submit" name="form_question" value="Post question">

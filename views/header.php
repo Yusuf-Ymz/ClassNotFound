@@ -18,22 +18,22 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <?php if(empty($_SESSION['logged'])) { ?>
+                <?php if(!isset($memberLogin)) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?action=register">Register</a>
                 </li>
                 <?php } else { ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=profile"><?php echo unserialize($_SESSION['login'])->html_login(); ?></a>
+                    <a class="nav-link" href="index.php?action=profile"><?php echo $memberLogin ; ?></a>
                 </li>
                 <?php } ?>
-                <?php if(!empty($_SESSION['admin'])) { ?>
+                <?php if(isset($isAdmin)) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?action=admin">Admin</a>
                 </li>
                 <?php } ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=<?php echo empty($_SESSION['logged']) ? 'login">Login' : 'logout">Logout'?></a>
+                    <a class="nav-link" href="index.php?action=<?php echo !isset($isLogged) ? 'login">Login' : 'logout">Logout'?></a>
                 </li>
                 <li class="nav-item">
                     <a id="btn-new-question" class="btn btn-light" href="index.php?action=editQuestion&newQuestion">New Question</a>
@@ -62,7 +62,7 @@
                 <div class="container-fluid form-search">
                     <form action="index.php?action=questions" method="post">
                         <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($_POST['search'])) echo 'value="' . htmlspecialchars($_POST['search']) . '"' ?>>
+                            <input class="form-control" type="text" placeholder="Search" name="search" <?php if(isset($search)) echo 'value="' . $search . '"' ?>>
                             <div class="input-group-btn">
                             <button id="btn-search" class="btn btn-default" type="submit" name="form_search"><i class="fas fa-search"></i></button>
                             </div>

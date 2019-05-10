@@ -79,6 +79,11 @@ class QuestionController
 
         $nbAnswers = count($question->answers());
 
+        if(isset($_SESSION['login']))
+            $memberLogin = unserialize($_SESSION['login'])->html_login();
+        if(isset($_SESSION['admin']))
+            $isAdmin = true;
+
         require_once(VIEWS . 'question.php');
 
     }

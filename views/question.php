@@ -38,13 +38,13 @@
                     </form>
 
                     <!-- Displaying edit button if user == question's author -->
-                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $question->author()->login()) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login()) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
                             <button class="btn btn-dark" type="submit" name="edit">Edit</button>
                         </form>
                     <?php } ?>
-                    <?php if (isset($_SESSION['login']) && $question->bestAnswer() != null && unserialize($_SESSION['login'])->html_login() == $question->author()->login()) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login() && $question->bestAnswer() != null) { ?>
                         <form class="form-btn float-left"
                               action="index.php?action=question&id=<?php echo $question->questionId() ?>" method="post">
                             <div class="container card-footer-container">
@@ -59,7 +59,7 @@
                         </form>
                     <?php } ?>
                     <!-- Displaying admin buttons if user == admin -->
-                    <?php if (isset($_SESSION['admin'])) { ?>
+                    <?php if (isset($isAdmin)) { ?>
                         <?php if ($question->state() == 'duplicated') { ?>
                             <form class="form-btn"
                                   action="index.php?action=question&id=<?php echo $question->questionId() ?>"
@@ -140,7 +140,7 @@
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and the answer is not his-->
-                    <?php if (isset($_SESSION['login']) && unserialize($_SESSION['login'])->login() == $question->author()->login()) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login()) { ?>
                         <?php if ($question->bestAnswer() == null || ($question->bestAnswer() != null && $question->bestAnswer()->answerId() != $question->answers()[$i]->answerId())) { ?>
                             <form class="form-btn float-left"
                                   action="index.php?action=question&id=<?php echo $question->questionId() ?>"
