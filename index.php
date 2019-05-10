@@ -44,7 +44,7 @@ require_once(VIEWS . 'header.php');
 
 # If action is empty, define action=homepage
 if (empty($_GET['action'])) {
-    $_GET['action'] = 'homepage';
+    $_GET['action'] = 'HomepageController';
 }
 
 # Create a $controller variable containing the correct controller according to the action
@@ -82,8 +82,8 @@ switch ($_GET['action']) {
         $controller = new EditQuestionController($db);
         break;
     default:
-        require_once(CONTROLLERS . 'QuestionsControllers.php');
-        $controller = new QuestionsControllers($db);
+        require_once(CONTROLLERS . 'HomepageController.php');
+        $controller = new HomepageController($db);
         break;
 }
 
