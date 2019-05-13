@@ -28,9 +28,11 @@ class NewAnswerController
         # Answer form
         if (isset($_POST['form_answer'])) {
             # Check if user is trying to post an empty answer
-            if (preg_match('/^\s*$/', $_POST['answer_text'])) {
+            if (preg_match('/^\s*$/', $_POST['answer_text']))
                 $notification = "Please fill in all fields";
-            } else {
+            elseif (isset($_POST['answer_text'][65535]))
+                $notification = 'Please enter a shorter answer';
+            else {
                 # Insert answer into database
                 $authorId = unserialize($_SESSION['login'])->memberId();
                 $publicationDate = date("Y-m-d");

@@ -158,7 +158,7 @@
                     <?php } ?>
                 </div>
                 <div class="container card-footer-container col-6">
-                    <span id="date" class="card-deco pagination justify-content-end">
+                    <span class="date card-deco pagination justify-content-end">
                         <?php echo $question->answers()[$i]->publicationDate() ?>
                     </span>
                 </div>

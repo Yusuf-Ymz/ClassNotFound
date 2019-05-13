@@ -27,10 +27,17 @@ class RegisterController
                 $notification = 'Please fill in all fields';
             } else {
                 # All fields are completed, verification...
-
+                if (isset($_POST['lastname'][25]))
+                    $notification = 'Please enter a shorter lastname';
+                elseif (isset($_POST['firstname'][25])) {
+                    $notification = 'Please enter a shorter firstname';
+                } elseif (isset($_POST['login'][25]))
+                    $notification = 'Please enter a shorter login';
                 # Invalid e-mail address
-                if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail']))
+                elseif (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail']))
                     $notification = 'Please enter a valid mail address';
+                elseif (isset($_POST['password'][60]))
+                    $notification = 'Please enter a shorter password';
                 # Successfully registered
                 else {
                     # Catch error if login already exists
@@ -42,15 +49,10 @@ class RegisterController
                         header('Location: index.php?action=login');
                         die();
                     } catch (PDOException $e) {
-                        if($e->getCode() == 23000)
-                            $notification = 'This username already exists';
-                        else {
-                            preg_match('/(\'.*?\')/', $e->getMessage(), $result);
-                            $notification = 'The field ' . $result[1] . ' is too long';
-                        }
+                        $notification = 'This username already exists';
                     }
                 }
-            }   
+            }
         }
         require_once(VIEWS . 'register.php');
     }

@@ -36,7 +36,11 @@ class EditQuestionController
         if (isset($_POST['question_title']) && isset($_POST['question_subject'])) {
             if (preg_match('/^\s*$/', $_POST['question_title']) || preg_match('/^\s*$/', $_POST['question_subject'])) {
                 $notification = "Please fill in all fields";
-            } else {
+            } elseif (isset($_POST['question_title'][80]))
+                $notification = 'Please enter a shorter title';
+            elseif (isset($_POST['question_subject'][65535]))
+                $notification = 'Please enter a short answer';
+            else {
                 # If the member is editing his question
                 if (isset($_POST['form_edit'])) {
                     # Updating his question
@@ -48,14 +52,10 @@ class EditQuestionController
                     # Insert question into database
                     $authorId = unserialize($_SESSION['login'])->memberId();
                     $publicationDate = date("Y-m-d");
-                    try {
-                        $this->_db->insert_question($authorId, $_POST['question_category_id'], $_POST['question_title'], $_POST['question_subject'], $publicationDate);
-                        $postedQuestionId = $this->_db->select_last_posted_question();
-                        header("Location: index.php?action=question&id=" . $postedQuestionId);
-                        die();
-                    } catch (PDOException $e) {
-                        $notification = 'Please enter a shorter title';
-                    }
+                    $this->_db->insert_question($authorId, $_POST['question_category_id'], $_POST['question_title'], $_POST['question_subject'], $publicationDate);
+                    $postedQuestionId = $this->_db->select_last_posted_question();
+                    header("Location: index.php?action=question&id=" . $postedQuestionId);
+                    die();
                 }
             }
         }
