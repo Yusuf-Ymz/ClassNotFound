@@ -59,8 +59,7 @@ class QuestionController
                     }
                     $memberId = unserialize($_SESSION['login'])->memberId();
                     # Voting for an answer
-                    $result = $this->vote_answer($questionState, $memberId);
-                    if ($result != null) $notification = $result;
+                    $notification= $this->vote_answer($questionState, $memberId);
                 } elseif (isset($_POST['delete_best_answer'])) {
                     # Removing the question and all related answers
                     $this->remove_best_answer();
@@ -109,7 +108,6 @@ class QuestionController
         # If the member try to vote for his answer
         if ($memberId == $_POST['member_id']) {
             return 'You cannot vote for your own answers';
-
         }
 
         if (isset($_POST['like'])) {

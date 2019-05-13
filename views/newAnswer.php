@@ -28,7 +28,7 @@
 </div>
 
 <!-- Answer Form Part -->
-<div class="container">
+<div class="container" id="new_answer">
     <div class="row">
         <div class="col-md-12">
             <h3>Write your answer:</h3>

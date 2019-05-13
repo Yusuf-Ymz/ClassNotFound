@@ -23,19 +23,18 @@ class RegisterController
 
         # Display notification if any of the fields are empty
         if (!empty($_POST)) {
-            if (preg_match('/^\s*$/', $_POST['lastname']) || preg_match('/^\s*$/', $_POST['firstname']) || preg_match('/^\s*$/', $_POST['lastname']) || preg_match('/^\s*$/', $_POST['login']) || empty($_POST['password'])) {
+            if (preg_match('/^\s*$/', $_POST['lastname']) || preg_match('/^\s*$/', $_POST['firstname']) || preg_match('/^\s*$/', $_POST['mail']) || preg_match('/^\s*$/', $_POST['login']) || empty($_POST['password'])) {
                 $notification = 'Please fill in all fields';
             } else {
                 # All fields are completed, verification...
 
                 # Invalid e-mail address
-                if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail'])) {
+                if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail']))
                     $notification = 'Please enter a valid mail address';
-                } # Successfully registered
+                # Successfully registered
                 else {
                     # Catch error if login already exists
                     try {
-
                         # Register member to the database
                         $this->_db->insert_member($_POST['lastname'], $_POST['firstname'], $_POST['mail'], $_POST['login'], password_hash($_POST['password'], PASSWORD_BCRYPT));
 
@@ -43,11 +42,7 @@ class RegisterController
                         header('Location: index.php?action=login');
                         die();
                     } catch (PDOException $e) {
-                        if($e->getCode()==22001){
-                            $notification = 'Take a shorter username';
-                        } else {
-                            $notification = 'This username already exists';
-                        }
+                        $notification = 'This username already exists';
                     }
                 }
             }   

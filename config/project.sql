@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `author_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `best_answer_id` int(11) DEFAULT NULL,
-  `title` varchar(50) NOT NULL,
+  `title` varchar(80) NOT NULL,
   `subject` text NOT NULL,
   `state` set('solved','duplicated') DEFAULT NULL,
   `publication_date` date NOT NULL,

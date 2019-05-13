@@ -7,7 +7,7 @@
     <div class="container">
         <!-- The title-->
         <div class="form-group">
-            <input placeholder="Your title..." type="text" class="form-control" name="question_title"
+            <input placeholder="Your title..." type="text" class="form-control" maxlength="80" name="question_title"
                    value="<?php echo $question->html_title(); ?>"/>
         </div>
         <!-- The Subject-->

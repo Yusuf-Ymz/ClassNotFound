@@ -32,7 +32,7 @@
             <div class="container">
                 <div class="row">
                     <!-- New Answer Button -->
-                    <form class="form-btn" action="index.php?action=newAnswer" method="post">
+                    <form class="form-btn" action="index.php?action=newAnswer#new_answer" method="post">
                         <button class="btn btn-dark" type="submit" name="new_answer">Answer</button>
                         <input type="hidden" name="id" value="<?php echo $question->questionId() ?>">
                     </form>
