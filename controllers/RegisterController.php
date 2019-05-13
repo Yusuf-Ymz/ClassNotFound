@@ -42,7 +42,12 @@ class RegisterController
                         header('Location: index.php?action=login');
                         die();
                     } catch (PDOException $e) {
-                        $notification = 'This username already exists';
+                        if($e->getCode() == 23000)
+                            $notification = 'This username already exists';
+                        else {
+                            preg_match('/(\'.*?\')/', $e->getMessage(), $result);
+                            $notification = 'The field ' . $result[1] . ' is too long';
+                        }
                     }
                 }
             }   
