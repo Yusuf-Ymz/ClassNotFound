@@ -1,6 +1,5 @@
 <div class="container">
-    <?php if(isset($questionId)) { ?><h3>Edit your question:</h3>
-    <?php } else { ?><h3>New question:</h3><?php } ?>
+    <h3><?php echo $pageTitle ?></h3>
 </div>
 <!-- Edit form -->
 <form action="index.php?action=editQuestion" method="post">

@@ -2,13 +2,9 @@
     <h3><?php echo $pageTitle; ?></h3>
 </div>
 <?php
-if ($nbQuestions == 0) {
-    echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i>';
-    if (isset($category)) {
-        echo ' No questions have been posted in this category yet.';
-    } elseif (isset($search)) {
-        echo ' No results';
-    } else echo ' No open questions have been found</p>';
+if (isset($notification)) {
+    echo "<p id=\"notification\" class=\"container\"><i class=\"fas fa-exclamation-triangle\"></i> $notification</p>";
+
 }
 ?>
 <!-- Displaying category's questions -->

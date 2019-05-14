@@ -14,7 +14,7 @@ class LoginController
     {
 
         # User already connected
-        if (isset($_SESSION['logged'])) {
+        if (isset($_SESSION['login'])) {
             header('Location: index.php');
             die();
         }
@@ -49,14 +49,7 @@ class LoginController
                     $notification = 'Your account is suspended';
                 } # Authentication succeeded
                 else {
-                    $_SESSION['logged'] = true;
                     $_SESSION['login'] = serialize($member);
-
-                    # Check if account has administrator rights
-                    if ($member->admin() == 1) {
-                        $_SESSION['admin'] = true;
-                    }
-
                     # Redirection to homepage after being successfully connected
                     header('Location: index.php');
                     die();

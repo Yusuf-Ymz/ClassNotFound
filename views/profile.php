@@ -1,7 +1,7 @@
 <div class="container">
     <h3>My questions:</h3>
 </div>
-<?php if ($nbQuestions == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No questions have been posted yet.</p>' ?>
+<?php if (isset($notification)) echo "<p id=\"notification\" class=\"container\"><i class=\"fas fa-exclamation-triangle\"></i> $notification</p>" ?>
 <!-- Displaying all user's questions -->
 <?php for ($i = 0; $i < $nbQuestions; $i++) { ?>
     <div class="container">

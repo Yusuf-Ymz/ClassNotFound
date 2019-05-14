@@ -13,7 +13,7 @@ class NewAnswerController
     {
 
         # Redirection to login if not logged
-        if (!isset($_SESSION['logged'])) {
+        if (!isset($_SESSION['login'])) {
             $_SESSION['error'] = 'You must be logged to post an answer';
             header('Location: index.php?action=login');
             die();

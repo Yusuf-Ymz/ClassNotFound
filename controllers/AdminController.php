@@ -12,8 +12,9 @@ class AdminController
     public function run()
     {
         # If the user is not connected or is not an admin --> homepage
-        if (!isset($_SESSION['admin'])) {
+        if (!isset($_SESSION['login']) || unserialize($_SESSION['login'])->admin() == 0) {
             header('Location: index.php');
+            die();
         }
 
         # If an admin clicked on a button
@@ -37,6 +38,9 @@ class AdminController
         $members = $this->_db->select_all_members(unserialize($_SESSION['login'])->memberId());
 
         $nbMembers = count($members);
+
+        if ($nbMembers == 0)
+            $notification = 'No other user found';
 
         require_once(VIEWS . 'admin.php');
     }

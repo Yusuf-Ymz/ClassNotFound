@@ -25,16 +25,15 @@ $ini = parse_ini_file('config/config.ini');
 require_once(MODELS . 'Db.php');
 $db = Db::getInstance($ini);
 
-
 # This array contains all the categories from the database as Category objects
 $categories = $db->select_categories();
 
-if (isset($_SESSION['login']))
-    $memberLogin = unserialize($_SESSION['login'])->login();
-
-
-if (isset($_SESSION['admin']))
-    $isAdmin = true;
+if (isset($_SESSION['login'])) {
+    $member = unserialize($_SESSION['login']);
+    $memberLogin = $member->login();
+    if ($member->admin() == 1)
+        $isAdmin = true;
+}
 
 if(isset($_POST['search']))
     $search = htmlspecialchars($_POST['search']);

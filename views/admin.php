@@ -1,7 +1,7 @@
 <div class="container">
     <h3>Members:</h3>
 </div>
-<?php if($nbMembers == 0) echo '<p id="notification" class="container"><i class="fas fa-exclamation-triangle"></i> No other user found.</p>'?>
+<?php if(isset($notification)) echo "<p id=\"notification\" class=\"container\"><i class=\"fas fa-exclamation-triangle\"></i> $notification</p>";?>
 <!-- Displaying all members -->
 <?php for ($i = 0; $i < $nbMembers; $i++) { ?>
         <div class="container">

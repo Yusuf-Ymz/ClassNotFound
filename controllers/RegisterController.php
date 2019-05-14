@@ -14,7 +14,7 @@ class RegisterController
     {
 
         # User already connected
-        if (isset($_SESSION['logged'])) {
+        if (isset($_SESSION['login'])) {
             header('Location: index.php');
             die();
         }
@@ -29,12 +29,12 @@ class RegisterController
                 # All fields are completed, verification...
                 if (isset($_POST['lastname'][25]))
                     $notification = 'Please enter a shorter lastname';
-                elseif (isset($_POST['firstname'][25])) {
+                elseif (isset($_POST['firstname'][25]))
                     $notification = 'Please enter a shorter firstname';
-                } elseif (isset($_POST['login'][25]))
+                elseif (isset($_POST['login'][25]))
                     $notification = 'Please enter a shorter login';
                 # Invalid e-mail address
-                elseif (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail']))
+                elseif (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/', $_POST['mail']) || isset($_POST['mail'][50]))
                     $notification = 'Please enter a valid mail address';
                 elseif (isset($_POST['password'][60]))
                     $notification = 'Please enter a shorter password';

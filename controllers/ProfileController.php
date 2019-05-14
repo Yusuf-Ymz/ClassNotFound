@@ -15,7 +15,7 @@ class ProfileController
     {
 
         # User not connected --> redirect homepage
-        if (!isset($_SESSION['logged'])) {
+        if (!isset($_SESSION['login'])) {
             header('Location: index.php');
             die();
         }
@@ -24,6 +24,8 @@ class ProfileController
         $memberQuestions = $this->_db->select_questions_for_profile($memberId);
 
         $nbQuestions = count($memberQuestions);
+        if($nbQuestions == 0)
+            $notfication =  'No questions have been posted yet.';
 
         require_once(VIEWS . 'profile.php');
     }

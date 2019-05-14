@@ -42,7 +42,15 @@ class HomepageController
             $questions = $this->_db->select_newest_questions_for_homepage();
 
         }
+
         $nbQuestions = count($questions);
+
+        if($nbQuestions == 0) {
+            if (isset($category))
+                $notification = 'No questions have been posted in this category yet.';
+            elseif (isset($search))
+                $notification = 'No results';
+        }
         require_once(VIEWS . 'homepage.php');
     }
 }

@@ -146,7 +146,7 @@ class Db
         $row = $ps->fetch();
         $member = null;
         if (!empty($row)) {
-            $member = new Member($row->member_id, $row->login, $row->lastname, $row->firstname, $row->mail, $row->admin, $row->suspended);
+            $member = new Member($row->member_id, $row->login, null, null, null, $row->admin, $row->suspended);
             if (!password_verify($password, $row->password)) {
                 $member = null;
             }

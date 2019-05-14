@@ -52,7 +52,7 @@ class QuestionController
                     $refreshQuestion = true;
                 } elseif (isset($_POST['like']) || isset($_POST['dislike'])) {
                     # If the user is not logged
-                    if (!isset($_SESSION['logged'])) {
+                    if (!isset($_SESSION['login'])) {
                         $_SESSION['error'] = 'You must be logged to like or dislike an answer';
                         header('Location: index.php?action=login');
                         die();
@@ -78,11 +78,12 @@ class QuestionController
 
         $nbAnswers = count($question->answers());
 
-        if(isset($_SESSION['login']))
-            $memberLogin = unserialize($_SESSION['login'])->html_login();
-        if(isset($_SESSION['admin']))
-            $isAdmin = true;
-
+        if(isset($_SESSION['login'])) {
+            $member = unserialize($_SESSION['login']);
+            $memberLogin = $member->html_login();
+            if ($member->admin() == 1)
+                $isAdmin = true;
+        }
         require_once(VIEWS . 'question.php');
 
     }

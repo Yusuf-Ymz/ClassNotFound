@@ -16,7 +16,6 @@
                     <p class="card-login"><?php echo $question->publicationDate() ?></p>
                 </div>
             </div>
-
         </div>
 
         <!-- Displaying the question's title and question's subject -->

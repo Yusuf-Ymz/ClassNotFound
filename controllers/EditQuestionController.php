@@ -23,7 +23,7 @@ class EditQuestionController
                 die();
             }
             # If the user try to post a question without being connected --> redirect login with notification
-            if (!isset($_SESSION['logged'])) {
+            if (!isset($_SESSION['login'])) {
                 $_SESSION['error'] = 'You must be logged to post a question';
                 header('Location: index.php?action=login');
                 die();
@@ -39,7 +39,7 @@ class EditQuestionController
             } elseif (isset($_POST['question_title'][80]))
                 $notification = 'Please enter a shorter title';
             elseif (isset($_POST['question_subject'][65535]))
-                $notification = 'Please enter a short answer';
+                $notification = 'Please enter a shorter answer';
             else {
                 # If the member is editing his question
                 if (isset($_POST['form_edit'])) {
@@ -70,8 +70,11 @@ class EditQuestionController
         # Selecting all categories to display
         $categories = $this->_db->select_categories();
 
-        if (isset($_POST['question_id']))
+        if (isset($_POST['question_id'])) {
             $questionId = $_POST['question_id'];
+            $pageTitle = 'Edit your question:';
+        }else
+            $pageTitle = 'New question:';
 
         require_once(VIEWS . 'editQuestion.php');
     }
