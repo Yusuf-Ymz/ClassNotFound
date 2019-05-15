@@ -30,7 +30,7 @@ $categories = $db->select_categories();
 
 if (isset($_SESSION['login'])) {
     $member = unserialize($_SESSION['login']);
-    $memberLogin = $member->login();
+    $memberLogin = $member->html_login();
     if ($member->admin() == 1)
         $isAdmin = true;
 }

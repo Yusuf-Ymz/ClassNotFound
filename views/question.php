@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="container col-8">
-                    <p class="card-login font-weight-bold"><?php echo $question->author()->login() . ' asks:'; ?></p>
+                    <p class="card-login font-weight-bold"><?php echo $question->author()->html_login() . ' asks:'; ?></p>
                 </div>
                 <div class="container col-4 pagination justify-content-end" id="question-date">
                     <p class="card-login"><?php echo $question->publicationDate() ?></p>
@@ -38,13 +38,13 @@
                     </form>
 
                     <!-- Displaying edit button if user == question's author -->
-                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login()) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->html_login()) { ?>
                         <form class="form-btn" action="index.php?action=editQuestion" method="post">
                             <input type="hidden" name="question_id" value="<?php echo $question->questionId() ?>">
                             <button class="btn btn-dark" type="submit" name="edit">Edit</button>
                         </form>
                     <?php } ?>
-                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login() && $question->bestAnswer() != null) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->html_login() && $question->bestAnswer() != null) { ?>
                         <form class="form-btn float-left"
                               action="index.php?action=question&id=<?php echo $question->questionId() ?>" method="post">
                             <div class="container card-footer-container">
@@ -140,7 +140,7 @@
                         </div>
                     </form>
                     <!-- Displaying best answer button if user == question's author and the answer is not his-->
-                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->login()) { ?>
+                    <?php if (isset($memberLogin) && $memberLogin == $question->author()->html_login()) { ?>
                         <?php if ($question->bestAnswer() == null || ($question->bestAnswer() != null && $question->bestAnswer()->answerId() != $question->answers()[$i]->answerId())) { ?>
                             <form class="form-btn float-left"
                                   action="index.php?action=question&id=<?php echo $question->questionId() ?>"
