@@ -47,7 +47,7 @@ class NewAnswerController
         # Select the question from the id in $_POST['id'] (hidden input)
         $question = $this->_db->select_question_for_new_answer($_POST['id']);
 
-        # If the question is duplicated and user clicked on like or dislike
+        # If the question is duplicated and user clicked on Answer Button
         if ($question->state() == 'duplicated') {
             $_SESSION['error'] = 'This question is marked as duplicated';
             header('Location: index.php?action=question&id=' . $question->questionId());

@@ -13,7 +13,7 @@ class QuestionController
     {
 
         # If no id specified or incorrect id --> redirect to homepage
-        if (!isset($_GET['id']) || empty($_GET['id'])) {
+        if (empty($_GET['id'])) {
             header("Location: index.php");
             die();
         }

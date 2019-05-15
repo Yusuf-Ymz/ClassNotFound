@@ -55,7 +55,7 @@ class EditQuestionController
             }
         }
 
-        # If the question is duplicated and user clicked on like or dislike
+        # If the question is duplicated and user clicked on 'Answer' Button
         if ($question->state() == 'duplicated') {
             $_SESSION['error'] = 'This question is marked as duplicated';
             header('Location: index.php?action=question&id=' . $question->questionId());
