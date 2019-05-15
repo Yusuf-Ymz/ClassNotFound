@@ -25,7 +25,7 @@ class ProfileController
 
         $nbQuestions = count($memberQuestions);
         if($nbQuestions == 0)
-            $notfication =  'No questions have been posted yet.';
+            $notification =  'You haven\'t posted anything yet.';
 
         require_once(VIEWS . 'profile.php');
     }

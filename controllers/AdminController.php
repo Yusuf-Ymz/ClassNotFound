@@ -40,7 +40,7 @@ class AdminController
         $nbMembers = count($members);
 
         if ($nbMembers == 0)
-            $notification = 'No other user found';
+            $notification = 'No other user found.';
 
         require_once(VIEWS . 'admin.php');
     }
