@@ -328,6 +328,8 @@ class Db
         $ps = $this->_db->prepare($query);
         $ps->bindValue(':id', $question_id);
         $ps->execute();
+        if($ps->rowCount() == 0)
+            return null;
         $row = $ps->fetch();
         $author = new Member($row->member_id, $row->login, null, null, null, null, null);
         $question = new Question($row->question_id, $author, null, null, $row->title, $row->subject, $row->state, $row->publication_date, null);
